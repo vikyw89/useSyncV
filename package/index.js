@@ -1,5 +1,6 @@
 import { get, set, unset, update } from "lodash";
 import { useSyncExternalStore } from "use-sync-external-store";
+
 const store = {};
 
 export const setNewStore = store;
@@ -71,8 +72,8 @@ export const useSyncV = (selector) => {
 };
 
 export const debugSyncV = (selector) => {
-  console.table({
-    storeData: get(store, selector),
-    storeSubscribers: get(subscribers, selector),
+  console.log({
+    selectorData: get(store, selector),
+    selectorSubscribersCount: get(subscribers, selector).length,
   });
 };

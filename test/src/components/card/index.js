@@ -1,6 +1,6 @@
 import { Box, Button, Typography } from "@mui/material";
+import { debugSyncV, updateSyncV, useSyncV } from "use-sync-v";
 
-import { debugSyncV, syncVDebugger, updateSyncV, useSyncV } from "use-sync-v";
 export default function CardComponent({ props }) {
   const data = useSyncV(props);
 
@@ -16,14 +16,8 @@ export default function CardComponent({ props }) {
           width: "200px",
         }}
       >
-        <Typography variant="h4" sx={{ textAlign: "center" }}>
-          Selector
-        </Typography>
-        <Typography variant="h4" sx={{ textAlign: "center" }}>
-          {props}
-        </Typography>
-        <Typography variant="h4" sx={{ textAlign: "center" }}>
-          Value
+        <Typography variant="h6" sx={{ textAlign: "center" }}>
+          useSyncV("{props}") =
         </Typography>
         <Typography variant="h4" sx={{ textAlign: "center" }}>
           {data}
