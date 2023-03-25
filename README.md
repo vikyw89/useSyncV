@@ -13,7 +13,7 @@ export const CounterDisplayComponent = () => {
   // sync this component to counter store, will re render whenever the value of counter changes
   return (
     <div>
-      <div>{counter.value}</div>
+      <div>{counter}</div>
       <CounterButton />
     </div>
   );
