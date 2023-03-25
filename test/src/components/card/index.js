@@ -10,10 +10,9 @@ export default function CardComponent({ props }) {
         sx={{
           border: "1px solid grey",
           color: "white",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "stretch",
-          width: "200px",
+          display: "grid",
+          gridTemplateColumns:'repeat(auto-fit, minmax(250px, 1fr))',
+          gridAutoRows: '1fr',
         }}
       >
         <Typography variant="h6" sx={{ textAlign: "center" }}>

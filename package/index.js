@@ -1,5 +1,5 @@
 import { get, set, unset, update } from "lodash";
-import { useSyncExternalStore } from "use-sync-external-store";
+import { useSyncExternalStore } from "react";
 
 const store = {};
 
@@ -8,7 +8,7 @@ export const setNewStore = store;
 const subscribers = {};
 
 export const emitChange = (selector) => {
-  const selectorSubscribers = get(subscribers, selector);
+  const selectorSubscribers = get(subscribers, selector) ?? []
 
   if (!selectorSubscribers) {
     set(subscribers, selector, []);
@@ -21,7 +21,6 @@ export const emitChange = (selector) => {
 
 export const readSyncV = (selector) => {
   const response = get(store, selector);
-  emitChange(selector);
   return response;
 };
 
@@ -72,8 +71,9 @@ export const useSyncV = (selector) => {
 };
 
 export const debugSyncV = (selector) => {
-  console.log({
-    selectorData: get(store, selector),
-    selectorSubscribersCount: get(subscribers, selector).length,
+  console.table({
+    selector: selector,
+    value: get(store, selector),
+    subscribersCount: get(subscribers, selector).length,
   });
 };
