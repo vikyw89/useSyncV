@@ -1,6 +1,6 @@
 {
   "name": "use-sync-v",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "a custom react hook to sync store, with a built in CRUDE",
   "main": "index.js",
   "scripts": {
