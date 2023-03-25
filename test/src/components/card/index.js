@@ -1,8 +1,10 @@
 import { Box, Button, Typography } from "@mui/material";
 
+import { debugSyncV, syncVDebugger, updateSyncV, useSyncV } from "use-sync-v";
 export default function CardComponent({ props }) {
+  const data = useSyncV(props);
 
-    return (
+  return (
     <>
       <Box
         sx={{
@@ -14,10 +16,29 @@ export default function CardComponent({ props }) {
           width: "200px",
         }}
       >
-        <Typography variant="h3" sx={{ textAlign: "center" }}>
-          3
+        <Typography variant="h4" sx={{ textAlign: "center" }}>
+          Selector
         </Typography>
-        <Button variant="contained">Increment</Button>
+        <Typography variant="h4" sx={{ textAlign: "center" }}>
+          {props}
+        </Typography>
+        <Typography variant="h4" sx={{ textAlign: "center" }}>
+          Value
+        </Typography>
+        <Typography variant="h4" sx={{ textAlign: "center" }}>
+          {data}
+        </Typography>
+        <Button
+          variant="contained"
+          onClick={() => {
+            updateSyncV(props, (p) => {
+              return p + 1;
+            });
+            debugSyncV(props);
+          }}
+        >
+          Increment
+        </Button>
         <Button variant="contained">Decrement</Button>
       </Box>
     </>

@@ -1,26 +1,10 @@
 import { get, set, unset, update } from "lodash";
-
+import { useSyncExternalStore } from "use-sync-external-store";
 const store = {};
 
 export const setNewStore = store;
 
 const subscribers = {};
-
-export const readSync = (selector) => {
-  return get(store, selector);
-};
-
-export const createSync = (selector, value) => {
-  return set(store, selector, value);
-};
-
-export const updateSync = (selector, updaterFn) => {
-  return update(store, selector, updaterFn);
-};
-
-export const deleteSync = (selector) => {
-  return unset(store, selector);
-};
 
 export const emitChange = (selector) => {
   const selectorSubscribers = get(subscribers, selector);
@@ -32,6 +16,30 @@ export const emitChange = (selector) => {
   for (let subscriber of selectorSubscribers) {
     subscriber();
   }
+};
+
+export const readSyncV = (selector) => {
+  const response = get(store, selector);
+  emitChange(selector);
+  return response;
+};
+
+export const createSyncV = (selector, value) => {
+  const response = set(store, selector, value);
+  emitChange(selector);
+  return response;
+};
+
+export const updateSyncV = (selector, updaterFn) => {
+  const response = update(store, selector, updaterFn);
+  emitChange(selector);
+  return response;
+};
+
+export const deleteSyncV = (selector) => {
+  const response = unset(store, selector);
+  emitChange(selector);
+  return response
 };
 
 export const useSyncV = (selector) => {
@@ -62,7 +70,7 @@ export const useSyncV = (selector) => {
   return state;
 };
 
-export const syncVDebugger = (selector) => {
+export const debugSyncV = (selector) => {
   console.table({
     storeData: get(store, selector),
     storeSubscribers: get(subscribers, selector),
