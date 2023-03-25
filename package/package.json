@@ -1,0 +1,30 @@
+{
+  "name": "use-sync-v",
+  "version": "1.0.0",
+  "description": "a custom react hook to sync store, with a built in CRUDE",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vikyw89/useSyncV.git"
+  },
+  "keywords": [
+    "useSyncV",
+    "use-sync-v",
+    "react",
+    "redux",
+    "zustand"
+  ],
+  "author": "https://github.com/vikyw89",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vikyw89/useSyncV/issues"
+  },
+  "homepage": "https://github.com/vikyw89/useSyncV#readme",
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "use-sync-external-store": "^1.2.0"
+  }
+}
