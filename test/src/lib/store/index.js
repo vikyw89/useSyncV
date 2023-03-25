@@ -1,11 +1,10 @@
 import { createSyncV } from "use-sync-v";
 
-createSyncV("a", 4);
-createSyncV("b", {
-  5: 10,
-});
-createSyncV("c", {
-  c: 67,
-});
+createSyncV("a", {
+  b:[5,{
+    c:6
+  }]
+})
+
 
 export const initStores = () => {};

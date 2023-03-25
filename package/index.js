@@ -5,16 +5,12 @@ const store = {};
 
 export const setNewStore = store;
 
-const subscribers = {};
+let subscribers = [];
 
-export const emitChange = (selector) => {
-  const selectorSubscribers = get(subscribers, selector) ?? []
+const logger = {}
 
-  if (!selectorSubscribers) {
-    set(subscribers, selector, []);
-  }
-
-  for (let subscriber of selectorSubscribers) {
+export const emitChange = () => {
+  for (let subscriber of subscribers) {
     subscriber();
   }
 };
@@ -26,19 +22,19 @@ export const readSyncV = (selector) => {
 
 export const createSyncV = (selector, value) => {
   const response = set(store, selector, value);
-  emitChange(selector);
+  emitChange();
   return response;
 };
 
 export const updateSyncV = (selector, updaterFn) => {
   const response = update(store, selector, updaterFn);
-  emitChange(selector);
+  emitChange();
   return response;
 };
 
 export const deleteSyncV = (selector) => {
   const response = unset(store, selector);
-  emitChange(selector);
+  emitChange();
   return response
 };
 
@@ -52,17 +48,12 @@ export const useSyncV = (selector) => {
   };
 
   const subscribe = (callback) => {
-    update(subscribers, selector, (p) => {
-      if (!p) {
-        p = [];
-      }
-      return [...p, callback];
-    });
+    subscribers = [...subscribers, callback]
     return () => {
-      update(subscribers, selector, (p) => {
-        return p.filter((el) => el !== callback);
-      });
-    };
+      subscribers = subscribers.filter(p=>{
+        return p !== callback
+      })
+    }
   };
 
   const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
@@ -74,6 +65,5 @@ export const debugSyncV = (selector) => {
   console.table({
     selector: selector,
     value: get(store, selector),
-    subscribersCount: get(subscribers, selector).length,
   });
 };

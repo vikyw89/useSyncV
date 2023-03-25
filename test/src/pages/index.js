@@ -12,18 +12,19 @@ export default function Home() {
         sx={{
           height: "100%",
           display: "grid",
-          gridTemplateColumns: "1fr 1fr 1fr",
-          gridAutoRows: "200px",
+          gridTemplateColumns:'repeat(auto-fit, minmax(200px, 1fr))',
+          height:'auto',
           margin: "30px",
           justifyContent: "center",
+          gap:'10px'
         }}
       >
         <CardComponent props={"a"} />
-        <CardComponent props={"a"} />
-        <CardComponent props={"b[5]"} />
-        <CardComponent props={"b['5']"} />
-        <CardComponent props={`c['c']`} />
-        <CardComponent props={`c.c`} />
+        <CardComponent props={"a.b"} />
+        <CardComponent props={"a.b[0]"} />
+        <CardComponent props={"a.b[1]"} />
+        <CardComponent props={"a.b[1].c"} />
+        <CardComponent props={""} />
       </Box>
     </>
   );

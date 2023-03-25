@@ -8,11 +8,15 @@ export default function CardComponent({ props }) {
     <>
       <Box
         sx={{
-          border: "1px solid grey",
           color: "white",
-          display: "grid",
-          gridTemplateColumns:'repeat(auto-fit, minmax(250px, 1fr))',
-          gridAutoRows: '1fr',
+          display: "flex",
+          flexDirection:'column',
+          height:'auto',
+          width:'auto',
+          gap:'10px',
+          border:'1px solid white',
+          borderRadius:'20px',
+          padding:'10px'
         }}
       >
         <Typography variant="h6" sx={{ textAlign: "center" }}>

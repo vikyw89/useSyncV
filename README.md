@@ -69,15 +69,15 @@ createSyncV("users[age]", 20);
 let's try reading the "users" state
 
 ```jsx
-const users = readSyncV("users");
+const rootState = readSyncV();
 // this will return the state value
-console.log(users);
+console.log(rootState);
 ```
 
 here's what it will return
 
 ```jsx
-{
+users:{
   name: "user1",
   id: "314991",
   contacts: [
@@ -92,6 +92,7 @@ here's what it will return
   ],
   age: 20
 };
+// state is just a plain JS object, and we use the selector to choose where we want our state be
 ```
 
 ### To UPDATE the state with an updater function:
@@ -130,6 +131,8 @@ export const UserProfileComponent = () => {
   // this will re-render the component whenever the value of users.contacts[0] changes
 };
 ```
+
+only scoop the state as specific as we need, this way we will not get a rerender on things we don't use
 
 ### To DEBUG
 
