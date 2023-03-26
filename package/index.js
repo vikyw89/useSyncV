@@ -1,4 +1,4 @@
-import { get, set, unset, update } from "lodash";
+import { result, set, unset, update } from "lodash";
 import { useSyncExternalStore } from "react";
 
 const store = {};
@@ -62,7 +62,7 @@ export const useSyncV = (selector) => {
 export const debugSyncV = (selector) => {
   console.table({
     selector: selector,
-    value: get(store, selector),
+    value: result(store, selector),
   });
 };
 
