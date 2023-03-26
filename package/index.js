@@ -65,6 +65,82 @@ export const debugSyncV = (selector) => {
   console.log(`end of debug SyncV`);
 };
 
+export const createAsyncV = (selector, asyncFn) => {
+  const asyncWrapper = async (store, selector, asyncFn) => {
+    set(store, selector, {
+      data: null,
+      loading: true,
+      error: false,
+    });
+    try {
+      const data = await asyncFn();
+      createSyncV(selector, {
+        data: data,
+        loading: false,
+        error: false,
+      });
+    } catch (error) {
+      createSyncV(selector, {
+        data: null,
+        loading: false,
+        error: error,
+      });
+    }
+  };
+  asyncWrapper(store, selector, asyncFn);
+  return readSyncV(selector);
+};
+
+export const updateAsyncV = (selector, asyncFn) => {
+  const asyncWrapper = async (store, selector, asyncFn) => {
+    update(store, selector, (p) => ({
+      ...p,
+      loading: true,
+      error: false,
+    }));
+    try {
+      const data = await asyncFn();
+      updateSyncV(selector, (p) => ({
+        ...p,
+        data: data,
+        loading: false,
+        error: false,
+      }));
+    } catch (error) {
+      updateSyncV(selector, (p) => ({
+        ...p,
+        data: null,
+        loading: false,
+        error: error,
+      }));
+    }
+  };
+  asyncWrapper(store, selector, asyncFn);
+  return readSyncV(selector);
+};
+
+const asyncWrapper = async (store, selector, asyncFn) => {
+  set(store, selector, {
+    data: null,
+    loading: true,
+    error: false,
+  });
+  try {
+    const data = await asyncFn();
+    createSyncV(selector, {
+      data: data,
+      loading: false,
+      error: false,
+    });
+  } catch (error) {
+    createSyncV(selector, {
+      data: null,
+      loading: false,
+      error: error,
+    });
+  }
+};
+
 export const useAsyncV = (selector, asyncFn) => {
   update(store, selector, (p) => {
     if (p) return p;
@@ -78,30 +154,8 @@ export const useAsyncV = (selector, asyncFn) => {
   const endState = useSyncV(selector);
 
   useEffect(() => {
-    const asyncWrapper = async () => {
-      set(store, selector, {
-        data: null,
-        loading: true,
-        error: false,
-      });
-      try {
-        const data = await asyncFn();
-        createSyncV(selector, {
-          data: data,
-          loading: false,
-          error: false,
-        });
-      } catch (error) {
-        createSyncV(selector, {
-          data: null,
-          loading: false,
-          error: error,
-        });
-      }
-    };
-    console.log(!endState?.data && (!endState?.loading || endState?.error));
     if (!endState?.data && (!endState?.loading || endState?.error)) {
-      asyncWrapper();
+      asyncWrapper(store, selector, asyncFn);
     }
   });
 
