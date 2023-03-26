@@ -3,11 +3,9 @@ import { useSyncExternalStore } from "react";
 
 const store = {};
 
-export const setNewStore = store;
-
 let subscribers = [];
 
-const logger = {}
+const asyncStatus = {}
 
 export const emitChange = () => {
   for (let subscriber of subscribers) {
@@ -16,7 +14,7 @@ export const emitChange = () => {
 };
 
 export const readSyncV = (selector) => {
-  const response = get(store, selector);
+  const response = result(store, selector);
   return response;
 };
 
@@ -38,22 +36,22 @@ export const deleteSyncV = (selector) => {
   return response
 };
 
+const subscribe = (callback) => {
+  subscribers = [...subscribers, callback]
+  return () => {
+    subscribers = subscribers.filter(p=>{
+      return p !== callback
+    })
+  }
+};
+
 export const useSyncV = (selector) => {
   const getSnapshot = () => {
-    return JSON.stringify(get(store, selector));
+    return JSON.stringify(result(store, selector));
   };
 
   const getServerSnapshot = () => {
-    return JSON.stringify(get(store, selector));
-  };
-
-  const subscribe = (callback) => {
-    subscribers = [...subscribers, callback]
-    return () => {
-      subscribers = subscribers.filter(p=>{
-        return p !== callback
-      })
-    }
+    return JSON.stringify(result(store, selector));
   };
 
   const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
@@ -67,3 +65,42 @@ export const debugSyncV = (selector) => {
     value: get(store, selector),
   });
 };
+
+export const useAsyncV = (selector, asyncFn) => {
+  const asyncFnWithStatus = async() => {
+    const status = {
+      pending:true,
+      error:null
+    }
+    set(asyncStatus, selector, status)
+    try {
+      const response = await asyncFn()
+      return response
+    } catch (err) {
+      set(status,"error", err)
+    }
+  }
+
+  const updateFn = (p) => {
+    if (p) {
+      return p
+    }
+    return asyncFn()
+  }
+  set(asyncStatus, selector, status)
+  update(store,selector, updateFn)
+
+  // create the data
+  createSyncV(selector, asyncFn())
+  const getSnapshot = () => {
+    return JSON.stringify(result(store, selector));
+  };
+
+  const getServerSnapshot = () => {
+    return JSON.stringify(result(store, selector));
+  };
+
+  const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+
+  return [state, pending, error]
+}
