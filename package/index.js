@@ -1,11 +1,9 @@
 import { result, set, unset, update } from "lodash";
-import { useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 
 const store = {};
 
 let subscribers = [];
-
-const asyncStatus = {}
 
 export const emitChange = () => {
   for (let subscriber of subscribers) {
@@ -33,16 +31,16 @@ export const updateSyncV = (selector, updaterFn) => {
 export const deleteSyncV = (selector) => {
   const response = unset(store, selector);
   emitChange();
-  return response
+  return response;
 };
 
 const subscribe = (callback) => {
-  subscribers = [...subscribers, callback]
+  subscribers = [...subscribers, callback];
   return () => {
-    subscribers = subscribers.filter(p=>{
-      return p !== callback
-    })
-  }
+    subscribers = subscribers.filter((p) => {
+      return p !== callback;
+    });
+  };
 };
 
 export const useSyncV = (selector) => {
@@ -54,53 +52,58 @@ export const useSyncV = (selector) => {
     return JSON.stringify(result(store, selector));
   };
 
-  const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
-  return state;
+  return readSyncV(selector);
 };
 
 export const debugSyncV = (selector) => {
-  console.table({
-    selector: selector,
-    value: result(store, selector),
-  });
+  console.log(`start of debug SyncV`);
+  console.log(`selector : ${selector}`);
+  console.log(`value : `);
+  console.log(result(store, selector));
+  console.log(`end of debug SyncV`);
 };
 
 export const useAsyncV = (selector, asyncFn) => {
-  const asyncFnWithStatus = async() => {
-    const status = {
-      pending:true,
-      error:null
+  update(store, selector, (p) => {
+    if (p) return p;
+    return {
+      data: null,
+      loading: false,
+      error: false,
+    };
+  });
+
+  const endState = useSyncV(selector);
+
+  useEffect(() => {
+    const asyncWrapper = async () => {
+      set(store, selector, {
+        data: null,
+        loading: true,
+        error: false,
+      });
+      try {
+        const data = await asyncFn();
+        createSyncV(selector, {
+          data: data,
+          loading: false,
+          error: false,
+        });
+      } catch (error) {
+        createSyncV(selector, {
+          data: null,
+          loading: false,
+          error: error,
+        });
+      }
+    };
+    console.log(!endState?.data && (!endState?.loading || endState?.error));
+    if (!endState?.data && (!endState?.loading || endState?.error)) {
+      asyncWrapper();
     }
-    set(asyncStatus, selector, status)
-    try {
-      const response = await asyncFn()
-      return response
-    } catch (err) {
-      set(status,"error", err)
-    }
-  }
+  });
 
-  const updateFn = (p) => {
-    if (p) {
-      return p
-    }
-    return asyncFn()
-  }
-  set(asyncStatus, selector, status)
-  update(store,selector, updateFn)
-
-  // create the data
-  createSyncV(selector, asyncFn())
-  const getSnapshot = () => {
-    return JSON.stringify(result(store, selector));
-  };
-
-  const getServerSnapshot = () => {
-    return JSON.stringify(result(store, selector));
-  };
-
-  const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
-
-  return [state, pending, error]
-}
+  return endState;
+};
