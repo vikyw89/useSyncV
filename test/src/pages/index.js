@@ -1,10 +1,7 @@
 import CardComponent from "@/components/card";
 import { Box, Button, Typography } from "@mui/material";
 import { Inter } from "next/font/google";
-import {
-  readSyncV,
-  updateAsyncV, useQueryV
-} from "use-sync-v";
+import { debugSyncV, readSyncV, updateAsyncV, useQueryV } from "use-sync-v";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,13 +16,14 @@ export default function Home() {
   const data = useQueryV(selector, async () => {
     const response = await fetch("https://catfact.ninja/fact");
     const data = await response.json();
-    console.log('refetch')
+    console.log("refetch");
     return data;
   });
+  debugSyncV(selector);
   const refetchHandler = () => {
     updateAsyncV(selector, asyncFn);
   };
-  console.log('rerender')
+  console.log("rerender");
   return (
     <>
       <Box

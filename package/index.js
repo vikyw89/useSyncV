@@ -5,29 +5,51 @@ const store = {};
 
 let subscribers = [];
 
-export const emitChange = () => {
+const emitChange = () => {
   for (let subscriber of subscribers) {
     subscriber();
   }
 };
 
+/**
+ * A function that reads data from the store for a given selector.
+ * @param {string} selector - The selector to read.
+ * @returns {Object} - The data object from the store.
+ */
 export const readSyncV = (selector) => {
   const response = result(store, selector);
   return response;
 };
 
+/**
+ * A function that creates a new item in the store with the given selector and value.
+ * @param {string} selector - The selector to create.
+ * @param {Object} value - The value to assign to the selector.
+ * @returns {Object} - The response object from the store.
+ */
 export const createSyncV = (selector, value) => {
   const response = set(store, selector, value);
   emitChange();
   return response;
 };
 
+/**
+ * A function that updates an item in the store for a given selector with the provided updater function.
+ * @param {string} selector - The selector to update.
+ * @param {Function} updaterFn - The updater function to apply to the selector.
+ * @returns {Object} - The response object from the store.
+ */
 export const updateSyncV = (selector, updaterFn) => {
   const response = update(store, selector, updaterFn);
   emitChange();
   return response;
 };
 
+/**
+ * A function that deletes an item from the store for a given selector.
+ * @param {string} selector - The selector to delete.
+ * @returns {Object} - The response object from the store.
+ */
 export const deleteSyncV = (selector) => {
   const response = unset(store, selector);
   emitChange();
@@ -43,6 +65,11 @@ const subscribe = (callback) => {
   };
 };
 
+/**
+ * A custom hook that reads and synchronizes with the store for a given selector.
+ * @param {string} selector - The selector to read.
+ * @returns {Object} - The state object returned by `readSyncV`.
+ */
 export const useSyncV = (selector) => {
   const getSnapshot = () => {
     return JSON.stringify(result(store, selector));
@@ -57,14 +84,23 @@ export const useSyncV = (selector) => {
   return readSyncV(selector);
 };
 
+/**
+ * Logs the current value of a selector to the console for debugging purposes.
+ * @param {string} selector - The selector to log.
+ * @returns {void}
+ */
 export const debugSyncV = (selector) => {
-  console.log(`start of debug SyncV`);
-  console.log(`selector : ${selector}`);
-  console.log(`value : `);
-  console.log(result(store, selector));
-  console.log(`end of debug SyncV`);
+  console.group(`Debug SyncV`);
+  console.log(`Selector: ${selector}`);
+  console.log(`Value:`, result(store, selector));
+  console.groupEnd();
 };
 
+/**
+ * A function that creates a new item in the store with an asynchronous function.
+ * @param {string} selector - The selector to create.
+ * @param {Function} asyncFn - The asynchronous function to fetch data.
+ */
 export const createAsyncV = async (selector, asyncFn) => {
   set(store, selector, {
     data: null,
@@ -87,10 +123,14 @@ export const createAsyncV = async (selector, asyncFn) => {
   }
 };
 
+/**
+ * A function that updates an item in the store with an asynchronous function.
+ * @param {string} selector - The selector to update.
+ * @param {Function} asyncFn - The asynchronous function to fetch data.
+ */
 export const updateAsyncV = async (selector, asyncFn) => {
   update(store, selector, (p) => ({
     ...p,
-    data: p?.data ?? null,
     loading: true,
     error: false,
   }));
@@ -109,16 +149,19 @@ export const updateAsyncV = async (selector, asyncFn) => {
       error: error,
     }));
   }
-
-  return readSyncV(selector);
 };
 
+/**
+ * A custom hook that updates the store for a given selector with a default initial state if not present.
+ * @param {string} selector - The selector to update.
+ * @returns {Object} - The state object returned by `useSyncV`.
+ */
 export const useAsyncV = (selector) => {
   update(store, selector, (p) => {
     if (p) return p;
     return {
       data: null,
-      loading: false,
+      loading: true,
       error: false,
     };
   });
@@ -135,15 +178,7 @@ export const useAsyncV = (selector) => {
  * - The object properties are {data, loading, error}
  */
 export const useQueryV = (selector, asyncFn) => {
-  update(store, selector, (p) => {
-    if (p) return p;
-    return {
-      data: null,
-      loading: true,
-      error: false,
-    };
-  });
-  const state = useSyncV(selector);
+  const state = useAsyncV(selector, asyncFn);
   useEffect(() => {
     createAsyncV(selector, asyncFn);
   }, []);
