@@ -8,7 +8,6 @@ a simplistic CRUDE global state / store management for react
 - efficient rendering by utilizing selector
 - extendable if you like to use reducer, write a reducer just like how you write vanilla JS IIFE or static class
 - built in fetch with cache, up to date {data, loading, error} for your UI
--
 
 ## In a rush ?
 
@@ -110,7 +109,7 @@ createSyncV("users[age]", 20);
 
 ### To READ the state:
 
-let's try reading the "users" state
+let's try reading the user id state
 
 ```jsx
 const rootState = readSyncV("users.contacts[0].id");

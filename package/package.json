@@ -1,6 +1,7 @@
 {
   "name": "use-sync-v",
-  "version": "1.1.0",
+  "version": "1.1.2",
+  "type": "module",
   "description": "a custom react hook to sync store, with a built in CRUDE",
   "main": "index.js",
   "scripts": {
@@ -26,7 +27,7 @@
   },
   "homepage": "https://github.com/vikyw89/useSyncV#readme",
   "dependencies": {
-    "lodash": "^4.17.21",
+    "lodash-es": "^4.17.21",
     "react": "^18.2.0"
   }
 }
