@@ -65,61 +65,7 @@ export const debugSyncV = (selector) => {
   console.log(`end of debug SyncV`);
 };
 
-export const createAsyncV = (selector, asyncFn) => {
-  const asyncWrapper = async (store, selector, asyncFn) => {
-    set(store, selector, {
-      data: null,
-      loading: true,
-      error: false,
-    });
-    try {
-      const data = await asyncFn();
-      createSyncV(selector, {
-        data: data,
-        loading: false,
-        error: false,
-      });
-    } catch (error) {
-      createSyncV(selector, {
-        data: null,
-        loading: false,
-        error: error,
-      });
-    }
-  };
-  asyncWrapper(store, selector, asyncFn);
-  return readSyncV(selector);
-};
-
-export const updateAsyncV = (selector, asyncFn) => {
-  const asyncWrapper = async (store, selector, asyncFn) => {
-    update(store, selector, (p) => ({
-      ...p,
-      loading: true,
-      error: false,
-    }));
-    try {
-      const data = await asyncFn();
-      updateSyncV(selector, (p) => ({
-        ...p,
-        data: data,
-        loading: false,
-        error: false,
-      }));
-    } catch (error) {
-      updateSyncV(selector, (p) => ({
-        ...p,
-        data: null,
-        loading: false,
-        error: error,
-      }));
-    }
-  };
-  asyncWrapper(store, selector, asyncFn);
-  return readSyncV(selector);
-};
-
-const asyncWrapper = async (store, selector, asyncFn) => {
+export const createAsyncV = async (selector, asyncFn) => {
   set(store, selector, {
     data: null,
     loading: true,
@@ -141,7 +87,33 @@ const asyncWrapper = async (store, selector, asyncFn) => {
   }
 };
 
-export const useAsyncV = (selector, asyncFn) => {
+export const updateAsyncV = async (selector, asyncFn) => {
+  update(store, selector, (p) => ({
+    ...p,
+    data: p?.data ?? null,
+    loading: true,
+    error: false,
+  }));
+  try {
+    const data = await asyncFn();
+    updateSyncV(selector, (p) => ({
+      ...p,
+      data: data,
+      loading: false,
+      error: false,
+    }));
+  } catch (error) {
+    updateSyncV(selector, (p) => ({
+      ...p,
+      loading: false,
+      error: error,
+    }));
+  }
+
+  return readSyncV(selector);
+};
+
+export const useAsyncV = (selector) => {
   update(store, selector, (p) => {
     if (p) return p;
     return {
@@ -150,14 +122,30 @@ export const useAsyncV = (selector, asyncFn) => {
       error: false,
     };
   });
+  const state = useSyncV(selector);
+  return state;
+};
 
-  const endState = useSyncV(selector);
-
-  useEffect(() => {
-    if (!endState?.data && (!endState?.loading || endState?.error)) {
-      asyncWrapper(store, selector, asyncFn);
-    }
+/**
+ * A custom hook that uses `useAsyncV` to manage asynchronous data fetching.
+ * If the data is not available or an error has occurred, it will refetch the data.
+ * @param {string} selector - The selector to store data.
+ * @param {Function} asyncFn - The asynchronous function to fetch data.
+ * @returns {Object} - The state object returned by `useAsyncV`.
+ * - The object properties are {data, loading, error}
+ */
+export const useQueryV = (selector, asyncFn) => {
+  update(store, selector, (p) => {
+    if (p) return p;
+    return {
+      data: null,
+      loading: true,
+      error: false,
+    };
   });
-
-  return endState;
+  const state = useSyncV(selector);
+  useEffect(() => {
+    createAsyncV(selector, asyncFn);
+  }, []);
+  return state;
 };
