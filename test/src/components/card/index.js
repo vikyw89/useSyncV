@@ -23,7 +23,7 @@ export default function CardComponent({ props }) {
           useSyncV("{props}") =
         </Typography>
         <Typography variant="h4" sx={{ textAlign: "center" }}>
-          {data}
+          {JSON.stringify(data)}
         </Typography>
         <Button
           variant="contained"
