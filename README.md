@@ -1,6 +1,14 @@
 # useSyncV
 
-a simplistic CRUDE state management for react,
+a simplistic CRUDE global state / store management for react
+
+- no boilercode to start with, use it out of the box
+- built in CRUDE function to manipulate your store
+- structure the store / state how you want it, it's behaving like JS object
+- efficient rendering by utilizing selector
+- extendable if you like to use reducer, write a reducer just like how you write vanilla JS IIFE or static class
+- built in fetch with cache, up to date {data, loading, error} for your UI
+-
 
 ## In a rush ?
 
@@ -37,7 +45,7 @@ export const CounterButton = () => {
 ### for ASYNC:
 
 ```jsx
-export const DataDisplay = () => {
+export const DataDisplayComponent = () => {
   // This will fetch data and store it in the store
   // data will be stored in an object { data, loading, error}
   const {data, loading, error} = useQueryV("api", ()=>{
@@ -46,10 +54,10 @@ export const DataDisplay = () => {
     return data;
   });
 
-  // This will re fetch data and wipe the old data, the alternative would be
-  // updateAsyncV(), it will leave the old data for display until a new data arrived
+  // This will leave the old data on display, and update it when a new data arrive
+  // The alternative would be createAsyncV(), it will delete the old data and update the data when a new data arrive
   const refetchHandler = () => {
-    createAsyncV("api", ()=>{
+    updateAsyncV("api", ()=>{
       const response = await fetch("https://randomuser.me/api/");
       const data = await response.json();
       return data;
@@ -180,7 +188,7 @@ createSyncV("users", {
       name: "Irenelle",
     },
   ],
-  age: 20,
+  age: 20
 });
 
 // we can have a reducer too
@@ -195,7 +203,7 @@ export class usersReducer {
 export const initStores = () => {};
 ```
 
-and call the file on the root of your react app
+and call the file in the root of your react app
 
 ```jsx
 import { initStores } from "@/lib/store";
@@ -239,13 +247,15 @@ deleteSyncV(path:string)
 useSyncV(path:string)
 // to subscribe to the state path, and will re render the component whenever the value change
 
-useQueryV(path:string, asyncFn)
+useQueryV(path:string, asyncFn:function)
 // to fetch a data from api, save the results into the store, and subscribe to it
 
-createAsyncV(path:string, asyncFn)
+createAsyncV(path:string, asyncFn:function)
 // to fetch a data from api, delete the content inside path, and save the result
+// usefull if you want to show a spinner or loading when fetching the data
 
-updateAsyncV(path:string, asyncFn)
+updateAsyncV(path:string, asyncFn:function)
 // to fetch a data from api, and overwrite the old data when there's a new result
+// usefull when you you want to show the old data, while updating the data
 
 ```
