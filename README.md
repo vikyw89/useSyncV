@@ -34,6 +34,42 @@ export const CounterButton = () => {
 };
 ```
 
+### for ASYNC:
+
+```jsx
+export const DataDisplay = () => {
+  // This will fetch data and store it in the store
+  // data will be stored in an object { data, loading, error}
+  const {data, loading, error} = useQueryV("api", ()=>{
+    const response = await fetch("https://randomuser.me/api/");
+    const data = await response.json();
+    return data;
+  });
+
+  // This will re fetch data and wipe the old data, the alternative would be
+  // updateAsyncV(), it will leave the old data for display until a new data arrived
+  const refetchHandler = () => {
+    createAsyncV("api", ()=>{
+      const response = await fetch("https://randomuser.me/api/");
+      const data = await response.json();
+      return data;
+    })
+  }
+  return (
+    <div>
+      {data && <div>{data}</div>}
+      {loading && <div>Loading...</div>}
+      {error && <div>Error fetching data...</div>}
+      {error && <button onClick={refetchHandler}>Refetch Data</button>}
+    </div>
+  );
+};
+
+```
+
+- by default result of useQueryV is cached in the store, if there are other components accessing useQueryV, they will get the cache result
+- to update / refetch useQueryV content, use updateAsyncV / createAsyncV
+
 ## Usages:
 
 ### to CREATE a state with the name 'users' :
@@ -69,31 +105,14 @@ createSyncV("users[age]", 20);
 let's try reading the "users" state
 
 ```jsx
-const rootState = readSyncV();
+const rootState = readSyncV("users.contacts[0].id");
 // this will return the state value
 console.log(rootState);
+// => 1
 ```
 
-here's what it will return
-
-```jsx
-users:{
-  name: "user1",
-  id: "314991",
-  contacts: [
-    {
-      id: 1,
-      name: "Irene",
-    },
-    {
-      id: 2,
-      name: "Irenelle",
-    },
-  ],
-  age: 20
-};
-// state is just a plain JS object, and we use the selector to choose where we want our state be
-```
+- state is just a plain JS object, and we use the selector to choose where we want our state be
+- selector is the same way we access JS object, either using dot notation or bracket, wrapped as string
 
 ### To UPDATE the state with an updater function:
 
@@ -118,7 +137,7 @@ createSyncV("users.age", 20);
 
 ```jsx
 deleteSyncV("users");
-// this will delete the state
+// this will delete the state users and everything underneath users
 ```
 
 ### To SUBSCRIBE / SYNC to the state
@@ -138,7 +157,7 @@ only scoop the state as specific as we need, this way we will not get a rerender
 
 ```jsx
 debugSyncV("users.contacts[0]");
-// this will print into console the value and the subscribers count of the particular state object at the time this function is called
+// this will print into console the value of the store
 ```
 
 ### To organize the store in a different file and have a reducer even an Async value
@@ -162,10 +181,6 @@ createSyncV("users", {
     },
   ],
   age: 20,
-  quote: (async () => {
-    const response = await fetchQuoteFn();
-    return response;
-  })(),
 });
 
 // we can have a reducer too
@@ -223,5 +238,14 @@ deleteSyncV(path:string)
 
 useSyncV(path:string)
 // to subscribe to the state path, and will re render the component whenever the value change
+
+useQueryV(path:string, asyncFn)
+// to fetch a data from api, save the results into the store, and subscribe to it
+
+createAsyncV(path:string, asyncFn)
+// to fetch a data from api, delete the content inside path, and save the result
+
+updateAsyncV(path:string, asyncFn)
+// to fetch a data from api, and overwrite the old data when there's a new result
 
 ```
