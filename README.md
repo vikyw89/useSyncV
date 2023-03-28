@@ -1,9 +1,9 @@
 # useSyncV
 
-a simplistic CRUDE global state / store management for react
+a simplistic CRUD global state / store management for react
 
 - no boilercode to start with, use it out of the box
-- built in CRUDE function to manipulate your store
+- built in CRUD function to manipulate your store
 - structure the store / state how you want it, it's behaving like JS object
 - efficient rendering by utilizing selector
 - extendable if you like to use reducer, write a reducer just like how you write vanilla JS IIFE or static class
@@ -53,10 +53,10 @@ export const DataDisplayComponent = () => {
     return data;
   });
 
-  // This will leave the old data on display, and update it when a new data arrive
-  // The alternative would be createAsyncV(), it will delete the old data and update the data when a new data arrive
   const refetchHandler = () => {
     updateAsyncV("api", ()=>{
+      // This will leave the old data on display, and update it when a new data arrive
+      // The alternative would be createAsyncV(), it will delete the old data and update the data when a new data arrive
       const response = await fetch("https://randomuser.me/api/");
       const data = await response.json();
       return data;
