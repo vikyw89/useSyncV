@@ -1,7 +1,7 @@
 import CardComponent from "@/components/card";
 import { Box, Button, Typography } from "@mui/material";
 import { Inter } from "next/font/google";
-import { createAsyncV, createSyncV, debugSyncV, readSyncV, updateAsyncV, useQueryV, useSyncV } from "use-sync-v";
+import {  debugSyncV, readSyncV, updateAsyncV, updateSyncV, useQueryV, useSyncV } from "use-sync-v";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,7 +11,7 @@ const asyncFn = async () => {
   return data;
 };
 
-createSyncV("test",{
+updateSyncV("test",{
   quote: asyncFn()
 })
 
@@ -22,12 +22,14 @@ export default function Home() {
   const data = useQueryV(selector, async () => {
     const response = await fetch("https://catfact.ninja/fact");
     const data = await response.json();
-    return data;
+    return data.fact;
   });
-  debugSyncV(selector);
+  
+  // debugSyncV(selector);
   const refetchHandler = () => {
-    createAsyncV(selector, asyncFn);
+    updateAsyncV(selector, asyncFn);
   };
+  // console.log(data)
   return (
     <>
       <Box
@@ -42,7 +44,7 @@ export default function Home() {
         }}
       >
         {data.loading && <Typography>Loading</Typography>}
-        {data.data && <Typography>{JSON.stringify(data.data)}</Typography>}
+        {data.data && <Typography>{JSON.stringify(data.data)}test</Typography>}
         {data.error && <Typography>error</Typography>}
         <Button onClick={refetchHandler}>refetch</Button>
         <div>{JSON.stringify(test)}</div>
