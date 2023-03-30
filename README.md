@@ -12,6 +12,10 @@ a simplistic CRUD global state management for react with a built in async fetchi
 ## In a rush ?
 
 ```jsx
+npm i use-sync-v
+```
+
+```jsx
 updateSyncV("counter", 0);
 // create a counter state with initial value of 0
 
@@ -78,90 +82,25 @@ export const DataDisplayComponent = () => {
 ```jsx
 const darkTheme = {
   primary: {
-    main: '#1976d2',
-    light: 'rgb(71, 145, 219)',
-    dark: 'rgb(17, 82, 147)',
-    contrastText: '#fff'
-  },
-  secondary: {
-    main: '#9c27b0',
-    light: 'rgb(175, 82, 191)',
-    dark: 'rgb(109, 27, 123)',
-    contrastText: '#fff'
-  },
-  error: {
-    main: '#d32f2f',
-    light: 'rgb(219, 88, 88)',
-    dark: 'rgb(147, 32, 32)',
-    contrastText: '#fff'
+    main: "#1976d2",
+    light: "rgb(71, 145, 219)",
+    dark: "rgb(17, 82, 147)",
+    contrastText: "#fff",
   },
   warning: {
-    main: '#ed6c02',
-    light: 'rgb(240, 137, 52)',
-    dark: 'rgb(165, 75, 1)',
-    contrastText: '#fff'
-  },
-  info: {
-    main: '#0288d1',
-    light: 'rgb(52, 159, 218)',
-    dark: 'rgb(1, 95, 146)',
-    contrastText: '#fff'
-  },
-  success: {
-    main: '#2e7d32',
-    light: 'rgb(87, 151, 91)',
-    dark: 'rgb(32, 87, 35)',
-    contrastText: '#fff'
-  },
-  common: { black: '#000', white: '#fff' },
-  grey: {
-    '50': '#fafafa',
-    '100': '#f5f5f5',
-    '200': '#eeeeee',
-    '300': '#e0e0e0',
-    '400': '#bdbdbd',
-    '500': '#9e9e9e',
-    '600': '#757575',
-    '700': '#616161',
-    '800': '#424242',
-    '900': '#212121',
-    A100: '#f5f5f5',
-    A200: '#eeeeee',
-    A400: '#bdbdbd',
-    A700: '#616161'
+    main: "#ed6c02",
+    light: "rgb(240, 137, 52)",
+    dark: "rgb(165, 75, 1)",
+    contrastText: "#fff",
   },
   contrastThreshold: 3,
-  getContrastText: [Function: getContrastText],
-  augmentColor: [Function: augmentColor],
-  tonalOffset: 0.2,
-  text: {
-    primary: '#fff',
-    secondary: 'rgba(255, 255, 255, 0.7)',
-    disabled: 'rgba(255, 255, 255, 0.5)',
-    icon: 'rgba(255, 255, 255, 0.5)'
-  },
-  divider: 'rgba(255, 255, 255, 0.12)',
-  background: { paper: '#121212', default: '#121212' },
-  action: {
-    active: '#fff',
-    hover: 'rgba(255, 255, 255, 0.08)',
-    hoverOpacity: 0.08,
-    selected: 'rgba(255, 255, 255, 0.16)',
-    selectedOpacity: 0.16,
-    disabled: 'rgba(255, 255, 255, 0.3)',
-    disabledBackground: 'rgba(255, 255, 255, 0.12)',
-    disabledOpacity: 0.38,
-    focus: 'rgba(255, 255, 255, 0.12)',
-    focusOpacity: 0.12,
-    activatedOpacity: 0.24
-  }
-}
+};
 
-updateSyncV("theme.dark", theme);
+updateSyncV("theme.dark", darkTheme);
 // this will put themeDark into "theme.dark" state
 
 // if you don't like using . notation, you can also do this
-updateSyncV("theme[dark]", theme)
+updateSyncV("theme[dark]", darkTheme);
 // this will do the exact same thing like above
 ```
 
