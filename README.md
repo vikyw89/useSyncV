@@ -29,9 +29,7 @@ export const CounterDisplayComponent = () => {
     </div>
   );
 };
-```
 
-```jsx
 export const CounterButton = () => {
   const incrementCounter = () => {
     updateSyncV("counter", (p) => p + 1);
@@ -97,7 +95,7 @@ const darkTheme = {
 };
 
 updateSyncV("theme.dark", darkTheme);
-// this will put themeDark into "theme.dark" state
+// this will put darkTheme into "theme.dark" state
 
 // if you don't like using . notation, you can also do this
 updateSyncV("theme[dark]", darkTheme);
@@ -270,13 +268,13 @@ useSyncV(selector:string)
 // to subscribe to the state selector, and will re render the component whenever the value change
 // be specific in the selector to prevent unnecessary rerendering
 
-useAsyncV(selector:string, asyncFn:function)
+useAsyncV(selector:string, asyncFn:function, ?config:obj)
 // will subscribe to the selector, and if there's no existing data, it will prepopulate it with {loading, data, error} initial state
 
-updateAsyncV(selector:string, asyncFn:function)
+updateAsyncV(selector:string, asyncFn:function, ?config:obj)
 // to fetch a data from api, save the results into the store
 
-useQueryV(selector:string, asyncFn:function)
+useQueryV(selector:string, asyncFn:function, ?config:obj)
 // this is a bundle of useAsyncV and updateAsyncV
 // to fetch a data from api, save the results into the store, and subscribe to it
 // by default the result is cached
