@@ -114,20 +114,27 @@ export const debugSyncV = (selector) => {
  * A function that updates an item in the store with an asynchronous function.
  * @param {string} selector - The selector to update.
  * @param {Function} asyncFn - The asynchronous function to fetch data.
+ * @param {object} config - The configuration object.
+ * @param {object} config.initialState - The initial state of the component.
+ * @param {boolean} [config.initialState.loading=true] - Whether or not the component is currently loading.
+ * @param {boolean} [config.initialState.error=false] - Whether or not an error has occurred.
+ * @returns {Promise} - A promise that resolves when the component has been updated.
  */
 export const updateAsyncV = async (
   selector,
   asyncFn,
   config = {
-    initialState: {
-      data: null,
-      loading: true,
-      error: false,
-    },
+    deleteExistingData:false,
   }
 ) => {
-  const initialState = config.initialState;
-  update(store, selector, (p) => ({
+  const initialState = {
+    loading:true,
+    error:false
+  }
+  if (config.deleteExistingData) {
+    initialState.data = null
+  }
+  updateSyncV(selector, (p) => ({
     ...p,
     ...initialState,
   }));
@@ -149,17 +156,18 @@ export const updateAsyncV = async (
 
 /**
  * A custom hook that subscribe to the store with a given selector
- * - If there's no initial data present, preset it with async value
+ * - If there's no initial data present, preset it with initial async value
  * @param {string} selector - The selector to update.
+ * @param {Object} config - (optional) initial value if there's no data yet.
  * @returns {Object} - The state object returned by `useSyncV`.
  */
 export const useAsyncV = (
   selector,
-  config = { initialState: { data: null, loading: true, error: false } }
+  config = { initialState: { data: null, loading: false, error: false } }
 ) => {
   const initialState = config.initialState;
   update(store, selector, (p) => {
-    if (p) return p;
+    if (p?.data) return p;
     return {
       ...initialState,
     };
