@@ -106,46 +106,50 @@ export const useSyncV = (selector) => {
 export const debugSyncV = (selector) => {
   console.group(`Debug SyncV`);
   console.log(`Selector: ${selector}`);
-  console.log(`Value:`, result(store, selector));
+  console.log(`Value:`, JSON.parse(JSON.stringify(result(store, selector))));
   console.groupEnd();
 };
 
 /**
- * A function that updates an item in the store with an asynchronous function.
- * @param {string} selector - The selector to update.
- * @param {Function} asyncFn - The asynchronous function to fetch data.
- * @param {object} config - The configuration object.
- * @param {object} config.initialState - The initial state of the component.
- * @param {boolean} [config.initialState.loading=true] - Whether or not the component is currently loading.
- * @param {boolean} [config.initialState.error=false] - Whether or not an error has occurred.
- * @returns {Promise} - A promise that resolves when the component has been updated.
+ * A custom function that updates an asynchronous state object for a given selector using an async function.
+ * @async
+ * @param {string} selector - The selector to use for the state object.
+ * @param {Function} asyncFn - The async function to use for updating the state object.
+ * @param {Object} [config] - An optional configuration object.
+ * @param {boolean} [config.deleteExistingData=false] - A boolean flag indicating whether to delete the existing data in the state object.
+ * @return {Promise<void>} A Promise that resolves when the state object has been updated.
  */
 export const updateAsyncV = async (
   selector,
   asyncFn,
-  config = {
-    deleteExistingData:false,
-  }
+  config = { deleteExistingData: false }
 ) => {
-  const initialState = {
-    loading:true,
-    error:false
-  }
-  if (config.deleteExistingData) {
-    initialState.data = null
-  }
-  updateSyncV(selector, (p) => ({
-    ...p,
-    ...initialState,
-  }));
   try {
+    // Delete existing data if specified in config
+    if (config.deleteExistingData) {
+      updateSyncV(selector, {
+        data: null,
+        loading: true,
+        error: false,
+      });
+    } else {
+      // Keep existing data while updating
+      updateSyncV(selector, (p) => ({
+        ...p,
+        loading: true,
+        error: false,
+      }));
+    }
+    // Call async function and get data
     const data = await asyncFn();
+    // Update synchronous state with new data
     updateSyncV(selector, (p) => ({
       ...p,
       data: data,
       loading: false,
     }));
   } catch (error) {
+    // Handle errors
     updateSyncV(selector, (p) => ({
       ...p,
       loading: false,
@@ -155,48 +159,68 @@ export const updateAsyncV = async (
 };
 
 /**
- * A custom hook that subscribe to the store with a given selector
- * - If there's no initial data present, preset it with initial async value
- * @param {string} selector - The selector to update.
- * @param {Object} config - (optional) initial value if there's no data yet.
- * @returns {Object} - The state object returned by `useSyncV`.
+ * A custom React hook that provides an asynchronous state object for a given selector.
+ * @param {string} selector - The selector to use for the state object.
+ * @param {Object} [config] - An optional configuration object.
+ * @param {Object} [config.initialState] - An optional initial state object.
+ * @param {null} config.initialState.data - An optional initial data value.
+ * @param {false} config.initialState.loading - An optional initial loading state.
+ * @param {false} config.initialState.error - An optional initial error state.
+ * @return {Object} The asynchronous state object for the given selector.
  */
 export const useAsyncV = (
   selector,
   config = { initialState: { data: null, loading: false, error: false } }
 ) => {
+  // Get initial state from config
   const initialState = config.initialState;
+
+  /**
+   * Update the store with the initial state if no data exists.
+   * @param {Object} p - The previous state object.
+   * @return {Object} The updated state object.
+   */
   update(store, selector, (p) => {
-    if (p?.data) return p;
+    if (p?.data !== undefined) return p;
     return {
       ...initialState,
     };
   });
+
+  // Get the synchronous state object for the given selector
   const state = useSyncV(selector);
+
+  // Return the synchronous state object
   return state;
 };
 
 /**
- * A custom hook that uses `useAsyncV` to manage asynchronous data fetching.
- * If the data is not available or an error has occurred, it will refetch the data.
- * @param {string} selector - The selector to store data.
- * @param {Function} asyncFn - The asynchronous function to fetch data.
- * @returns {Object} - The state object returned by `useAsyncV`.
- * - The object properties are {data, loading, error}
+ * A hook that allows you to fetch and update data asynchronously, and returns the state of the data.
+ *
+ * @param {string} selector - The selector to use for caching the data.
+ * @param {function} asyncFn - The asynchronous function to fetch the data.
+ * @param {object} [config] - The configuration object to use for the hook.
+ * @param {object} [config.useAsyncV] - The configuration object to use for the useAsyncV hook.
+ * @param {object} [config.useAsyncV.initialState] - The initial state of the useAsyncV hook.
+ * @param {null} [config.useAsyncV.initialState.data] - The initial value of the data property in the state.
+ * @param {true} [config.useAsyncV.initialState.loading] - The initial value of the loading property in the state.
+ * @param {false} [config.useAsyncV.initialState.error] - The initial value of the error property in the state.
+ * @param {object} [config.updateAsyncV] - The configuration object to use for the updateAsyncV function.
+ * @param {false} [config.updateAsyncV.deleteExistingData] - Whether to delete existing data before updating.
+ *
+ * @returns {object} - The state of the data, containing the data, loading status, and error status.
  */
 export const useQueryV = (
   selector,
   asyncFn,
   config = {
     useAsyncV: { initialState: { data: null, loading: true, error: false } },
-    updateAsyncV: {
-      initialState: { data: null, loading: true, error: false },
-    },
+    updateAsyncV: { deleteExistingData: false },
   }
 ) => {
   const state = useAsyncV(selector, config.useAsyncV);
   useEffect(() => {
-    if (readSyncV(selector).data) return;
+    // if (state.data === null) return
     updateAsyncV(selector, asyncFn, config.updateAsyncV);
   }, []);
   return state;

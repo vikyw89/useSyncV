@@ -1,6 +1,7 @@
 import CardComponent from "@/components/card";
 import { Box, Button, Typography } from "@mui/material";
 import { Inter } from "next/font/google";
+import { useEffect } from "react";
 import {
   debugSyncV,
   readSyncV,
@@ -11,31 +12,24 @@ import {
   useSyncV,
 } from "use-sync-v";
 
-const inter = Inter({ subsets: ["latin"] });
-
 const asyncFn = async () => {
   const response = await fetch("https://randomuser.me/api/");
   const data = await response.json();
   return data;
 };
 
-// updateSyncV("test",{
-//   quote: asyncFn()
-// })
-
 export default function Home() {
   const selector = "api";
-  const data = useAsyncV("api");
-  // const data = useQueryV(selector, async () => {
-  //   const response = await fetch("https://catfact.ninja/fact");
-  //   const data = await response.json();
-  //   return data.fact;
-  // });
+  // const data = useQueryV(selector, asyncFn);
 
-  // debugSyncV(selector);
+  const data = useAsyncV(selector);
+  useEffect(()=>{
+    updateAsyncV(selector, asyncFn);
+  },[])
   const refetchHandler = () => {
     updateAsyncV(selector, asyncFn);
   };
+  console.log(JSON.stringify(data));
   return (
     <>
       <Box

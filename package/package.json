@@ -1,6 +1,6 @@
 {
   "name": "use-sync-v",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "type": "module",
   "description": "a custom react hook to sync store, with a built in CRUD and async data fetching",
   "main": "index.js",
