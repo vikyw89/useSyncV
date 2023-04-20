@@ -15,8 +15,6 @@ a simplistic CRUD global state management for react with a built in async fetchi
 npm i use-sync-v
 ```
 
-## To use
-
 ```jsx
 updateSyncV("counter", 0);
 // create a counter state with initial value of 0
@@ -66,7 +64,7 @@ export const DataDisplayComponent = () => {
   };
   return (
     <div>
-      {data && <div>{JSON.stringify(data)}</div>}
+      {data && <div>{data}</div>}
       {loading && <div>Loading...</div>}
       {error && <div>Error fetching data...</div>}
       {error && <button onClick={refetchHandler}>Refetch Data</button>}
