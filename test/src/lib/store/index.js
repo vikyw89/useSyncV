@@ -1,6 +1,6 @@
-import { createSyncV } from "use-sync-v";
+import { updateSyncV } from "use-sync-v";
 
-createSyncV("users", [
+updateSyncV("users", [
   {
     id:1,
     name:'irene',

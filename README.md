@@ -1,24 +1,27 @@
 # useSyncV
 
-a simplistic CRUDE global state / store management for react
+a simplistic CRUD global state management for react with a built in async fetching
 
 - no boilercode to start with, use it out of the box
-- built in CRUDE function to manipulate your store
+- CREATE, READ, UPDATE and DELETE
 - structure the store / state how you want it, it's behaving like JS object
 - efficient rendering by utilizing selector
 - extendable if you like to use reducer, write a reducer just like how you write vanilla JS IIFE or static class
-- built in fetch with cache, up to date {data, loading, error} for your UI
--
+- built in fetch with cache, and return synced {data, loading, error} for your UI
 
 ## In a rush ?
 
 ```jsx
-createSyncV("counter", 0);
+npm i use-sync-v
+```
+
+```jsx
+updateSyncV("counter", 0);
 // create a counter state with initial value of 0
 
 export const CounterDisplayComponent = () => {
   const counter = useSyncV("counter");
-  // sync this component to counter store, will re render whenever the value of counter changes
+  // sync this component to "counter" state, will re render whenever the value of counter changes
   return (
     <div>
       <div>{counter}</div>
@@ -26,13 +29,11 @@ export const CounterDisplayComponent = () => {
     </div>
   );
 };
-```
 
-```jsx
 export const CounterButton = () => {
   const incrementCounter = () => {
     updateSyncV("counter", (p) => p + 1);
-    //this will increment the counter by 1, and thus re render CounterDisplayComponent
+    // this will increment the counter by 1, and thus re-render CounterDisplayComponent
   };
   return (
     <div>
@@ -42,27 +43,25 @@ export const CounterButton = () => {
 };
 ```
 
-### for ASYNC:
+### Fetching data:
 
 ```jsx
-export const DataDisplayComponent = () => {
-  // This will fetch data and store it in the store
-  // data will be stored in an object { data, loading, error}
-  const {data, loading, error} = useQueryV("api", ()=>{
-    const response = await fetch("https://randomuser.me/api/");
-    const data = await response.json();
-    return data;
-  });
+const fetchRandomUser = async () => {
+  const response = await fetch("https://randomuser.me/api/");
+  const data = await response.json();
+  return data;
+};
 
-  // This will leave the old data on display, and update it when a new data arrive
-  // The alternative would be createAsyncV(), it will delete the old data and update the data when a new data arrive
+export const DataDisplayComponent = () => {
+  // This will fetch data and store it in the "api" state
+  // data will be stored in an object format { data, loading, error}
+  // when you use useQuery to "api" state in different component later on, by default cached data will be served instead of refetched
+  const { data, loading, error } = useQueryV("api", fetchRandomUser);
+
   const refetchHandler = () => {
-    updateAsyncV("api", ()=>{
-      const response = await fetch("https://randomuser.me/api/");
-      const data = await response.json();
-      return data;
-    })
-  }
+    // This will wipe the old data in "api" state, and renew it
+    updateAsyncV("api", fetchRandomUser);
+  };
   return (
     <div>
       {data && <div>{data}</div>}
@@ -72,74 +71,84 @@ export const DataDisplayComponent = () => {
     </div>
   );
 };
-
 ```
-
-- by default result of useQueryV is cached in the store, if there are other components accessing useQueryV, they will get the cache result
-- to update / refetch useQueryV content, use updateAsyncV / createAsyncV
 
 ## Usages:
 
-### to CREATE a state with the name 'users' :
+### To CREATE a state to store "theme" :
 
 ```jsx
-const initialState = {
-  name: "user1",
-  id: "314991",
-  contacts: [
-    {
-      id: 1,
-      name: "Irene",
-    },
-    {
-      id: 2,
-      name: "Irenelle",
-    },
-  ],
+const darkTheme = {
+  primary: {
+    main: "#1976d2",
+    light: "rgb(71, 145, 219)",
+    dark: "rgb(17, 82, 147)",
+    contrastText: "#fff",
+  },
+  warning: {
+    main: "#ed6c02",
+    light: "rgb(240, 137, 52)",
+    dark: "rgb(165, 75, 1)",
+    contrastText: "#fff",
+  },
+  contrastThreshold: 3,
 };
 
-createSyncV("users", initialState);
-// this will put initialState into "users"
+updateSyncV("theme.dark", darkTheme);
+// this will put darkTheme into "theme.dark" state
 
-createSyncV("users.age", 20);
-// this will add an object {age:20} under 'users' state
-
-createSyncV("users[age]", 20);
-// don't like using . notation, we can use bracket notation
+// if you don't like using . notation, you can also do this
+updateSyncV("theme[dark]", darkTheme);
+// this will do the exact same thing like above
 ```
+
+- in CRUD create, create will add an object into an array, while useful for a database, it's rarely useful for managing state
+- we suggest using updateSyncV to manage state
 
 ### To READ the state:
 
-let's try reading the "users" state
+let's try reading the state
 
 ```jsx
-const rootState = readSyncV("users.contacts[0].id");
-// this will return the state value
-console.log(rootState);
-// => 1
+const themePrimary = readSyncV("theme.dark.primary");
+console.log({ themePrimary });
 ```
 
-- state is just a plain JS object, and we use the selector to choose where we want our state be
+in our console
+
+```jsx
+themePrimary: {
+  main: '#1976d2',
+  light: 'rgb(71, 145, 219)',
+  dark: 'rgb(17, 82, 147)',
+  contrastText: '#fff'
+}
+```
+
+- state is just a plain JS object
 - selector is the same way we access JS object, either using dot notation or bracket, wrapped as string
 
-### To UPDATE the state with an updater function:
+### To UPDATE the state:
+
+assuming we want to change the warning contrastText of our theme to white
 
 ```jsx
-const updaterFn = (baseState) => ({
-  ...baseState,
-  age: 99,
-});
-
-updateSyncV("users", updaterFn);
-// this will update the state
-
-// updating deeply nested state can be tiring, we can also update it this way
-updateSyncV("users.age", (baseState) => 20);
-
-// don't like using updater function ? we can update it using create too
-createSyncV("users.age", 20);
-// these will do the same thing
+updateSyncV("theme.dark.warning.contrastText", "white");
+// this will update the value stored in our selector into "white"
 ```
+
+but sometimes we want to update things while also referencing the base value
+
+```jsx
+updateSyncV("theme.dark.warning.contrastText", (p) => {
+  if (p === "white") {
+    return "grey";
+  }
+});
+// this will only update the contrast text to grey if the existing value is white
+```
+
+updateSync accepts an updater or a value as 2nd argument, hint: just like react useState setterFn
 
 ### To DELETE the state :
 
@@ -155,27 +164,36 @@ this one is a react hook, only use it at the top level of react component
 ```jsx
 export const UserProfileComponent = () => {
   const users = useSyncV("users[contacts][0]");
-  // this will re-render the component whenever the value of users.contacts[0] changes
+  // this will re-render the component whenever the value of "users.contacts[0]" changes
+
+  const asyncData = useAsyncV("asyncData");
+  // similar to above but it will sync on asyncData changes, such as {data, loading, error}
+
+  const asyncQuery = useQueryV("query", queryFn);
+  // this is a custom hook to both sync and fetch data, by default data will be cached
 };
 ```
 
-only scoop the state as specific as we need, this way we will not get a rerender on things we don't use
+- for sync operation, use syncV, for async operation, use asyncV
+- asyncV will return an object of loading, error, and data they are useful to update UI
+- for selector, only scoop the state as specific as we need, this way we will not get a rerender on things we don't use
 
 ### To DEBUG
 
 ```jsx
 debugSyncV("users.contacts[0]");
-// this will print into console the value of the store
+// this will print into console the value of the selector
 ```
 
-### To organize the store in a different file and have a reducer even an Async value
+### To organize the store in a different file and have a reducer
 
 in your stores directory
 
 ```jsx
 import { createSyncV } from "use-sync-v";
 
-createSyncV("users", {
+// to pre populate initial state
+updateSyncV("users", {
   name: "user1",
   id: "314991",
   contacts: [
@@ -188,10 +206,10 @@ createSyncV("users", {
       name: "Irenelle",
     },
   ],
-  age: 20
+  age: 20,
 });
 
-// we can have a reducer too
+// for the reducer
 export class usersReducer {
   static addContact = (newContact) => {
     updateSyncV("users.contacts", (p) => {
@@ -231,31 +249,33 @@ export const UserContactsComponent = () => {
 ### To recap:
 
 ```jsx
-createSyncV(path:string, value:any)
-// to put value into state path, overwriting existing value if there's any
+createSyncV(selector:string, value:any)
+// this will create an array at the selector state, and push the value
+// rarely used, just use updateSyncV instead
 
-readSyncV(path:string)
-// to read value of the state path at the time the function is called
+readSyncV(selector:string)
+// to read value of the state selector at the time the function is called
 
-updateSyncV(path:string, updaterFn:function)
-// to update the value of the state path using an updater function
+updateSyncV(selector:string, updates:function || value)
+// to update the value of the state selector using an updater function or a value
 // the updater function take a parameter (original state) and return a value (updated state)
+// if given a value, it will replace existing value with the value
 
-deleteSyncV(path:string)
-// to delete anything on the particular state path
+deleteSyncV(selector:string)
+// to delete anything on the particular state selector
 
-useSyncV(path:string)
-// to subscribe to the state path, and will re render the component whenever the value change
+useSyncV(selector:string)
+// to subscribe to the state selector, and will re render the component whenever the value change
+// be specific in the selector to prevent unnecessary rerendering
 
-useQueryV(path:string, asyncFn:function)
+useAsyncV(selector:string, asyncFn:function, ?config:obj)
+// will subscribe to the selector, and if there's no existing data, it will prepopulate it with {loading, data, error} initial state
+
+updateAsyncV(selector:string, asyncFn:function, ?config:obj)
+// to fetch a data from api, save the results into the store
+
+useQueryV(selector:string, asyncFn:function, ?config:obj)
+// this is a bundle of useAsyncV and updateAsyncV
 // to fetch a data from api, save the results into the store, and subscribe to it
-
-createAsyncV(path:string, asyncFn:function)
-// to fetch a data from api, delete the content inside path, and save the result
-// usefull if you want to show a spinner or loading when fetching the data
-
-updateAsyncV(path:string, asyncFn:function)
-// to fetch a data from api, and overwrite the old data when there's a new result
-// usefull when you you want to show the old data, while updating the data
-
+// by default the result is cached
 ```
