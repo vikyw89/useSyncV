@@ -1,4 +1,4 @@
-import { updateSyncV } from "./updateSyncV";
+import { updateSyncV } from "./updateSyncV.js";
 
 /**
  * A function that updates the data in the store asynchronously using the specified selector and async function.

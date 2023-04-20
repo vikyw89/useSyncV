@@ -1,5 +1,5 @@
 import { result } from "lodash-es";
-import { store } from "./helper";
+import { store } from "./helper.js";
 
 /**
  * A function that reads data from the store synchronously using the specified selector.

@@ -1,6 +1,6 @@
 import { update } from "lodash-es";
-import { useSyncV } from "./useSyncV";
-import { store } from "./helper";
+import { useSyncV } from "./useSyncV.js";
+import { store } from "./helper.js";
 
 /**
  * A custom hook for managing asynchronous data in an external store with synchronous state.

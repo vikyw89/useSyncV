@@ -10,8 +10,8 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 import { update } from "lodash-es";
-import { useSyncV } from "./useSyncV";
-import { store } from "./helper";
+import { useSyncV } from "./useSyncV.js";
+import { store } from "./helper.js";
 /**
  * A custom hook for managing asynchronous data in an external store with synchronous state.
  *

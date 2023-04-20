@@ -8,7 +8,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 import { update } from "lodash-es";
-import { emitChange, store } from "./helper";
+import { emitChange, store } from "./helper.js";
 /**
  * A function that creates new data in the store synchronously using the specified selector and value.
  *

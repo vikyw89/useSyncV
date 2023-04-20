@@ -3,7 +3,7 @@
     "outDir": "dist/",
     "declaration": true,
     "strict": true,
-    "moduleResolution": "node"
+    "moduleResolution": "nodenext"
   },
   "include": ["src", "test"],
   "watchOptions": {
