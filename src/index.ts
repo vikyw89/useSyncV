@@ -1,9 +1,9 @@
 import { result, set, unset, update } from "lodash";
 import { useEffect, useSyncExternalStore } from "react";
 
-const store: any = {};
+const store = {};
 
-let subscribers: any = [];
+let subscribers: Array<any> = [];
 
 const emitChange = () => {
   for (let subscriber of subscribers) {
@@ -17,18 +17,26 @@ export const readSyncV = (selector: string) => {
 };
 
 export const createSyncV = (selector: string, value: any) => {
-  const response = set(store, selector, value);
+  const response = update(store, selector, (p: any) => {
+    if (Array.isArray(p)) {
+      return [...p, value];
+    }
+    return [value];
+  });
   emitChange();
   return response;
 };
 
-export const updateSyncV = (
-  selector: string,
-  updaterFn: (value: any) => any
-) => {
-  const response = update(store, selector, updaterFn);
-  emitChange();
-  return response;
+export const updateSyncV = (selector: string, updates: any) => {
+  if (typeof updates === "function") {
+    const response = update(store, selector, updates);
+    emitChange();
+    return response;
+  } else {
+    const response = set(store, selector, updates);
+    emitChange();
+    return response;
+  }
 };
 
 export const deleteSyncV = (selector: string) => {
@@ -63,53 +71,41 @@ export const useSyncV = (selector: string) => {
 export const debugSyncV = (selector: string) => {
   console.group(`Debug SyncV`);
   console.log(`Selector: ${selector}`);
-  console.log(`Value:`, result(store, selector));
+  console.log(`Value:`, JSON.parse(JSON.stringify(result(store, selector))));
   console.groupEnd();
-};
-
-export const createAsyncV = async (
-  selector: string,
-  asyncFn: CallableFunction
-) => {
-  set(store, selector, {
-    data: null,
-    loading: true,
-    error: false,
-  });
-  try {
-    const data = await asyncFn();
-    createSyncV(selector, {
-      data: data,
-      loading: false,
-      error: false,
-    });
-  } catch (error) {
-    createSyncV(selector, {
-      data: null,
-      loading: false,
-      error: error,
-    });
-  }
 };
 
 export const updateAsyncV = async (
   selector: string,
-  asyncFn: CallableFunction
+  asyncFn: CallableFunction,
+  config = { deleteExistingData: false }
 ) => {
-  update(store, selector, (p) => ({
-    ...p,
-    loading: true,
-    error: false,
-  }));
   try {
+    // Delete existing data if specified in config
+    if (config.deleteExistingData) {
+      updateSyncV(selector, {
+        data: null,
+        loading: true,
+        error: false,
+      });
+    } else {
+      // Keep existing data while updating
+      updateSyncV(selector, (p: any) => ({
+        ...p,
+        loading: true,
+        error: false,
+      }));
+    }
+    // Call async function and get data
     const data = await asyncFn();
+    // Update synchronous state with new data
     updateSyncV(selector, (p: any) => ({
       ...p,
       data: data,
       loading: false,
-      error: false,
     }));
   } catch (error) {
+    // Handle errors
     updateSyncV(selector, (p: any) => ({
       ...p,
       loading: false,
@@ -118,23 +114,44 @@ export const updateAsyncV = async (
   }
 };
 
-export const useAsyncV = (selector: string) => {
+export const useAsyncV = (
+  selector: string,
+  config = { initialState: { data: null, loading: false, error: false } }
+) => {
+  // Get initial state from config
+  const initialState = config.initialState;
+
+  /**
+   * Update the store with the initial state if no data exists.
+   * @param {Object} p - The previous state object.
+   * @return {Object} The updated state object.
+   */
   update(store, selector, (p: any) => {
-    if (p) return p;
+    if (p?.data !== undefined) return p;
     return {
-      data: null,
-      loading: true,
-      error: false,
+      ...initialState,
     };
   });
+
+  // Get the synchronous state object for the given selector
   const state = useSyncV(selector);
+
+  // Return the synchronous state object
   return state;
 };
 
-export const useQueryV = (selector: string, asyncFn: CallableFunction) => {
-  const state = useAsyncV(selector);
+export const useQueryV = (
+  selector: string,
+  asyncFn: CallableFunction,
+  config = {
+    useAsyncV: { initialState: { data: null, loading: true, error: false } },
+    updateAsyncV: { deleteExistingData: false },
+  }
+) => {
+  const state = useAsyncV(selector, config.useAsyncV);
   useEffect(() => {
-    createAsyncV(selector, asyncFn);
+    // if (state.data === null) return
+    updateAsyncV(selector, asyncFn, config.updateAsyncV);
   }, []);
   return state;
 };

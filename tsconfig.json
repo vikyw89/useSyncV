@@ -6,6 +6,8 @@
   // Some typical compiler options
   "compilerOptions": {
     "outDir": "dist",
+    "declaration": true,
+    "sourceMap": true
   },
   // NEW: Options for file/directory watching
   "watchOptions": {
@@ -19,8 +21,6 @@
     "synchronousWatchDirectory": true,
     // Finally, two additional settings for reducing the amount of possible
     // files to track  work from these directories
-    "excludeDirectories": ["**/node_modules", "_build"],
-    "excludeFiles": ["build/fileWhichChangesOften.ts"]
   },
   "include": [
     "src/"
