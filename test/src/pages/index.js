@@ -3,7 +3,8 @@ import { Box, Button, Typography } from "@mui/material";
 import { useEffect } from "react";
 import {
   updateAsyncV,
-  useAsyncV
+  useAsyncV,
+  useQueryV
 } from "use-sync-v";
 
 const asyncFn = async () => {
@@ -14,15 +15,16 @@ const asyncFn = async () => {
 
 export default function Home() {
   const selector = "api";
-  // const data = useQueryV(selector, asyncFn);
-  const data = useAsyncV(selector);
-  useEffect(() => {
-    updateAsyncV(selector, asyncFn);
-  }, []);
+  const data = useQueryV(selector, asyncFn);
+  // const data = useAsyncV(selector);
+  // useEffect(() => {
+  //   updateAsyncV(selector, asyncFn);
+  // }, []);
   const refetchHandler = () => {
     updateAsyncV(selector, asyncFn);
   };
-  console.log(JSON.stringify(data));
+  // console.log(JSON.stringify(data));
+  console.log('render')
   return (
     <>
       <Box

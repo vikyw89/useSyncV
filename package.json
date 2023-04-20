@@ -1,8 +1,10 @@
+
 {
   "name": "use-sync-v",
   "version": "2.0.4",
   "description": "a custom react hook to sync store, with a built in CRUDE",
-  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "type": "module",
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
@@ -24,16 +26,18 @@
   },
   "homepage": "https://github.com/vikyw89/useSyncV#readme",
   "devDependencies": {
-    "@tsconfig/recommended": "^1.0.2",
-    "@types/lodash": "^4.14.194",
+    "@tsconfig/esm": "^1.0.2",
+    "@types/lodash-es": "^4.17.7",
     "@types/react": "^18.0.37",
+    "eslint": "^8.38.0",
+    "prettier": "^2.8.7",
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "lodash": "^4.17.21",
+    "lodash-es": "^4.17.21",
     "react": "^18.2.0"
   },
   "scripts": {
-    "dev": "npx tsc --watch"
+    "dev": "npx tsc -p tsconfig.json --watch"
   }
 }
