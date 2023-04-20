@@ -1,5 +1,5 @@
 import { unset } from "lodash-es";
-import { emitChange, store } from "./helper";
+import { emitChange, store } from "./helper.js";
 /**
  * A function that deletes data from the store synchronously using the specified selector.
  *

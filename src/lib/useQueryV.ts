@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { useAsyncV } from "./useAsyncV";
-import { updateAsyncV } from "./updateAsyncV";
+import { updateAsyncV } from "./updateAsyncV.js";
+import { useAsyncV } from "./useAsyncV.js";
 
 /**
  * Hook that provides a reactive way to fetch data asynchronously and update the synchronous state of the application.
