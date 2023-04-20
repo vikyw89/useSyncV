@@ -1,12 +1,9 @@
 {
   "name": "use-sync-v",
-  "version": "2.0.2",
-  "type": "module",
-  "description": "a custom react hook to sync store, with a built in CRUD and async data fetching",
+  "version": "1.1.1",
+  "description": "a custom react hook to sync store, with a built in CRUDE",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "types": "index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vikyw89/useSyncV.git"
@@ -26,8 +23,17 @@
     "url": "https://github.com/vikyw89/useSyncV/issues"
   },
   "homepage": "https://github.com/vikyw89/useSyncV#readme",
+  "devDependencies": {
+    "@tsconfig/recommended": "^1.0.2",
+    "@types/lodash": "^4.14.194",
+    "@types/react": "^18.0.37",
+    "typescript": "^5.0.4"
+  },
   "dependencies": {
-    "lodash-es": "^4.17.21",
+    "lodash": "^4.17.21",
     "react": "^18.2.0"
+  },
+  "scripts": {
+    "dev": "npx tsc --watch"
   }
 }
