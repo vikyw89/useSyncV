@@ -7,7 +7,8 @@
   "compilerOptions": {
     "outDir": "dist",
     "declaration": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "strict": true
   },
   // NEW: Options for file/directory watching
   "watchOptions": {

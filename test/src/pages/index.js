@@ -1,15 +1,9 @@
 import CardComponent from "@/components/card";
 import { Box, Button, Typography } from "@mui/material";
-import { Inter } from "next/font/google";
 import { useEffect } from "react";
 import {
-  debugSyncV,
-  readSyncV,
   updateAsyncV,
-  updateSyncV,
-  useAsyncV,
-  useQueryV,
-  useSyncV,
+  useAsyncV
 } from "use-sync-v";
 
 const asyncFn = async () => {
@@ -21,11 +15,10 @@ const asyncFn = async () => {
 export default function Home() {
   const selector = "api";
   // const data = useQueryV(selector, asyncFn);
-
   const data = useAsyncV(selector);
-  useEffect(()=>{
+  useEffect(() => {
     updateAsyncV(selector, asyncFn);
-  },[])
+  }, []);
   const refetchHandler = () => {
     updateAsyncV(selector, asyncFn);
   };
