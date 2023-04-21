@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "outDir": "dist/",
+    "outDir": "./dist/",
     "declaration": true,
     "strict": true,
     "moduleResolution": "nodenext"
   },
-  "include": ["src", "test"],
+  "include": ["src"],
   "watchOptions": {
     "watchFile": "useFsEvents",
     "watchDirectory": "useFsEvents",

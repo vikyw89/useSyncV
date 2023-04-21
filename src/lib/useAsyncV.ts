@@ -20,6 +20,7 @@ export const useAsyncV = (
   update(store, selector, (p: any) => {
     if (typeof p === "object") {
       if ("data" in p && "loading" in p && "error" in p) return p;
+      return { ...p, ...initialState };
     }
     return initialState;
   });
