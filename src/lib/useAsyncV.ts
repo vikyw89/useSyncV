@@ -18,10 +18,10 @@ export const useAsyncV = (
   const initialState = config.initialState;
 
   update(store, selector, (p: any) => {
-    if (p?.data !== undefined) return p;
-    return {
-      ...initialState,
-    };
+    if (typeof p === "object") {
+      if ("data" in p && "loading" in p && "error" in p) return p;
+    }
+    return initialState;
   });
 
   // Get the synchronous state object for the given selector

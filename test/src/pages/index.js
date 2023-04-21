@@ -4,7 +4,8 @@ import { useEffect } from "react";
 import {
   updateAsyncV,
   useAsyncV,
-  useQueryV
+  useQueryV,
+  debugSyncV
 } from "use-sync-v";
 
 const asyncFn = async () => {
@@ -25,6 +26,7 @@ export default function Home() {
   };
   // console.log(JSON.stringify(data));
   console.log('render')
+  debugSyncV("api")
   return (
     <>
       <Box
