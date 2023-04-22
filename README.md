@@ -7,7 +7,7 @@ a simplistic CRUD global state management for react with a built in async fetchi
 - structure the store / state how you want it, it's behaving like JS object
 - efficient rendering by utilizing selector
 - extendable if you like to use reducer, write a reducer just like how you write vanilla JS IIFE or static class
-- built in fetch with cache, and return synced {data, loading, error} for your UI
+- built in fetch with cache, and return synced \{data, loading, error\} for your UI
 
 ## To start
 

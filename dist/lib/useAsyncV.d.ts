@@ -1,10 +1,19 @@
+export declare const defaultConfig: {
+    initialState: {
+        data: null;
+        loading: boolean;
+        error: boolean;
+    };
+};
 /**
  * A custom hook for managing asynchronous data in an external store with synchronous state.
  *
- * @param {string} selector - The selector for the asynchronous data.
- * @param {Object} config - Optional configuration options.
- * @param {Object} config.initialState - The initial state object for the asynchronous data. Default: { data: null, loading: false, error: false }.
- * @returns {Object} The synchronous state object for the given selector.
+ * @param selector - The selector for the asynchronous data.
+ * @param config - Optional configuration options.
+ * @param config.initialState - Optional initial state.
+ * @param config.initialState.data - Optional initial data, default to null.
+ * @param config.initialState.loading - Optional initial loading status, default to false.
+ * @param config.initialState.error - Optional initial error status, default to false.
  */
 export declare const useAsyncV: (selector: string, config?: {
     initialState: {
