@@ -6,7 +6,13 @@ import { useAsyncV, useAsyncVDefaultConfig } from "./useAsyncV.js";
  * Default config for useQueryV
  */
 export const useQueryVDefaultConfig = {
-  useAsyncV: useAsyncVDefaultConfig,
+  useAsyncV: {
+    ...useAsyncVDefaultConfig,
+    initialState:{
+      ...useAsyncVDefaultConfig.initialState,
+      loading:true
+    }
+  },
   updateAsyncV: updateAsyncVDefaultConfig,
 };
 

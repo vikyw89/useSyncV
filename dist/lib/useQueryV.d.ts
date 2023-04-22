@@ -4,8 +4,8 @@
 export declare const useQueryVDefaultConfig: {
     useAsyncV: {
         initialState: {
-            data: null;
             loading: boolean;
+            data: null;
             error: boolean;
         };
     };
@@ -22,8 +22,8 @@ export declare const useQueryVDefaultConfig: {
 export declare const useQueryV: (selector: string, asyncFn: CallableFunction, config?: {
     useAsyncV: {
         initialState: {
-            data: null;
             loading: boolean;
+            data: null;
             error: boolean;
         };
     };
