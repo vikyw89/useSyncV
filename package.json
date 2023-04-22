@@ -41,8 +41,8 @@
     "react": "^18.2.0"
   },
   "scripts": {
-    "tsc": "npx tsc -p tsconfig.json --watch",
-    "typedoc":"npx typedoc ./src/index.ts --watch",
+    "tsc": "tsc -p tsconfig.json --watch",
+    "typedoc":"typedoc ./src/index.ts --watch --includeVersion",
     "dev":"npm run tsc & npm run typedoc"
   }
 }
