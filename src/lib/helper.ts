@@ -1,6 +1,6 @@
 import { result } from "lodash-es";
 
-export const store: any = {};
+export const store: Object = {};
 
 export let subscribers: Array<any> = [];
 
@@ -22,7 +22,7 @@ export const subscribe = (callback: CallableFunction) => {
 /**
  * A function that logs debug information about the data in the store using the specified selector.
  *
- * @param {string} selector - The selector to use for accessing data in the store.
+ * @param selector - The selector to use for accessing data in the store.
  */
 export const debugSyncV = (selector: string) => {
   console.group(`Debug SyncV`);

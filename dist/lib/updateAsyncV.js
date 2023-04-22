@@ -47,15 +47,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 import { updateSyncV } from "./updateSyncV.js";
 /**
+ * Default config for updateAsyncV
+ */
+export var updateAsyncVDefaultConfig = {
+    deleteExistingData: false,
+};
+/**
  * A function that updates the data in the store asynchronously using the specified selector and async function.
  *
  * @async
- * @param {string} selector - The selector to use for accessing data in the store.
- * @param {CallableFunction} asyncFn - The async function to call to update the data in the store.
- * @param {{deleteExistingData: boolean}} [config={deleteExistingData: false}] - An optional object that specifies whether to delete existing data before updating.
+ * @param selector - The selector to use for accessing data in the store.
+ * @param asyncFn - The async function to call to update the data in the store.
+ * @param config- An optional object that specifies whether to delete existing data before updating.
  */
 export var updateAsyncV = function (selector, asyncFn, config) {
-    if (config === void 0) { config = { deleteExistingData: false }; }
+    if (config === void 0) { config = updateAsyncVDefaultConfig; }
     return __awaiter(void 0, void 0, void 0, function () {
         var data_1, error_1;
         return __generator(this, function (_a) {

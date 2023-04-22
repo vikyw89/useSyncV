@@ -12,7 +12,10 @@ var __assign = (this && this.__assign) || function () {
 import { update } from "lodash-es";
 import { useSyncV } from "./useSyncV.js";
 import { store } from "./helper.js";
-export var defaultConfig = {
+/**
+ * Default config for useAsyncV
+ */
+export var useAsyncVDefaultConfig = {
     initialState: { data: null, loading: false, error: false },
 };
 /**
@@ -20,14 +23,10 @@ export var defaultConfig = {
  *
  * @param selector - The selector for the asynchronous data.
  * @param config - Optional configuration options.
- * @param config.initialState - Optional initial state.
- * @param config.initialState.data - Optional initial data, default to null.
- * @param config.initialState.loading - Optional initial loading status, default to false.
- * @param config.initialState.error - Optional initial error status, default to false.
  */
 export var useAsyncV = function (selector, config) {
-    if (config === void 0) { config = defaultConfig; }
-    var defaultInitialState = defaultConfig.initialState;
+    if (config === void 0) { config = useAsyncVDefaultConfig; }
+    var defaultInitialState = useAsyncVDefaultConfig.initialState;
     var customInitialState = __assign(__assign({}, defaultInitialState), config.initialState);
     update(store, selector, function (p) {
         if (typeof p === "object") {

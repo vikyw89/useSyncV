@@ -5,5 +5,5 @@ export { updateSyncV } from "./lib/updateSyncV.js";
 export { deleteSyncV } from "./lib/deleteSyncV.js";
 export { useSyncV } from "./lib/useSyncV.js";
 export { updateAsyncV } from "./lib/updateAsyncV.js";
-export { useAsyncV, defaultConfig } from "./lib/useAsyncV.js";
+export { useAsyncV } from "./lib/useAsyncV.js";
 export { useQueryV } from "./lib/useQueryV.js";

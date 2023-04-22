@@ -1,8 +1,10 @@
 import { update } from "lodash-es";
 import { useSyncV } from "./useSyncV.js";
 import { store } from "./helper.js";
-
-export const defaultConfig = {
+/**
+ * Default config for useAsyncV
+ */
+export const useAsyncVDefaultConfig = {
   initialState: { data: null, loading: false, error: false },
 };
 
@@ -11,17 +13,16 @@ export const defaultConfig = {
  *
  * @param selector - The selector for the asynchronous data.
  * @param config - Optional configuration options.
- * @param config.initialState - Optional initial state.
- * @param config.initialState.data - Optional initial data, default to null.
- * @param config.initialState.loading - Optional initial loading status, default to false.
- * @param config.initialState.error - Optional initial error status, default to false.
  */
-export const useAsyncV = (selector: string, config = defaultConfig) => {
-  const defaultInitialState = defaultConfig.initialState;
+export const useAsyncV = (
+  selector: string,
+  config = useAsyncVDefaultConfig
+) => {
+  const defaultInitialState = useAsyncVDefaultConfig.initialState;
   const customInitialState = {
     ...defaultInitialState,
-    ...config.initialState
-  }
+    ...config.initialState,
+  };
   update(store, selector, (p: any) => {
     if (typeof p === "object") {
       if ("data" in p && "loading" in p && "error" in p) return p;

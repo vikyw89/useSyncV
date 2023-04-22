@@ -27,7 +27,7 @@ export var subscribe = function (callback) {
 /**
  * A function that logs debug information about the data in the store using the specified selector.
  *
- * @param {string} selector - The selector to use for accessing data in the store.
+ * @param selector - The selector to use for accessing data in the store.
  */
 export var debugSyncV = function (selector) {
     console.group("Debug SyncV");

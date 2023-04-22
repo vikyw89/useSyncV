@@ -5,9 +5,7 @@ import { readSyncV } from "./readSyncV.js";
 /**
  * A hook that provides synchronous access to the data in the store using the specified selector.
  *
- * @param {string} selector - The selector to use for accessing data in the store.
- *
- * @returns {*} - The data from the store using the specified selector.
+ * @param selector - The selector to use for accessing data in the store.
  */
 export var useSyncV = function (selector) {
     var getSnapshot = function () {

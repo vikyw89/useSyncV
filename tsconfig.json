@@ -5,7 +5,7 @@
     "strict": true,
     "moduleResolution": "nodenext"
   },
-  "include": ["src"],
+  "include": ["./src"],
   "watchOptions": {
     "watchFile": "useFsEvents",
     "watchDirectory": "useFsEvents",
