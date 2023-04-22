@@ -3,7 +3,8 @@
     "outDir": "./dist/",
     "declaration": true,
     "strict": true,
-    "moduleResolution": "nodenext"
+    "moduleResolution": "nodenext",
+    "lib": ["ES2015","DOM"]
   },
   "include": ["./src"],
   "watchOptions": {
@@ -11,6 +12,10 @@
     "watchDirectory": "useFsEvents",
     "fallbackPolling": "dynamicPriority",
     "synchronousWatchDirectory": true
+  },
+  "typedocOptions": {
+    "entryPoints": ["src/index.ts"],
+    "out": "docs"
   },
   "extends": "@tsconfig/esm/tsconfig.json"
 }
