@@ -1,5 +1,7 @@
 # useSyncV
 
+documentation : https://vikyw89.github.io/useSyncV/
+
 a simplistic CRUD global state management for react with a built in async fetching
 
 - no boilercode to start with, use it out of the box
