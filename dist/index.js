@@ -1,4 +1,4 @@
-export { debugSyncV, store, subscribers } from "./lib/helper.js";
+export { debugSyncV } from "./lib/helper.js";
 export { createSyncV } from "./lib/createSyncV.js";
 export { readSyncV } from "./lib/readSyncV.js";
 export { updateSyncV } from "./lib/updateSyncV.js";
