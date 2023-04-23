@@ -44,7 +44,8 @@
   },
   "scripts": {
     "tsc": "tsc -p tsconfig.json --watch",
-    "typedoc":"typedoc ./src/index.ts --watch --includeVersion",
-    "dev":"npm run tsc & npm run typedoc"
+    "typedoc":"typedoc --watch --includeVersion",
+    "dev":"npm run tsc & npm run typedoc",
+    "test": "cd test && npm install && npm link .. && npm run dev & cd .."
   }
 }

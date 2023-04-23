@@ -15,7 +15,8 @@
   },
   "typedocOptions": {
     "entryPoints": ["src/index.ts"],
-    "out": "docs"
+    "out": "./docs",
+    "plugin":["./typedoc-plugin-default-value.js"]
   },
   "extends": "@tsconfig/esm/tsconfig.json"
 }
