@@ -5,7 +5,8 @@ import {
   updateAsyncV,
   useAsyncV,
   useQueryV,
-  debugSyncV
+  debugSyncV,
+  readSyncV
 } from "use-sync-v";
 
 const asyncFn = async () => {
@@ -16,17 +17,18 @@ const asyncFn = async () => {
 
 export default function Home() {
   const selector = "api";
-  const data = useQueryV(selector, asyncFn);
-  // const data = useAsyncV(selector);
-  // useEffect(() => {
-  //   updateAsyncV(selector, asyncFn);
-  // }, []);
+  // const data = useQueryV(selector, asyncFn);
+  const data = useAsyncV(selector)
+  console.log(readSyncV(selector))
+  useEffect(() => {
+    updateAsyncV(selector, asyncFn);
+  }, []);
   const refetchHandler = () => {
     updateAsyncV(selector, asyncFn);
   };
-  // console.log(JSON.stringify(data));
+
   console.log('render')
-  debugSyncV("api")
+  // debugSyncV("api")
   return (
     <>
       <Box
