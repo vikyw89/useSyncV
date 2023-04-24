@@ -19,7 +19,6 @@ export default function Home() {
   const selector = "api";
   // const data = useQueryV(selector, asyncFn);
   const data = useAsyncV(selector)
-  console.log(readSyncV(selector))
   useEffect(() => {
     updateAsyncV(selector, asyncFn);
   }, []);
@@ -28,7 +27,7 @@ export default function Home() {
   };
 
   console.log('render')
-  // debugSyncV("api")
+  debugSyncV()
   return (
     <>
       <Box

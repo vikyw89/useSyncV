@@ -1,9 +1,16 @@
 import { updateSyncV } from "./updateSyncV.js";
 
 /**
+ * config for updateSyncV
+ */
+export interface updateAsyncVConfigInterface {
+  deleteExistingData: boolean
+}
+
+/**
  * Default config for updateAsyncV
  */
-export const updateAsyncVDefaultConfig = {
+export const updateAsyncVDefaultConfig: Partial<updateAsyncVConfigInterface> = {
   deleteExistingData: false,
 };
 
@@ -13,7 +20,7 @@ export const updateAsyncVDefaultConfig = {
  * @async
  * @param selector - The selector to use for accessing data in the store.
  * @param asyncFn - The async function to call to update the data in the store.
- * @param config- An optional object that specifies whether to delete existing data before updating.
+ * @param config - An optional object that specifies whether to delete existing data before updating. {@link updateAsyncVDefaultConfig}
  */
 export const updateAsyncV = async (
   selector: string,
@@ -21,7 +28,6 @@ export const updateAsyncV = async (
   config = updateAsyncVDefaultConfig
 ) => {
   try {
-    // Delete existing data if specified in config
     if (config.deleteExistingData) {
       updateSyncV(selector, {
         data: null,

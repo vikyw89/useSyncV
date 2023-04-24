@@ -1,10 +1,21 @@
-import { update } from "lodash-es";
+import { initial, update } from "lodash-es";
 import { useSyncV } from "./useSyncV.js";
 import { store } from "./helper.js";
+
+export interface asyncInterface {
+  data:any,
+  loading:boolean,
+  error:boolean
+}
+
+export interface useAsyncVConfigInterface {
+  initialState: Partial<asyncInterface>
+}
+
 /**
  * Default config for useAsyncV
  */
-export const useAsyncVDefaultConfig = {
+export const useAsyncVDefaultConfig: Partial<useAsyncVConfigInterface> = {
   initialState: { data: null, loading: false, error: false },
 };
 

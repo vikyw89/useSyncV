@@ -7,3 +7,16 @@ export { useSyncV } from "./lib/useSyncV.js";
 export { updateAsyncV } from "./lib/updateAsyncV.js";
 export { useAsyncV } from "./lib/useAsyncV.js";
 export { useQueryV } from "./lib/useQueryV.js";
+/**
+ *
+ */
+export declare const OPTIONS: {
+    test: string;
+};
+/**
+ *
+ * @param param1 - default to {@link OPTIONS}
+ */
+export declare const example: (param1?: {
+    test: string;
+}) => void;

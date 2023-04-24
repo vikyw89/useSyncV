@@ -8,3 +8,16 @@ export { updateAsyncV } from "./lib/updateAsyncV.js";
 export { useAsyncV } from "./lib/useAsyncV.js";
 export { useQueryV } from "./lib/useQueryV.js";
 
+/**
+ * 
+ */
+export const OPTIONS = {
+    test:'test'
+}
+/**
+ * 
+ * @param param1 - default to {@link OPTIONS}
+ */
+export const example = (param1 = OPTIONS)=>{
+
+}

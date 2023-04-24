@@ -31,6 +31,7 @@
   "homepage": "https://github.com/vikyw89/useSyncV#readme",
   "devDependencies": {
     "@tsconfig/esm": "^1.0.2",
+    "@types/diff": "^5.0.3",
     "@types/lodash-es": "^4.17.7",
     "@types/react": "^18.0.37",
     "eslint": "^8.38.0",
@@ -39,13 +40,14 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
+    "diff": "^5.1.0",
     "lodash-es": "^4.17.21",
     "react": "^18.2.0"
   },
   "scripts": {
     "tsc": "tsc -p tsconfig.json --watch",
-    "typedoc":"typedoc --watch --includeVersion",
-    "dev":"npm run tsc & npm run typedoc",
-    "test": "cd test && npm install && npm link .. && npm run dev & cd .."
+    "typedoc": "typedoc --watch --entryPointStrategy expand ./src",
+    "dev": "npm run tsc & npm run typedoc & npm run test",
+    "test": "cd test && npm install && npm link .. && npm run dev"
   }
 }

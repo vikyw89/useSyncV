@@ -1,11 +1,16 @@
 import { useEffect } from "react";
-import { updateAsyncV, updateAsyncVDefaultConfig } from "./updateAsyncV.js";
-import { useAsyncV, useAsyncVDefaultConfig } from "./useAsyncV.js";
+import { updateAsyncV, updateAsyncVConfigInterface, updateAsyncVDefaultConfig } from "./updateAsyncV.js";
+import { useAsyncV, useAsyncVConfigInterface, useAsyncVDefaultConfig } from "./useAsyncV.js";
+
+export interface useQueryVConfigInterface {
+  updateAsyncV: Partial<updateAsyncVConfigInterface>,
+  useAsyncV: Partial<useAsyncVConfigInterface>
+}
 
 /**
  * Default config for useQueryV
  */
-export const useQueryVDefaultConfig = {
+export const useQueryVDefaultConfig: Partial<useQueryVConfigInterface> = {
   useAsyncV: {
     ...useAsyncVDefaultConfig,
     initialState:{
