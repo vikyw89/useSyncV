@@ -1,13 +1,14 @@
-import { result, update } from 'lodash-es';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { diffJson } from 'diff';
-export const store: Object = {};
+import { result, update } from 'lodash-es';
+export const store: object = {};
 
 export let subscribers: Array<any> = [];
 
-export let selectorHistory = {};
+export const selectorHistory = {};
 
 export const emitChange = () => {
-  for (let subscriber of subscribers) {
+  for (const subscriber of subscribers) {
     subscriber();
   }
 };

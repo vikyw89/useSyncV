@@ -1,5 +1,6 @@
-import { result } from "lodash-es";
-import { store } from "./helper.js";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { result } from 'lodash-es';
+import { store } from './helper.js';
 /**
  * A function that reads data from the store synchronously using the specified selector.
  *

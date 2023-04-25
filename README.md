@@ -1,6 +1,10 @@
 # useSyncV
 
-documentation : https://vikyw89.github.io/useSyncV/
+DOC : https://vikyw89.github.io/useSyncV/
+
+NPM: https://www.npmjs.com/package/use-sync-v
+
+GH: https://github.com/vikyw89/useSyncV
 
 a simplistic CRUD global state management for react with a built in async fetching
 
@@ -165,7 +169,7 @@ export const CounterComponent = () => {
 readSyncV(selector:string)
 // to read value of the state selector at the time the function is called
 
-updateSyncV(selector:string, updates:function || value)
+updateSyncV(selector:string, updates:function(previousValue) || value)
 // to update the value of the state selector using an updater function or a value
 // the updater function take a parameter (original state) and return a value (updated state)
 // if given a value, it will replace existing value with the value
@@ -174,14 +178,14 @@ useSyncV(selector:string)
 // to subscribe to the state selector, and will re render the component whenever the value change
 // be specific in the selector to prevent unnecessary rerendering
 
-useAsyncV(selector:string, asyncFn:function, ?config:obj)
+useAsyncV(selector:string, asyncFn:function, config?:obj)
 // will subscribe to the selector, and if there's no existing data, it will prepopulate it with {loading, data, error} initial state
 
-updateAsyncV(selector:string, asyncFn:function, ?config:obj)
+updateAsyncV(selector:string, asyncFn:function, config?:obj)
 // to fetch a data from api, save the results into the store
 
-useQueryV(selector:string, asyncFn:function, ?config:obj)
+useQueryV(selector:string, asyncFn:function, config?:obj)
 // this is a bundle of useAsyncV and updateAsyncV
 // to fetch a data from api, save the results into the store, and subscribe to it
-// by default the result is cached
+// by default the result is cached in js variable
 ```

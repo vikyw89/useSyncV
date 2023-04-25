@@ -3,6 +3,7 @@ import { store } from './helper.js';
 import { useSyncV } from './useSyncV.js';
 
 export interface asyncInterface {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any;
   loading: boolean;
   error: boolean;
@@ -35,6 +36,7 @@ export const useAsyncV = (
     ...defaultInitialState,
     ...config.initialState
   };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   update(store, selector, (p: any) => {
     if (typeof p === 'object') {
       if ('data' in p && 'loading' in p && 'error' in p) return p;

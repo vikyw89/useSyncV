@@ -1,5 +1,5 @@
-import { set, update } from "lodash-es";
-import { emitChange, store } from "./helper.js";
+import { set, update } from 'lodash-es';
+import { emitChange, store } from './helper.js';
 
 /**
  * A function that updates data in the store synchronously using the specified selector and updates.
@@ -10,9 +10,10 @@ import { emitChange, store } from "./helper.js";
  */
 export const updateSyncV = (
   selector: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   updates: any | CallableFunction
 ) => {
-  if (typeof updates === "function") {
+  if (typeof updates === 'function') {
     const response = update(store, selector, updates);
     emitChange();
     return response;

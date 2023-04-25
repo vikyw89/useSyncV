@@ -29,6 +29,7 @@ export var useAsyncV = function (selector, config) {
     if (config === void 0) { config = useAsyncVDefaultConfig; }
     var defaultInitialState = useAsyncVDefaultConfig.initialState;
     var customInitialState = __assign(__assign({}, defaultInitialState), config.initialState);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     update(store, selector, function (p) {
         if (typeof p === 'object') {
             if ('data' in p && 'loading' in p && 'error' in p)

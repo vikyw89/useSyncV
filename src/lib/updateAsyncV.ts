@@ -1,17 +1,18 @@
-import { updateSyncV } from "./updateSyncV.js";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { updateSyncV } from './updateSyncV.js';
 
 /**
  * config for updateSyncV
  */
 export interface updateAsyncVConfigInterface {
-  deleteExistingData: boolean
+  deleteExistingData: boolean;
 }
 
 /**
  * Default config for updateAsyncV
  */
 export const updateAsyncVDefaultConfig: Partial<updateAsyncVConfigInterface> = {
-  deleteExistingData: false,
+  deleteExistingData: false
 };
 
 /**
@@ -33,14 +34,14 @@ export const updateAsyncV = async (
       updateSyncV(selector, {
         data: null,
         loading: true,
-        error: false,
+        error: false
       });
     } else {
       // Keep existing data while updating
       updateSyncV(selector, (p: any) => ({
         ...p,
         loading: true,
-        error: false,
+        error: false
       }));
     }
     // Call async function and get data
@@ -49,14 +50,14 @@ export const updateAsyncV = async (
     updateSyncV(selector, (p: any) => ({
       ...p,
       data: data,
-      loading: false,
+      loading: false
     }));
   } catch (error) {
     // Handle errors
     updateSyncV(selector, (p: any) => ({
       ...p,
       loading: false,
-      error: error,
+      error: error
     }));
   }
 };

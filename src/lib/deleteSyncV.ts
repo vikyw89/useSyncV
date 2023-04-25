@@ -1,5 +1,5 @@
-import { unset } from "lodash-es";
-import { emitChange, store } from "./helper.js";
+import { unset } from 'lodash-es';
+import { emitChange, store } from './helper.js';
 
 /**
  * A function that deletes data from the store synchronously using the specified selector.
@@ -7,7 +7,7 @@ import { emitChange, store } from "./helper.js";
  * @param  selector - The selector to use for deleting data from the store.
  *
  */
-export const deleteSyncV = (selector: string): any => {
+export const deleteSyncV = (selector: string) => {
   const response = unset(store, selector);
   emitChange();
   return response;

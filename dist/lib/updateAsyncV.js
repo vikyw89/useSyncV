@@ -45,12 +45,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import { updateSyncV } from "./updateSyncV.js";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { updateSyncV } from './updateSyncV.js';
 /**
  * Default config for updateAsyncV
  */
 export var updateAsyncVDefaultConfig = {
-    deleteExistingData: false,
+    deleteExistingData: false
 };
 /**
  * A function that updates the data in the store asynchronously using the specified selector and async function.
@@ -73,7 +74,7 @@ export var updateAsyncV = function (selector, asyncFn, config) {
                         updateSyncV(selector, {
                             data: null,
                             loading: true,
-                            error: false,
+                            error: false
                         });
                     }
                     else {

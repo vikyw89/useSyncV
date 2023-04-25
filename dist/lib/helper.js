@@ -7,8 +7,9 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
-import { result, update } from 'lodash-es';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { diffJson } from 'diff';
+import { result, update } from 'lodash-es';
 export var store = {};
 export var subscribers = [];
 export var selectorHistory = {};

@@ -34,7 +34,9 @@
     "@types/diff": "^5.0.3",
     "@types/lodash-es": "^4.17.7",
     "@types/react": "^18.0.37",
-    "eslint": "^8.38.0",
+    "@typescript-eslint/eslint-plugin": "^5.59.1",
+    "@typescript-eslint/parser": "^5.59.1",
+    "eslint": "^8.39.0",
     "onchange": "^7.1.0",
     "prettier": "^2.8.7",
     "prettier-plugin-organize-imports": "^3.2.2",
@@ -51,6 +53,7 @@
     "typedoc": "typedoc --watch",
     "dev": "npm run tsc & npm run typedoc & npm run test & npm run prettier-watch",
     "test": "cd test && npm install && npm link .. && npm run dev",
-    "prettier-watch": "onchange 'src/' -- prettier --write {{changed}}"
+    "prettier-watch": "onchange 'src/' -- prettier --write {{changed}}",
+    "lint":"eslint ./src/ --fix"
   }
 }
