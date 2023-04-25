@@ -1,6 +1,6 @@
 {
   "name": "use-sync-v",
-  "version": "2.0.13",
+  "version": "2.0.14",
   "description": "a custom react hook to sync store, with a built in CRUD",
   "type": "module",
   "exports": "./dist/index.js",
@@ -54,6 +54,6 @@
     "dev": "npm run tsc & npm run typedoc & npm run test & npm run prettier-watch",
     "test": "cd test && npm install && npm link .. && npm run dev",
     "prettier-watch": "onchange 'src/' -- prettier --write {{changed}}",
-    "lint":"eslint ./src/ --fix"
+    "lint": "eslint ./src/ --fix"
   }
 }
