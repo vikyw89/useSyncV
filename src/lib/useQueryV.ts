@@ -26,6 +26,7 @@ export const useQueryVDefaultConfig: Partial<useQueryVConfigInterface> = {
  * @param selector - The selector for the synchronous state object to update.
  * @param asyncFn - The asynchronous function to call and get data.
  * @param config - The configuration object for the hook. Optional.
+ * {@link useQueryVDefaultConfig}
  */
 export const useQueryV = (
   selector: string,
@@ -34,7 +35,6 @@ export const useQueryV = (
 ) => {
   const state = useAsyncV(selector, config?.useAsyncV);
   useEffect(() => {
-    // if (state.data === null) return
     updateAsyncV(selector, asyncFn, config?.updateAsyncV);
   }, []);
   return state;

@@ -13,5 +13,6 @@ export declare const useQueryVDefaultConfig: Partial<useQueryVConfigInterface>;
  * @param selector - The selector for the synchronous state object to update.
  * @param asyncFn - The asynchronous function to call and get data.
  * @param config - The configuration object for the hook. Optional.
+ * {@link useQueryVDefaultConfig}
  */
 export declare const useQueryV: (selector: string, asyncFn: CallableFunction, config?: Partial<useQueryVConfigInterface>) => any;

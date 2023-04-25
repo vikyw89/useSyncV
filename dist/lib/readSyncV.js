@@ -9,3 +9,4 @@ export var readSyncV = function (selector) {
     var response = result(store, selector);
     return response;
 };
+//# sourceMappingURL=readSyncV.js.map

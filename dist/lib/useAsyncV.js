@@ -41,3 +41,4 @@ export var useAsyncV = function (selector, config) {
     // Return the synchronous state object
     return state;
 };
+//# sourceMappingURL=useAsyncV.js.map
