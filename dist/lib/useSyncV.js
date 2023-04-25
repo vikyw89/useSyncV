@@ -8,11 +8,11 @@ import { readSyncV } from './readSyncV.js';
  *
  * @param selector - The selector to use for accessing data in the store.
  */
-export var useSyncV = function (selector) {
-    var getSnapshot = function () {
+export const useSyncV = (selector) => {
+    const getSnapshot = () => {
         return JSON.stringify(result(store, selector));
     };
-    var getServerSnapshot = function () {
+    const getServerSnapshot = () => {
         return JSON.stringify(result(store, selector));
     };
     useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);

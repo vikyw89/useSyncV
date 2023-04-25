@@ -8,14 +8,14 @@ import { emitChange, store } from './helper.js';
  * @param  updates - The updates to be applied to the data in the store using the specified selector.
  * If updates is a function, it will receive the previous value of the data and must return the new value.
  */
-export var updateSyncV = function (selector, updates) {
+export const updateSyncV = (selector, updates) => {
     if (typeof updates === 'function') {
-        var response = update(store, selector, updates);
+        const response = update(store, selector, updates);
         emitChange();
         return response;
     }
     else {
-        var response = set(store, selector, updates);
+        const response = set(store, selector, updates);
         emitChange();
         return response;
     }

@@ -46,7 +46,7 @@ export const useQueryV = (
   const state = useAsyncV(selector, config?.useAsyncV);
   useEffect(() => {
     if (config.cacheData && state.data) {
-      return state;
+      return;
     } else {
       updateAsyncV(selector, asyncFn, config?.updateAsyncV);
     }
