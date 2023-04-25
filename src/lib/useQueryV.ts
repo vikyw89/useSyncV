@@ -1,10 +1,19 @@
-import { useEffect } from "react";
-import { updateAsyncV, updateAsyncVConfigInterface, updateAsyncVDefaultConfig } from "./updateAsyncV.js";
-import { useAsyncV, useAsyncVConfigInterface, useAsyncVDefaultConfig } from "./useAsyncV.js";
+import { useEffect } from 'react';
+import {
+  updateAsyncV,
+  updateAsyncVConfigInterface,
+  updateAsyncVDefaultConfig
+} from './updateAsyncV.js';
+import {
+  useAsyncV,
+  useAsyncVConfigInterface,
+  useAsyncVDefaultConfig
+} from './useAsyncV.js';
 
 export interface useQueryVConfigInterface {
-  updateAsyncV: Partial<updateAsyncVConfigInterface>,
-  useAsyncV: Partial<useAsyncVConfigInterface>
+  updateAsyncV: Partial<updateAsyncVConfigInterface>;
+  useAsyncV: Partial<useAsyncVConfigInterface>;
+  cacheData: boolean;
 }
 
 /**
@@ -13,12 +22,13 @@ export interface useQueryVConfigInterface {
 export const useQueryVDefaultConfig: Partial<useQueryVConfigInterface> = {
   useAsyncV: {
     ...useAsyncVDefaultConfig,
-    initialState:{
+    initialState: {
       ...useAsyncVDefaultConfig.initialState,
-      loading:true
+      loading: true
     }
   },
   updateAsyncV: updateAsyncVDefaultConfig,
+  cacheData: true
 };
 
 /**
@@ -35,7 +45,11 @@ export const useQueryV = (
 ) => {
   const state = useAsyncV(selector, config?.useAsyncV);
   useEffect(() => {
-    updateAsyncV(selector, asyncFn, config?.updateAsyncV);
+    if (config.cacheData && state.data) {
+      return state;
+    } else {
+      updateAsyncV(selector, asyncFn, config?.updateAsyncV);
+    }
   }, []);
   return state;
 };

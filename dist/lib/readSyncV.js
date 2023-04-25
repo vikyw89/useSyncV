@@ -6,7 +6,7 @@ import { store } from './helper.js';
  *
  * @param selector - The selector to use for reading data from the store.
  */
-export var readSyncV = function (selector) {
-    var response = result(store, selector);
+export const readSyncV = (selector) => {
+    const response = result(store, selector);
     return response;
 };

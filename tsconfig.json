@@ -4,7 +4,8 @@
     "declaration": true,
     "strict": true,
     "moduleResolution": "nodenext",
-    "lib": ["ESNext","DOM"]
+    "lib": ["ESNext","DOM"],
+    "target": "ESNext"
   },
   "include": ["./src"],
   "watchOptions": {

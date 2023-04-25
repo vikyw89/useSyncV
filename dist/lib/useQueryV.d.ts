@@ -1,8 +1,9 @@
-import { updateAsyncVConfigInterface } from "./updateAsyncV.js";
-import { useAsyncVConfigInterface } from "./useAsyncV.js";
+import { updateAsyncVConfigInterface } from './updateAsyncV.js';
+import { useAsyncVConfigInterface } from './useAsyncV.js';
 export interface useQueryVConfigInterface {
     updateAsyncV: Partial<updateAsyncVConfigInterface>;
     useAsyncV: Partial<useAsyncVConfigInterface>;
+    cacheData: boolean;
 }
 /**
  * Default config for useQueryV

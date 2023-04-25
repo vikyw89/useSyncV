@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { set, update } from 'lodash-es';
 import { emitChange, store } from './helper.js';
 
@@ -10,7 +11,6 @@ import { emitChange, store } from './helper.js';
  */
 export const updateSyncV = (
   selector: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   updates: any | CallableFunction
 ) => {
   if (typeof updates === 'function') {
