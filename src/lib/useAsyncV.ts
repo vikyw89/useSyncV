@@ -1,11 +1,11 @@
-import { initial, update } from "lodash-es";
+import { update } from "lodash-es";
 import { useSyncV } from "./useSyncV.js";
 import { store } from "./helper.js";
 
 export interface asyncInterface {
-  data:any,
-  loading:boolean,
-  error:boolean
+  data: any,
+  loading: boolean,
+  error: boolean
 }
 
 export interface useAsyncVConfigInterface {
@@ -24,6 +24,7 @@ export const useAsyncVDefaultConfig: Partial<useAsyncVConfigInterface> = {
  *
  * @param selector - The selector for the asynchronous data.
  * @param config - Optional configuration options.
+ * {@link useAsyncVDefaultConfig}
  */
 export const useAsyncV = (
   selector: string,

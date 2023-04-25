@@ -58,7 +58,8 @@ export var updateAsyncVDefaultConfig = {
  * @async
  * @param selector - The selector to use for accessing data in the store.
  * @param asyncFn - The async function to call to update the data in the store.
- * @param config - An optional object that specifies whether to delete existing data before updating. {@link updateAsyncVDefaultConfig}
+ * @param config - An optional object that specifies whether to delete existing data before updating.
+ * {@link updateAsyncVDefaultConfig}
  */
 export var updateAsyncV = function (selector, asyncFn, config) {
     if (config === void 0) { config = updateAsyncVDefaultConfig; }

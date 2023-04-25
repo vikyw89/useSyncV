@@ -23,6 +23,7 @@ export var useAsyncVDefaultConfig = {
  *
  * @param selector - The selector for the asynchronous data.
  * @param config - Optional configuration options.
+ * {@link useAsyncVDefaultConfig}
  */
 export var useAsyncV = function (selector, config) {
     if (config === void 0) { config = useAsyncVDefaultConfig; }

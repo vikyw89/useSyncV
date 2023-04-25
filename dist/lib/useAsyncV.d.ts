@@ -15,5 +15,6 @@ export declare const useAsyncVDefaultConfig: Partial<useAsyncVConfigInterface>;
  *
  * @param selector - The selector for the asynchronous data.
  * @param config - Optional configuration options.
+ * {@link useAsyncVDefaultConfig}
  */
 export declare const useAsyncV: (selector: string, config?: Partial<useAsyncVConfigInterface>) => any;

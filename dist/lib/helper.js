@@ -7,8 +7,8 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
-import { result, update } from "lodash-es";
-import { diffJson } from "diff";
+import { result, update } from 'lodash-es';
+import { diffJson } from 'diff';
 export var store = {};
 export var subscribers = [];
 export var selectorHistory = {};
@@ -37,8 +37,8 @@ export var debugSyncVConfig = {
 export var debugSyncV = function (selector) {
     var selectorKey = selector !== null && selector !== void 0 ? selector : 'ROOT';
     var currentSelectorJSONValue = selector
-        ? JSON.stringify(result(store, selector, ''), null, "\t")
-        : JSON.stringify(store, null, "\t");
+        ? JSON.stringify(result(store, selector, ''), null, '\t')
+        : JSON.stringify(store, null, '\t');
     console.group("START OF DEBUGSYNCV");
     console.count('Iteration number');
     console.log("Selector:", selectorKey);
