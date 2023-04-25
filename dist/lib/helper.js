@@ -1,23 +1,33 @@
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { diffJson } from 'diff';
 import { result, update } from 'lodash-es';
-export const store = {};
-export let subscribers = [];
-export const selectorHistory = {};
-export const emitChange = () => {
-    for (const subscriber of subscribers) {
+export var store = {};
+export var subscribers = [];
+export var selectorHistory = {};
+export var emitChange = function () {
+    for (var _i = 0, subscribers_1 = subscribers; _i < subscribers_1.length; _i++) {
+        var subscriber = subscribers_1[_i];
         subscriber();
     }
 };
-export const subscribe = (callback) => {
-    subscribers = [...subscribers, callback];
-    return () => {
-        subscribers = subscribers.filter((p) => {
+export var subscribe = function (callback) {
+    subscribers = __spreadArray(__spreadArray([], subscribers, true), [callback], false);
+    return function () {
+        subscribers = subscribers.filter(function (p) {
             return p !== callback;
         });
     };
 };
-export const debugSyncVConfig = {
+export var debugSyncVConfig = {
     maxHistory: 50
 };
 /**
@@ -25,39 +35,40 @@ export const debugSyncVConfig = {
  *
  * @param selector - The selector to use for accessing data in the store, debug store root if empty
  */
-export const debugSyncV = (selector) => {
-    const selectorKey = selector ?? 'ROOT';
-    const currentSelectorJSONValue = selector
+export var debugSyncV = function (selector) {
+    var selectorKey = selector !== null && selector !== void 0 ? selector : 'ROOT';
+    var currentSelectorJSONValue = selector
         ? JSON.stringify(result(store, selector, ''), null, '\t')
         : JSON.stringify(store, null, '\t');
-    console.group(`START OF DEBUGSYNCV`);
+    console.group("START OF DEBUGSYNCV");
     console.count('Iteration number');
-    console.log(`Selector:`, selectorKey);
-    console.groupCollapsed(`Value`);
+    console.log("Selector:", selectorKey);
+    console.groupCollapsed("Value");
     console.log(currentSelectorJSONValue);
     console.groupEnd();
-    let previousSelectorJSONValue = JSON.stringify('');
-    update(selectorHistory, selectorKey, (p) => {
+    var previousSelectorJSONValue = JSON.stringify('');
+    update(selectorHistory, selectorKey, function (p) {
+        var _a;
         if (!p) {
             p = [JSON.stringify('')];
         }
-        const historyLength = p.length;
+        var historyLength = p.length;
         // get the previous selector history value
-        previousSelectorJSONValue = p[historyLength - 1] ?? JSON.stringify('');
+        previousSelectorJSONValue = (_a = p[historyLength - 1]) !== null && _a !== void 0 ? _a : JSON.stringify('');
         if (historyLength >= 10) {
             p.shift();
         }
-        return [...p, currentSelectorJSONValue];
+        return __spreadArray(__spreadArray([], p, true), [currentSelectorJSONValue], false);
     });
     // diff selector history with previous result
     console.groupCollapsed('Change log');
-    const listOfChangedObject = diffJson(JSON.parse(previousSelectorJSONValue), JSON.parse(currentSelectorJSONValue), { newlineIsToken: false });
-    listOfChangedObject.forEach((v) => {
+    var listOfChangedObject = diffJson(JSON.parse(previousSelectorJSONValue), JSON.parse(currentSelectorJSONValue), { newlineIsToken: false });
+    listOfChangedObject.forEach(function (v) {
         if (v.added) {
-            console.log(`--`, v.value);
+            console.log("--", v.value);
         }
         else if (v.removed) {
-            console.info(`++`, v.value);
+            console.info("++", v.value);
         }
     });
     console.groupEnd();

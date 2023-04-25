@@ -14,7 +14,7 @@ const asyncFn = async () => {
 
 export default function Home() {
   const selector = "api";
-  const data = useQueryV(selector, asyncFn, { cacheData: true });
+  const data = useQueryV(selector, asyncFn);
   // const data = useAsyncV(selector)
   // useEffect(() => {
   //   updateAsyncV(selector, asyncFn);

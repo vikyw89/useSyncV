@@ -1,17 +1,22 @@
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 import { useEffect } from 'react';
 import { updateAsyncV, updateAsyncVDefaultConfig } from './updateAsyncV.js';
 import { useAsyncV, useAsyncVDefaultConfig } from './useAsyncV.js';
 /**
  * Default config for useQueryV
  */
-export const useQueryVDefaultConfig = {
-    useAsyncV: {
-        ...useAsyncVDefaultConfig,
-        initialState: {
-            ...useAsyncVDefaultConfig.initialState,
-            loading: true
-        }
-    },
+export var useQueryVDefaultConfig = {
+    useAsyncV: __assign(__assign({}, useAsyncVDefaultConfig), { initialState: __assign(__assign({}, useAsyncVDefaultConfig.initialState), { loading: true }) }),
     updateAsyncV: updateAsyncVDefaultConfig,
     cacheData: true
 };
@@ -22,14 +27,15 @@ export const useQueryVDefaultConfig = {
  * @param config - The configuration object for the hook. Optional.
  * {@link useQueryVDefaultConfig}
  */
-export const useQueryV = (selector, asyncFn, config = useQueryVDefaultConfig) => {
-    const state = useAsyncV(selector, config?.useAsyncV);
-    useEffect(() => {
+export var useQueryV = function (selector, asyncFn, config) {
+    if (config === void 0) { config = useQueryVDefaultConfig; }
+    var state = useAsyncV(selector, config === null || config === void 0 ? void 0 : config.useAsyncV);
+    useEffect(function () {
         if (config.cacheData && state.data) {
             return state;
         }
         else {
-            updateAsyncV(selector, asyncFn, config?.updateAsyncV);
+            updateAsyncV(selector, asyncFn, config === null || config === void 0 ? void 0 : config.updateAsyncV);
         }
     }, []);
     return state;

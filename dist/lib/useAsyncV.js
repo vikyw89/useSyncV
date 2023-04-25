@@ -1,10 +1,21 @@
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 import { update } from 'lodash-es';
 import { store } from './helper.js';
 import { useSyncV } from './useSyncV.js';
 /**
  * Default config for useAsyncV
  */
-export const useAsyncVDefaultConfig = {
+export var useAsyncVDefaultConfig = {
     initialState: { data: null, loading: false, error: false }
 };
 /**
@@ -14,23 +25,21 @@ export const useAsyncVDefaultConfig = {
  * @param config - Optional configuration options.
  * {@link useAsyncVDefaultConfig}
  */
-export const useAsyncV = (selector, config = useAsyncVDefaultConfig) => {
-    const defaultInitialState = useAsyncVDefaultConfig.initialState;
-    const customInitialState = {
-        ...defaultInitialState,
-        ...config.initialState
-    };
+export var useAsyncV = function (selector, config) {
+    if (config === void 0) { config = useAsyncVDefaultConfig; }
+    var defaultInitialState = useAsyncVDefaultConfig.initialState;
+    var customInitialState = __assign(__assign({}, defaultInitialState), config.initialState);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    update(store, selector, (p) => {
+    update(store, selector, function (p) {
         if (typeof p === 'object') {
             if ('data' in p && 'loading' in p && 'error' in p)
                 return p;
-            return { ...customInitialState, ...p };
+            return __assign(__assign({}, customInitialState), p);
         }
         return customInitialState;
     });
     // Get the synchronous state object for the given selector
-    const state = useSyncV(selector);
+    var state = useSyncV(selector);
     // Return the synchronous state object
     return state;
 };
