@@ -96,4 +96,3 @@ export var updateAsyncV = function (selector, asyncFn, config) {
         });
     });
 };
-//# sourceMappingURL=updateAsyncV.js.map

@@ -1,22 +1,22 @@
-import { update } from "lodash-es";
-import { useSyncV } from "./useSyncV.js";
-import { store } from "./helper.js";
+import { update } from 'lodash-es';
+import { store } from './helper.js';
+import { useSyncV } from './useSyncV.js';
 
 export interface asyncInterface {
-  data: any,
-  loading: boolean,
-  error: boolean
+  data: any;
+  loading: boolean;
+  error: boolean;
 }
 
 export interface useAsyncVConfigInterface {
-  initialState: Partial<asyncInterface>
+  initialState: Partial<asyncInterface>;
 }
 
 /**
  * Default config for useAsyncV
  */
 export const useAsyncVDefaultConfig: Partial<useAsyncVConfigInterface> = {
-  initialState: { data: null, loading: false, error: false },
+  initialState: { data: null, loading: false, error: false }
 };
 
 /**
@@ -33,11 +33,11 @@ export const useAsyncV = (
   const defaultInitialState = useAsyncVDefaultConfig.initialState;
   const customInitialState = {
     ...defaultInitialState,
-    ...config.initialState,
+    ...config.initialState
   };
   update(store, selector, (p: any) => {
-    if (typeof p === "object") {
-      if ("data" in p && "loading" in p && "error" in p) return p;
+    if (typeof p === 'object') {
+      if ('data' in p && 'loading' in p && 'error' in p) return p;
       return { ...customInitialState, ...p };
     }
     return customInitialState;

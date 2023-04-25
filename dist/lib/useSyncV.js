@@ -17,4 +17,3 @@ export var useSyncV = function (selector) {
     useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
     return readSyncV(selector);
 };
-//# sourceMappingURL=useSyncV.js.map

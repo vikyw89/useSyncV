@@ -19,4 +19,3 @@ export var updateSyncV = function (selector, updates) {
         return response;
     }
 };
-//# sourceMappingURL=updateSyncV.js.map

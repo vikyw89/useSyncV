@@ -3,7 +3,6 @@
     "outDir": "./dist/",
     "declaration": true,
     "strict": true,
-    "sourceMap": true,
     "moduleResolution": "nodenext",
     "lib": ["ES2015","DOM"]
   },

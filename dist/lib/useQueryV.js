@@ -34,4 +34,3 @@ export var useQueryV = function (selector, asyncFn, config) {
     }, []);
     return state;
 };
-//# sourceMappingURL=useQueryV.js.map
