@@ -3,22 +3,23 @@ import { defaultAsyncReturn } from './useAsyncV.js';
 /**
  * Type for updateAsyncVConfig
  */
-export type updateAsyncVConfig = {
+export type updateAsyncVDefaultConfig = {
   deleteExistingData: boolean
+}
+
+/**
+ * Type for updateAsyncVConfig
+ */
+export type updateAsyncVConfig = {
+  deleteExistingData?: boolean
 }
 
 /**
  * Default config for updateAsyncV
  */
-export const updateAsyncVDefaultConfig: updateAsyncVConfig = {
+export const updateAsyncVDefaultConfig: updateAsyncVDefaultConfig = {
   deleteExistingData: false
 };
-
-export type asyncReturn = {
-  data: unknown,
-  loading: boolean,
-  error: boolean
-}
 
 /**
  * A function that updates the data in the store asynchronously using the specified selector and async function.
@@ -32,7 +33,7 @@ export type asyncReturn = {
 export const updateAsyncV = async (
   selector: string,
   asyncFn: () => Promise<unknown> = async () => null,
-  config = updateAsyncVDefaultConfig
+  config: updateAsyncVConfig = updateAsyncVDefaultConfig
 ) => {
   try {
     // set initial asyncReturn and loading true
@@ -78,13 +79,13 @@ export const updateAsyncV = async (
     updateSyncV(selector, (p: unknown) => {
       if (!p) {
         return {
-          data:null,
+          data: null,
           loading: false,
           error: true
         }
       } else {
         return {
-          defaultAsyncReturn,
+          ...defaultAsyncReturn,
           ...p,
           loading: false,
           error: true

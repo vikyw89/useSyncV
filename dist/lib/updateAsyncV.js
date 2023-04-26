@@ -66,7 +66,7 @@ export const updateAsyncV = (selector, asyncFn = () => __awaiter(void 0, void 0,
                 };
             }
             else {
-                return Object.assign(Object.assign({ defaultAsyncReturn }, p), { loading: false, error: true });
+                return Object.assign(Object.assign(Object.assign({}, defaultAsyncReturn), p), { loading: false, error: true });
             }
         });
     }

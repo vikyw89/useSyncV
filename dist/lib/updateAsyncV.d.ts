@@ -1,18 +1,19 @@
 /**
  * Type for updateAsyncVConfig
  */
-export type updateAsyncVConfig = {
+export type updateAsyncVDefaultConfig = {
     deleteExistingData: boolean;
+};
+/**
+ * Type for updateAsyncVConfig
+ */
+export type updateAsyncVConfig = {
+    deleteExistingData?: boolean;
 };
 /**
  * Default config for updateAsyncV
  */
-export declare const updateAsyncVDefaultConfig: updateAsyncVConfig;
-export type asyncReturn = {
-    data: unknown;
-    loading: boolean;
-    error: boolean;
-};
+export declare const updateAsyncVDefaultConfig: updateAsyncVDefaultConfig;
 /**
  * A function that updates the data in the store asynchronously using the specified selector and async function.
  *

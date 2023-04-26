@@ -4,7 +4,7 @@ import { useAsyncV, useAsyncVDefaultConfig, } from './useAsyncV.js';
 /**
  * Default config for useQueryV
  */
-const useQueryVDefaultConfig = {
+export const useQueryVDefaultConfig = {
     useAsyncV: Object.assign(Object.assign({}, useAsyncVDefaultConfig), { initialState: Object.assign(Object.assign({}, useAsyncVDefaultConfig.initialState), { loading: true }) }),
     updateAsyncV: updateAsyncVDefaultConfig,
     cacheData: true
@@ -19,12 +19,13 @@ const useQueryVDefaultConfig = {
 export const useQueryV = (selector, asyncFn, config = useQueryVDefaultConfig) => {
     const state = useAsyncV(selector, config === null || config === void 0 ? void 0 : config.useAsyncV);
     useEffect(() => {
-        if (config.cacheData && state.data) {
+        // don't fetch if fetched data existed and cacheData is set to true
+        if (state && config.cacheData && typeof state === "object" && "data" in state && "loading" in state && "error" in state && state !== null)
             return;
-        }
-        else {
-            updateAsyncV(selector, asyncFn, config === null || config === void 0 ? void 0 : config.updateAsyncV);
-        }
+        // fetch data
+        const customConfig = config.updateAsyncV;
+        updateAsyncV(selector, () => asyncFn(), customConfig);
+        return;
     }, []);
     return state;
 };

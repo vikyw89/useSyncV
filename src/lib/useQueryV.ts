@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import {
   updateAsyncV, updateAsyncVConfig, updateAsyncVDefaultConfig,
-
 } from './updateAsyncV.js';
 import {
+  asyncReturn,
   useAsyncV, useAsyncVConfig, useAsyncVDefaultConfig,
 } from './useAsyncV.js';
 
@@ -14,15 +14,15 @@ export type useQueryVConfig = {
 }
 
 export type useQueryVDefaultConfig = {
-  updateAsyncV: updateAsyncVConfig,
-  useAsyncV: useAsyncVConfig,
+  updateAsyncV: updateAsyncVDefaultConfig,
+  useAsyncV: useAsyncVDefaultConfig,
   cacheData: boolean
 }
 
 /**
  * Default config for useQueryV
  */
-const useQueryVDefaultConfig: useQueryVDefaultConfig = {
+export const useQueryVDefaultConfig: useQueryVDefaultConfig = {
   useAsyncV: {
     ...useAsyncVDefaultConfig,
     initialState: {
@@ -43,16 +43,20 @@ const useQueryVDefaultConfig: useQueryVDefaultConfig = {
  */
 export const useQueryV = (
   selector: string,
-  asyncFn: () => unknown,
-  config = useQueryVDefaultConfig
-) => {
+  asyncFn: () => Promise<unknown>,
+  config: useQueryVConfig = useQueryVDefaultConfig
+): unknown | asyncReturn => {
   const state = useAsyncV(selector, config?.useAsyncV);
+
   useEffect(() => {
-    if (config.cacheData && state.data) {
-      return;
-    } else {
-      updateAsyncV(selector, asyncFn, config?.updateAsyncV);
-    }
+    // don't fetch if fetched data existed and cacheData is set to true
+    if (state && config.cacheData && typeof state === "object" && "data" in state && "loading" in state && "error" in state && state !== null) return
+
+    // fetch data
+    const customConfig = config.updateAsyncV
+    updateAsyncV(selector, () => asyncFn(), customConfig);
+    return
   }, []);
-  return state;
+
+  return state
 };

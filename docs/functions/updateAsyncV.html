@@ -17,7 +17,7 @@
 <h1>Function updateAsyncV</h1></div>
 <section class="tsd-panel">
 <ul class="tsd-signatures">
-<li class="tsd-signature tsd-anchor-link" id="updateAsyncV"><span class="tsd-kind-call-signature">update<wbr/>AsyncV</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">selector</span>, <span class="tsd-kind-parameter">asyncFn</span>, <span class="tsd-kind-parameter">config</span><span class="tsd-signature-symbol">?</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span><a href="#updateAsyncV" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" id="icon-anchor-a"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" id="icon-anchor-b"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" id="icon-anchor-c"></path></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="updateAsyncV"><span class="tsd-kind-call-signature">update<wbr/>AsyncV</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">selector</span>, <span class="tsd-kind-parameter">asyncFn</span><span class="tsd-signature-symbol">?</span>, <span class="tsd-kind-parameter">config</span><span class="tsd-signature-symbol">?</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span><a href="#updateAsyncV" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" id="icon-anchor-a"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" id="icon-anchor-b"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" id="icon-anchor-c"></path></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>A function that updates the data in the store asynchronously using the specified selector and async function.</p>
 
@@ -30,17 +30,23 @@
 <div class="tsd-comment tsd-typography"><p>The selector to use for accessing data in the store.</p>
 </div></li>
 <li>
-<h5><span class="tsd-kind-parameter">asyncFn</span>: <span class="tsd-signature-type ">Function</span></h5>
+<h5><span class="tsd-kind-parameter">asyncFn</span>: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> = ...</span></h5>
 <div class="tsd-comment tsd-typography"><p>The async function to call to update the data in the store.</p>
-</div></li>
+</div>
+<ul class="tsd-parameters">
+<li class="tsd-parameter-signature">
+<ul class="tsd-signatures">
+<li class="tsd-signature"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></li>
+<li class="tsd-description">
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></h4></li></ul></li></ul></li>
 <li>
-<h5><span class="tsd-kind-parameter">config</span>: <span class="tsd-signature-type ">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type ">updateAsyncVConfigInterface</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = updateAsyncVDefaultConfig</span></h5>
+<h5><span class="tsd-kind-parameter">config</span>: <span class="tsd-signature-type ">updateAsyncVConfig</span><span class="tsd-signature-symbol"> = updateAsyncVDefaultConfig</span></h5>
 <div class="tsd-comment tsd-typography"><p>An optional object that specifies whether to delete existing data before updating.
 updateAsyncVDefaultConfig</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/vikyw89/useSyncV/blob/6df949c/src/lib/updateAsyncV.ts#L26">lib/updateAsyncV.ts:26</a></li></ul></aside></li></ul></section></div>
+<li>Defined in <a href="https://github.com/vikyw89/useSyncV/blob/042ce8d/src/lib/updateAsyncV.ts#L33">lib/updateAsyncV.ts:33</a></li></ul></aside></li></ul></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
