@@ -52,7 +52,11 @@
     "tsc": "tsc -p tsconfig.json --watch",
     "typedoc": "typedoc --watch",
     "dev": "npm run tsc & npm run typedoc & npm run test",
+    "beta": "npm run tsc & npm run typedoc & npm run beta-test",
+    "stable": "npm run tsc & npm run typedoc & npm run stable-test",
     "test": "cd test && npm install && npm link .. && npm run dev",
+    "beta-test": "cd test && npm install && npm install use-sync-v@dev --save && npm run dev",
+    "stable-test": "cd test && npm install && npm install use-sync-v@beta --save && npm run dev",
     "prettier-watch": "onchange 'src/' -- prettier --write {{changed}}",
     "lint": "eslint ./src/ --fix"
   }
