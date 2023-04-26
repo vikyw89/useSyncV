@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { updateSyncV } from './updateSyncV.js';
 
 /**

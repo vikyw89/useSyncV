@@ -7,7 +7,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { updateSyncV } from './updateSyncV.js';
 /**
  * Default config for updateAsyncV
