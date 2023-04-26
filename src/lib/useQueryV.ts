@@ -1,25 +1,28 @@
 import { useEffect } from 'react';
 import {
-  updateAsyncV,
-  updateAsyncVConfigInterface,
-  updateAsyncVDefaultConfig
+  updateAsyncV, updateAsyncVConfig, updateAsyncVDefaultConfig,
+
 } from './updateAsyncV.js';
 import {
-  useAsyncV,
-  useAsyncVConfigInterface,
-  useAsyncVDefaultConfig
+  useAsyncV, useAsyncVConfig, useAsyncVDefaultConfig,
 } from './useAsyncV.js';
 
-export interface useQueryVConfigInterface {
-  updateAsyncV: Partial<updateAsyncVConfigInterface>;
-  useAsyncV: Partial<useAsyncVConfigInterface>;
+export type useQueryVConfig = {
+  updateAsyncV: Partial<updateAsyncVConfig>;
+  useAsyncV: Partial<useAsyncVConfig>;
   cacheData: boolean;
+}
+
+export type useQueryVDefaultConfig = {
+  updateAsyncV: updateAsyncVConfig,
+  useAsyncV: useAsyncVConfig,
+  cacheData: boolean
 }
 
 /**
  * Default config for useQueryV
  */
-export const useQueryVDefaultConfig: Partial<useQueryVConfigInterface> = {
+const useQueryVDefaultConfig: useQueryVDefaultConfig = {
   useAsyncV: {
     ...useAsyncVDefaultConfig,
     initialState: {
@@ -40,7 +43,7 @@ export const useQueryVDefaultConfig: Partial<useQueryVConfigInterface> = {
  */
 export const useQueryV = (
   selector: string,
-  asyncFn: CallableFunction,
+  asyncFn: () => unknown,
   config = useQueryVDefaultConfig
 ) => {
   const state = useAsyncV(selector, config?.useAsyncV);

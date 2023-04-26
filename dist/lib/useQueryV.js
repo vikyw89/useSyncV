@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import { updateAsyncV, updateAsyncVDefaultConfig } from './updateAsyncV.js';
-import { useAsyncV, useAsyncVDefaultConfig } from './useAsyncV.js';
+import { updateAsyncV, updateAsyncVDefaultConfig, } from './updateAsyncV.js';
+import { useAsyncV, useAsyncVDefaultConfig, } from './useAsyncV.js';
 /**
  * Default config for useQueryV
  */
-export const useQueryVDefaultConfig = {
+const useQueryVDefaultConfig = {
     useAsyncV: Object.assign(Object.assign({}, useAsyncVDefaultConfig), { initialState: Object.assign(Object.assign({}, useAsyncVDefaultConfig.initialState), { loading: true }) }),
     updateAsyncV: updateAsyncVDefaultConfig,
     cacheData: true

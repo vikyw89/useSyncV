@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { updateSyncV } from './updateSyncV.js';
+import { defaultAsyncReturn } from './useAsyncV.js';
 /**
  * Default config for updateAsyncV
  */
@@ -25,24 +26,48 @@ export const updateAsyncVDefaultConfig = {
  */
 export const updateAsyncV = (selector, asyncFn = () => __awaiter(void 0, void 0, void 0, function* () { return null; }), config = updateAsyncVDefaultConfig) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        if (config.deleteExistingData) {
-            updateSyncV(selector, {
-                data: null,
-                loading: true,
-                error: false
-            });
-        }
-        else {
-            // Keep existing data while updating
-            updateSyncV(selector, (p) => (Object.assign(Object.assign({}, p), { loading: true, error: false })));
-        }
-        // Call async function and get data
+        // set initial asyncReturn and loading true
+        updateSyncV(selector, (p) => {
+            if (!p || config.deleteExistingData) {
+                return {
+                    data: null,
+                    loading: true,
+                    error: false
+                };
+            }
+            else {
+                return Object.assign(Object.assign(Object.assign({}, defaultAsyncReturn), p), { loading: true, error: false });
+            }
+        });
+        // fetch data
         const data = yield asyncFn();
         // Update synchronous state with new data
-        updateSyncV(selector, (p) => (Object.assign(Object.assign({}, p), { data: data, loading: false })));
+        updateSyncV(selector, (p) => {
+            if (!p) {
+                return {
+                    data: data,
+                    loading: false,
+                    error: false
+                };
+            }
+            else {
+                return Object.assign(Object.assign({}, p), { data: data, loading: false, error: false });
+            }
+        });
     }
     catch (error) {
         // Handle errors
-        updateSyncV(selector, (p) => (Object.assign(Object.assign({}, p), { loading: false, error: error })));
+        updateSyncV(selector, (p) => {
+            if (!p) {
+                return {
+                    data: null,
+                    loading: false,
+                    error: true
+                };
+            }
+            else {
+                return Object.assign(Object.assign({ defaultAsyncReturn }, p), { loading: false, error: true });
+            }
+        });
     }
 });

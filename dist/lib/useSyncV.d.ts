@@ -3,4 +3,4 @@
  *
  * @param selector - The selector to use for accessing data in the store.
  */
-export declare const useSyncV: (selector: string) => any;
+export declare const useSyncV: (selector: string) => unknown;

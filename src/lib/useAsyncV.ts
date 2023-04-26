@@ -2,22 +2,31 @@ import { update } from 'lodash-es';
 import { store } from './helper.js';
 import { useSyncV } from './useSyncV.js';
 
-export interface asyncInterface {
+export type asyncReturn = {
   data: unknown;
   loading: boolean;
   error: boolean;
 }
 
-export interface useAsyncVConfigInterface {
-  initialState: Partial<asyncInterface>;
+export const defaultAsyncReturn: asyncReturn = {
+  data: null,
+  loading: false,
+  error: false
 }
 
+export type useAsyncVConfig = {
+  initialState: Partial<asyncReturn>;
+}
+
+export type useAsyncVDefaultConfig = {
+  initialState: asyncReturn
+}
 /**
  * Default config for useAsyncV
  */
-export const useAsyncVDefaultConfig: Partial<useAsyncVConfigInterface> = {
-  initialState: { data: null, loading: false, error: false }
-};
+export const useAsyncVDefaultConfig: useAsyncVDefaultConfig = {
+  initialState: defaultAsyncReturn
+}
 
 /**
  * A custom hook for managing asynchronous data in an external store with synchronous state.
@@ -28,15 +37,21 @@ export const useAsyncVDefaultConfig: Partial<useAsyncVConfigInterface> = {
  */
 export const useAsyncV = (
   selector: string,
-  config = useAsyncVDefaultConfig
-) => {
+  config: Partial<useAsyncVConfig> = useAsyncVDefaultConfig
+): asyncReturn | unknown => {
+  // default initial state from config
   const defaultInitialState = useAsyncVDefaultConfig.initialState;
+
+  // composing initial state from incomplete user input
+  const configInitialState = config.initialState ?? {}
+
   const customInitialState = {
     ...defaultInitialState,
-    ...config.initialState
+    ...configInitialState
   };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  update(store, selector, (p: any) => {
+
+  update(store, selector, (p: unknown) => {
+    if (!p) return
     if (typeof p === 'object') {
       if ('data' in p && 'loading' in p && 'error' in p) return p;
       return { ...customInitialState, ...p };
@@ -48,5 +63,5 @@ export const useAsyncV = (
   const state = useSyncV(selector);
 
   // Return the synchronous state object
-  return state;
+  return state as asyncReturn | unknown
 };

@@ -1,23 +1,25 @@
 import { updateSyncV } from './updateSyncV.js';
+import { defaultAsyncReturn } from './useAsyncV.js';
 /**
  * Type for updateAsyncVConfig
  */
 export type updateAsyncVConfig = {
-  deleteExistingData:boolean
+  deleteExistingData: boolean
 }
 
 /**
  * Default config for updateAsyncV
  */
-export const updateAsyncVDefaultConfig:updateAsyncVConfig = {
+export const updateAsyncVDefaultConfig: updateAsyncVConfig = {
   deleteExistingData: false
 };
 
 export type asyncReturn = {
-  data:unknown,
-  loading:boolean,
-  error:boolean
+  data: unknown,
+  loading: boolean,
+  error: boolean
 }
+
 /**
  * A function that updates the data in the store asynchronously using the specified selector and async function.
  *
@@ -29,38 +31,65 @@ export type asyncReturn = {
  */
 export const updateAsyncV = async (
   selector: string,
-  asyncFn: () => Promise<unknown> = async()=>null,
+  asyncFn: () => Promise<unknown> = async () => null,
   config = updateAsyncVDefaultConfig
 ) => {
   try {
-    if (config.deleteExistingData) {
-      updateSyncV(selector, {
-        data: null,
-        loading: true,
-        error: false
-      });
-    } else {
-      // Keep existing data while updating
-      updateSyncV(selector, (p:object) => ({
-        ...p,
-        loading: true,
-        error: false
-      }));
-    }
-    // Call async function and get data
+    // set initial asyncReturn and loading true
+    updateSyncV(selector, (p: unknown) => {
+      if (!p || config.deleteExistingData) {
+        return {
+          data: null,
+          loading: true,
+          error: false
+        }
+      } else {
+        return {
+          ...defaultAsyncReturn,
+          ...p,
+          loading: true,
+          error: false
+        }
+      }
+    })
+
+    // fetch data
     const data = await asyncFn();
+
     // Update synchronous state with new data
-    updateSyncV(selector, (p: any) => ({
-      ...p,
-      data: data,
-      loading: false
-    }));
+    updateSyncV(selector, (p: unknown) => {
+      if (!p) {
+        return {
+          data: data,
+          loading: false,
+          error: false
+        }
+      } else {
+        return {
+          ...p,
+          data: data,
+          loading: false,
+          error: false
+        }
+      }
+    })
   } catch (error) {
     // Handle errors
-    updateSyncV(selector, (p: any) => ({
-      ...p,
-      loading: false,
-      error: error
-    }));
+    updateSyncV(selector, (p: unknown) => {
+      if (!p) {
+        return {
+          data:null,
+          loading: false,
+          error: true
+        }
+      } else {
+        return {
+          defaultAsyncReturn,
+          ...p,
+          loading: false,
+          error: true
+        }
+      }
+    })
   }
 };
