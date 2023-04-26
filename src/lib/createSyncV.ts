@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { update } from 'lodash-es';
 import { emitChange, store } from './helper.js';
 
+function createSyncV(selector);
 /**
  * A function that creates new data in the store synchronously using the specified selector and value.
  *
