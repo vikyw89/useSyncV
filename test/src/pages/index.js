@@ -14,9 +14,9 @@ export default function Home() {
   const selector = 'api';
   // const data = useQueryV(selector, asyncFn);
   const data = useAsyncV(selector)
-  // useEffect(() => {
-  //   updateAsyncV(selector, asyncFn);
-  // }, []);
+  useEffect(() => {
+    updateAsyncV(selector, asyncFn);
+  }, []);
   console.log(data)
   const refetchHandler = () => {
     updateAsyncV(selector, asyncFn);
