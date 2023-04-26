@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { diffJson } from 'diff';
 import { result, update } from 'lodash-es';
-export const store: object = {};
+export const store = {};
 
-export let subscribers: Array<any> = [];
+export let subscribers: Function[] = [() => {}];
 
 export const selectorHistory = {};
 
