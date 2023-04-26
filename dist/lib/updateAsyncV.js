@@ -23,7 +23,7 @@ export const updateAsyncVDefaultConfig = {
  * @param config - An optional object that specifies whether to delete existing data before updating.
  * {@link updateAsyncVDefaultConfig}
  */
-export const updateAsyncV = (selector, asyncFn, config = updateAsyncVDefaultConfig) => __awaiter(void 0, void 0, void 0, function* () {
+export const updateAsyncV = (selector, asyncFn = () => __awaiter(void 0, void 0, void 0, function* () { return null; }), config = updateAsyncVDefaultConfig) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         if (config.deleteExistingData) {
             updateSyncV(selector, {
@@ -46,4 +46,3 @@ export const updateAsyncV = (selector, asyncFn, config = updateAsyncVDefaultConf
         updateSyncV(selector, (p) => (Object.assign(Object.assign({}, p), { loading: false, error: error })));
     }
 });
-update;

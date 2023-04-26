@@ -1,12 +1,23 @@
 import { updateSyncV } from './updateSyncV.js';
+/**
+ * Type for updateAsyncVConfig
+ */
+export type updateAsyncVConfig = {
+  deleteExistingData:boolean
+}
 
 /**
  * Default config for updateAsyncV
  */
-export const updateAsyncVDefaultConfig = {
+export const updateAsyncVDefaultConfig:updateAsyncVConfig = {
   deleteExistingData: false
 };
 
+export type asyncReturn = {
+  data:any,
+  loading:boolean,
+  error:boolean
+}
 /**
  * A function that updates the data in the store asynchronously using the specified selector and async function.
  *
@@ -18,7 +29,7 @@ export const updateAsyncVDefaultConfig = {
  */
 export const updateAsyncV = async (
   selector: string,
-  asyncFn: () => Promise<unknown>,
+  asyncFn: () => Promise<unknown> = async()=>null,
   config = updateAsyncVDefaultConfig
 ) => {
   try {
@@ -30,7 +41,7 @@ export const updateAsyncV = async (
       });
     } else {
       // Keep existing data while updating
-      updateSyncV(selector, (p: any) => ({
+      updateSyncV(selector, (p:object) => ({
         ...p,
         loading: true,
         error: false
@@ -53,5 +64,3 @@ export const updateAsyncV = async (
     }));
   }
 };
-
-update;
