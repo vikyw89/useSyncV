@@ -1,5 +1,5 @@
-import { Box, Button, Typography } from "@mui/material";
-import { debugSyncV, updateSyncV, useSyncV } from "use-sync-v";
+import { Box, Button, Typography } from '@mui/material';
+import { debugSyncV, updateSyncV, useSyncV } from 'use-sync-v';
 
 export default function CardComponent({ props }) {
   const data = useSyncV(props);
@@ -8,21 +8,21 @@ export default function CardComponent({ props }) {
     <>
       <Box
         sx={{
-          color: "white",
-          display: "flex",
-          flexDirection:'column',
-          height:'auto',
-          width:'auto',
-          gap:'10px',
-          border:'1px solid white',
-          borderRadius:'20px',
-          padding:'10px'
+          color: 'white',
+          display: 'flex',
+          flexDirection: 'column',
+          height: 'auto',
+          width: 'auto',
+          gap: '10px',
+          border: '1px solid white',
+          borderRadius: '20px',
+          padding: '10px'
         }}
       >
-        <Typography variant="h6" sx={{ textAlign: "center" }}>
+        <Typography variant="h6" sx={{ textAlign: 'center' }}>
           useSyncV("{props}") =
         </Typography>
-        <Typography variant="h4" sx={{ textAlign: "center" }}>
+        <Typography variant="h4" sx={{ textAlign: 'center' }}>
           {JSON.stringify(data)}
         </Typography>
         <Button

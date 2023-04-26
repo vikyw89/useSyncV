@@ -1,7 +1,7 @@
-import { initStores } from '@/lib/store'
-import '@/styles/globals.css'
+import { initStores } from '@/lib/store';
+import '@/styles/globals.css';
 
-initStores()
+initStores();
 export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} />
+  return <Component {...pageProps} />;
 }

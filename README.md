@@ -26,20 +26,20 @@ npm i use-sync-v
 ### To store and update data
 
 ```jsx
-updateSyncV("counter", 0);
+updateSyncV('counter', 0);
 // create a counter state with initial value of 0
 // this is not a hook, you can call the function anywhere
 
-updateSyncV("counter", (p) => p + 1);
+updateSyncV('counter', (p) => p + 1);
 // this will increment counter state by 1
 
-updateSyncV("data", [
+updateSyncV('data', [
   {
-    name: "Irene",
+    name: 'Irene'
   },
   {
-    name: "Irenelle",
-  },
+    name: 'Irenelle'
+  }
 ]);
 // this will store an Array of Object into "data" state
 ```
@@ -47,10 +47,10 @@ updateSyncV("data", [
 Updating a deeply nested object is easy
 
 ```jsx
-updateSyncV("data[0].phone_number", "010039945");
+updateSyncV('data[0].phone_number', '010039945');
 // this will add phone number field to the first object in our Array under the name Irene
 
-readSyncV("data[0]");
+readSyncV('data[0]');
 // => {
 //   name:'Irene',
 //   phone_number:'010039945'
@@ -61,7 +61,7 @@ readSyncV("data[0]");
 
 ```jsx
 export const CounterDisplayComponent = () => {
-  const data = useSyncV("data[0]");
+  const data = useSyncV('data[0]');
   // sync this component to "data[0]" state, will re render component whenever the value of "data[0]" state changes
 };
 ```
@@ -72,16 +72,16 @@ Let's say we want to fetch data from api and store it in "api" state
 
 ```jsx
 const fetchRandomUser = async () => {
-  const response = await fetch("https://randomuser.me/api/");
+  const response = await fetch('https://randomuser.me/api/');
   const data = await response.json();
   return data;
 };
 
 export const DataDisplayComponent = () => {
-  const { data, loading, error } = useAsyncV("api");
+  const { data, loading, error } = useAsyncV('api');
 
   useEffect(() => {
-    updateAsyncV("api", fetchRandomUser);
+    updateAsyncV('api', fetchRandomUser);
   }, []);
 
   return (
@@ -99,7 +99,7 @@ We can simplify it further by using useQueryV, it's a wrapper for useAsyncV and 
 
 ```jsx
 export const DataDisplayComponent = () => {
-  const { data, loading, error } = useQueryV("api", fetchRandomUser);
+  const { data, loading, error } = useQueryV('api', fetchRandomUser);
 
   return (
     <div>
@@ -118,17 +118,17 @@ in your stores directory
 ```jsx
 // @/lib/store.index.js
 
-import { updateSyncV } from "use-sync-v";
+import { updateSyncV } from 'use-sync-v';
 
-updateSyncV("counter", 0);
+updateSyncV('counter', 0);
 
 // for the reducer
 export class CounterReducer {
   static increment = () => {
-    updateSyncV("counter", (p) => p + 1);
+    updateSyncV('counter', (p) => p + 1);
   };
   static reset = () => {
-    updateSyncV("counter", 0);
+    updateSyncV('counter', 0);
   };
 }
 
@@ -140,7 +140,7 @@ and call the file in the root of your react app
 ```jsx
 // _App.js
 
-import { initStores } from "@/lib/store";
+import { initStores } from '@/lib/store';
 
 initStores();
 export default function App({ Component, pageProps }) {
@@ -152,7 +152,7 @@ and call the reducer anywhere
 
 ```jsx
 export const CounterComponent = () => {
-  const counter = useSyncV("counter");
+  const counter = useSyncV('counter');
   return (
     <>
       <div>{counter}</div>
