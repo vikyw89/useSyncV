@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { set, update } from 'lodash-es';
 import { emitChange, store } from './helper.js';
 
@@ -9,12 +8,14 @@ import { emitChange, store } from './helper.js';
  * @param  updates - The updates to be applied to the data in the store using the specified selector.
  * If updates is a function, it will receive the previous value of the data and must return the new value.
  */
-export const updateSyncV = (
+export function updateSyncV(
   selector: string,
-  updates: any | CallableFunction
-) => {
+  updates?: unknown | ((arg:unknown)=>unknown)
+) {
+  if (!updates) return;
   if (typeof updates === 'function') {
-    const response = update(store, selector, updates);
+    console.log(updates)
+    const response = update(store, selector, (updates)=>updates);
     emitChange();
     return response;
   } else {
@@ -22,4 +23,4 @@ export const updateSyncV = (
     emitChange();
     return response;
   }
-};
+}

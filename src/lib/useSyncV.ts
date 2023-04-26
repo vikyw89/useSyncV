@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { result } from 'lodash-es';
 import { useSyncExternalStore } from 'react';
 import { store, subscribe } from './helper.js';

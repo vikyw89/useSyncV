@@ -1,5 +1,6 @@
 import { diffJson } from 'diff';
 import { result, update } from 'lodash-es';
+
 export const store = {};
 
 // eslint-disable-next-line @typescript-eslint/ban-types

@@ -46,3 +46,4 @@ export const updateAsyncV = (selector, asyncFn, config = updateAsyncVDefaultConf
         updateSyncV(selector, (p) => (Object.assign(Object.assign({}, p), { loading: false, error: error })));
     }
 });
+update;

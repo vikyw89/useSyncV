@@ -1,13 +1,9 @@
 /**
- * config for updateSyncV
- */
-export interface updateAsyncVConfigInterface {
-    deleteExistingData: boolean;
-}
-/**
  * Default config for updateAsyncV
  */
-export declare const updateAsyncVDefaultConfig: Partial<updateAsyncVConfigInterface>;
+export declare const updateAsyncVDefaultConfig: {
+    deleteExistingData: boolean;
+};
 /**
  * A function that updates the data in the store asynchronously using the specified selector and async function.
  *
@@ -17,4 +13,6 @@ export declare const updateAsyncVDefaultConfig: Partial<updateAsyncVConfigInterf
  * @param config - An optional object that specifies whether to delete existing data before updating.
  * {@link updateAsyncVDefaultConfig}
  */
-export declare const updateAsyncV: (selector: string, asyncFn: CallableFunction, config?: Partial<updateAsyncVConfigInterface>) => Promise<void>;
+export declare const updateAsyncV: (selector: string, asyncFn: () => Promise<unknown>, config?: {
+    deleteExistingData: boolean;
+}) => Promise<void>;

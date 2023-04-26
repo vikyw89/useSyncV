@@ -7,7 +7,7 @@ import { emitChange, store } from './helper.js';
  * @param selector - The selector to use for creating new data in the store.
  * @param value - The value to be added to the store using the specified selector.
  */
-export function createSyncV<T>(selector: string, value: T): T {
+export function createSyncV(selector: string, value: unknown) {
   const response = update(store, selector, (p) => {
     if (Array.isArray(p)) {
       return [...p, value];
