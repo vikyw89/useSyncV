@@ -26,7 +26,7 @@ export const debugSyncVConfig = {
  * @param selector - The selector to use for accessing data in the store, debug store root if empty
  */
 export const debugSyncV = (selector) => {
-    const selectorKey = selector ?? 'ROOT';
+    const selectorKey = selector !== null && selector !== void 0 ? selector : 'ROOT';
     const currentSelectorJSONValue = selector
         ? JSON.stringify(result(store, selector, ''), null, '\t')
         : JSON.stringify(store, null, '\t');
@@ -38,12 +38,13 @@ export const debugSyncV = (selector) => {
     console.groupEnd();
     let previousSelectorJSONValue = JSON.stringify('');
     update(selectorHistory, selectorKey, (p) => {
+        var _a;
         if (!p) {
             p = [JSON.stringify('')];
         }
         const historyLength = p.length;
         // get the previous selector history value
-        previousSelectorJSONValue = p[historyLength - 1] ?? JSON.stringify('');
+        previousSelectorJSONValue = (_a = p[historyLength - 1]) !== null && _a !== void 0 ? _a : JSON.stringify('');
         if (historyLength >= 10) {
             p.shift();
         }

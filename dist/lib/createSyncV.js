@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { update } from 'lodash-es';
 import { emitChange, store } from './helper.js';
 /**
@@ -7,7 +6,7 @@ import { emitChange, store } from './helper.js';
  * @param selector - The selector to use for creating new data in the store.
  * @param value - The value to be added to the store using the specified selector.
  */
-export const createSyncV = (selector, value) => {
+export function createSyncV(selector, value) {
     const response = update(store, selector, (p) => {
         if (Array.isArray(p)) {
             return [...p, value];
@@ -16,4 +15,4 @@ export const createSyncV = (selector, value) => {
     });
     emitChange();
     return response;
-};
+}

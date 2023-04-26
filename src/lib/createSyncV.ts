@@ -1,15 +1,14 @@
 import { update } from 'lodash-es';
 import { emitChange, store } from './helper.js';
 
-function createSyncV(selector);
 /**
  * A function that creates new data in the store synchronously using the specified selector and value.
  *
  * @param selector - The selector to use for creating new data in the store.
  * @param value - The value to be added to the store using the specified selector.
  */
-export const createSyncV = (selector: string, value: any) => {
-  const response: any = update(store, selector, (p: any): any => {
+export function createSyncV<T>(selector: string, value: T): T {
+  const response = update(store, selector, (p) => {
     if (Array.isArray(p)) {
       return [...p, value];
     }
@@ -17,4 +16,4 @@ export const createSyncV = (selector: string, value: any) => {
   });
   emitChange();
   return response;
-};
+}

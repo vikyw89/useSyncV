@@ -16,16 +16,13 @@ export const useAsyncVDefaultConfig = {
  */
 export const useAsyncV = (selector, config = useAsyncVDefaultConfig) => {
     const defaultInitialState = useAsyncVDefaultConfig.initialState;
-    const customInitialState = {
-        ...defaultInitialState,
-        ...config.initialState
-    };
+    const customInitialState = Object.assign(Object.assign({}, defaultInitialState), config.initialState);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     update(store, selector, (p) => {
         if (typeof p === 'object') {
             if ('data' in p && 'loading' in p && 'error' in p)
                 return p;
-            return { ...customInitialState, ...p };
+            return Object.assign(Object.assign({}, customInitialState), p);
         }
         return customInitialState;
     });

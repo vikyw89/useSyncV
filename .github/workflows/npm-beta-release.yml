@@ -5,7 +5,7 @@ name: Node.js Package
 
 on:
   push:
-    branches: [main]
+    branches: [beta-release]
 
 jobs:
   publishNPM:
@@ -18,6 +18,6 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - run: |
           npm install
-          npm publish
+          npm publish --tag=beta
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}

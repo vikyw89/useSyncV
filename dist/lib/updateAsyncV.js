@@ -1,3 +1,12 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { updateSyncV } from './updateSyncV.js';
 /**
@@ -15,7 +24,7 @@ export const updateAsyncVDefaultConfig = {
  * @param config - An optional object that specifies whether to delete existing data before updating.
  * {@link updateAsyncVDefaultConfig}
  */
-export const updateAsyncV = async (selector, asyncFn, config = updateAsyncVDefaultConfig) => {
+export const updateAsyncV = (selector, asyncFn, config = updateAsyncVDefaultConfig) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         if (config.deleteExistingData) {
             updateSyncV(selector, {
@@ -26,27 +35,15 @@ export const updateAsyncV = async (selector, asyncFn, config = updateAsyncVDefau
         }
         else {
             // Keep existing data while updating
-            updateSyncV(selector, (p) => ({
-                ...p,
-                loading: true,
-                error: false
-            }));
+            updateSyncV(selector, (p) => (Object.assign(Object.assign({}, p), { loading: true, error: false })));
         }
         // Call async function and get data
-        const data = await asyncFn();
+        const data = yield asyncFn();
         // Update synchronous state with new data
-        updateSyncV(selector, (p) => ({
-            ...p,
-            data: data,
-            loading: false
-        }));
+        updateSyncV(selector, (p) => (Object.assign(Object.assign({}, p), { data: data, loading: false })));
     }
     catch (error) {
         // Handle errors
-        updateSyncV(selector, (p) => ({
-            ...p,
-            loading: false,
-            error: error
-        }));
+        updateSyncV(selector, (p) => (Object.assign(Object.assign({}, p), { loading: false, error: error })));
     }
-};
+});
