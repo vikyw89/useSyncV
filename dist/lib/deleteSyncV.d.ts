@@ -4,4 +4,4 @@
  * @param  selector - The selector to use for deleting data from the store.
  *
  */
-export declare const deleteSyncV: (selector: string) => boolean;
+export declare function deleteSyncV(selector: string): boolean;

@@ -7,8 +7,8 @@ import { emitChange, store } from './helper.js';
  * @param  selector - The selector to use for deleting data from the store.
  *
  */
-export const deleteSyncV = (selector: string) => {
+export function deleteSyncV(selector: string): boolean {
   const response = unset(store, selector);
   emitChange();
   return response;
-};
+}
