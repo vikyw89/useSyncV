@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { diffJson } from 'diff';
 import { result, update } from 'lodash-es';
 export const store = {};
+// eslint-disable-next-line @typescript-eslint/ban-types
 export let subscribers = [];
 export const selectorHistory = {};
 export const emitChange = () => {
@@ -9,6 +9,7 @@ export const emitChange = () => {
         subscriber();
     }
 };
+// eslint-disable-next-line @typescript-eslint/ban-types
 export const subscribe = (callback) => {
     subscribers = [...subscribers, callback];
     return () => {

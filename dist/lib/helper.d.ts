@@ -1,8 +1,8 @@
-export declare const store: object;
-export declare let subscribers: Array<any>;
+export declare const store: {};
+export declare let subscribers: Array<Function>;
 export declare const selectorHistory: {};
 export declare const emitChange: () => void;
-export declare const subscribe: (callback: CallableFunction) => () => void;
+export declare const subscribe: (callback: Function) => () => void;
 export declare const debugSyncVConfig: {
     maxHistory: number;
 };

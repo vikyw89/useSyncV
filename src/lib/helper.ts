@@ -2,7 +2,8 @@ import { diffJson } from 'diff';
 import { result, update } from 'lodash-es';
 export const store = {};
 
-export let subscribers: Function[] = [() => {}];
+// eslint-disable-next-line @typescript-eslint/ban-types
+export let subscribers: Array<Function> = [];
 
 export const selectorHistory = {};
 
@@ -12,10 +13,11 @@ export const emitChange = () => {
   }
 };
 
-export const subscribe = (callback: CallableFunction) => {
+// eslint-disable-next-line @typescript-eslint/ban-types
+export const subscribe = (callback: Function) => {
   subscribers = [...subscribers, callback];
   return () => {
-    subscribers = subscribers.filter((p: any) => {
+    subscribers = subscribers.filter((p) => {
       return p !== callback;
     });
   };
@@ -43,13 +45,13 @@ export const debugSyncV = (selector: string | undefined) => {
   console.log(currentSelectorJSONValue);
   console.groupEnd();
 
-  let previousSelectorJSONValue: string = JSON.stringify('');
+  let previousSelectorJSONValue = JSON.stringify('');
 
   update(selectorHistory, selectorKey, (p) => {
     if (!p) {
       p = [JSON.stringify('')];
     }
-    const historyLength: number = p.length;
+    const historyLength = p.length;
     // get the previous selector history value
     previousSelectorJSONValue = p[historyLength - 1] ?? JSON.stringify('');
     if (historyLength >= 10) {
