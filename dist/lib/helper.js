@@ -43,13 +43,15 @@ export const debugSyncV = (selector) => {
         if (!p) {
             p = [JSON.stringify('')];
         }
-        const historyLength = p.length;
-        // get the previous selector history value
-        previousSelectorJSONValue = (_a = p[historyLength - 1]) !== null && _a !== void 0 ? _a : JSON.stringify('');
-        if (historyLength >= 10) {
-            p.shift();
+        if (Array.isArray(p)) {
+            const historyLength = p.length;
+            previousSelectorJSONValue = (_a = p[historyLength - 1]) !== null && _a !== void 0 ? _a : JSON.stringify('');
+            if (historyLength >= 10) {
+                p.shift();
+            }
+            return [...p, currentSelectorJSONValue];
         }
-        return [...p, currentSelectorJSONValue];
+        throw "debugSyncV update history bug";
     });
     // diff selector history with previous result
     console.groupCollapsed('Change log');

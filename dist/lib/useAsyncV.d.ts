@@ -1,5 +1,5 @@
 export interface asyncInterface {
-    data: any;
+    data: unknown;
     loading: boolean;
     error: boolean;
 }

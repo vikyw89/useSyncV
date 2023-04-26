@@ -9,7 +9,7 @@ export type updateAsyncVConfig = {
  */
 export declare const updateAsyncVDefaultConfig: updateAsyncVConfig;
 export type asyncReturn = {
-    data: any;
+    data: unknown;
     loading: boolean;
     error: boolean;
 };

@@ -12,7 +12,7 @@ export function updateSyncV(selector, updates) {
         return;
     if (typeof updates === 'function') {
         console.log(updates);
-        const response = update(store, selector, (updates) => updates);
+        const response = update(store, selector, (p) => updates(p));
         emitChange();
         return response;
     }
