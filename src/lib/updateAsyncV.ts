@@ -1,16 +1,9 @@
 import { updateSyncV } from './updateSyncV.js';
 
 /**
- * config for updateSyncV
- */
-export interface updateAsyncVConfigInterface {
-  deleteExistingData: boolean;
-}
-
-/**
  * Default config for updateAsyncV
  */
-export const updateAsyncVDefaultConfig: Partial<updateAsyncVConfigInterface> = {
+export const updateAsyncVDefaultConfig = {
   deleteExistingData: false
 };
 
@@ -25,7 +18,7 @@ export const updateAsyncVDefaultConfig: Partial<updateAsyncVConfigInterface> = {
  */
 export const updateAsyncV = async (
   selector: string,
-  asyncFn: CallableFunction,
+  asyncFn: () => Promise<unknown>,
   config = updateAsyncVDefaultConfig
 ) => {
   try {
@@ -60,3 +53,5 @@ export const updateAsyncV = async (
     }));
   }
 };
+
+update;
