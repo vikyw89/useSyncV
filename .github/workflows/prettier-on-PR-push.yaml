@@ -2,12 +2,7 @@ name: Prettier
 
 # This action works with pull requests and pushes
 on:
-  pull_request:
-  push:
-    branches:
-      - stable-release
-      - beta-release
-      - dev
+  workflow_call:
 
 jobs:
   prettier:
