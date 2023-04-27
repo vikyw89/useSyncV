@@ -1,5 +1,7 @@
 import { set, update } from 'lodash-es';
 import { emitChange, store } from './helper.js';
+
+
 /**
  * A function that updates data in the store synchronously using the specified selector and updates.
  *
