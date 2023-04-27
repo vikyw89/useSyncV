@@ -3,8 +3,9 @@
   "version": "2.1.0",
   "description": "a custom react hook to sync store, and asyncQuery,",
   "type": "module",
+  "main": "./dist/index.js",
   "exports": "./dist/index.js",
-  "types": "dist/index.d.ts",
+  "types": "./dist/index.d.ts",
   "files": [
     "./dist/",
     "README.md",
