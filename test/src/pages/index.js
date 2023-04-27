@@ -23,7 +23,7 @@ export default function Home() {
   const refetchHandler = () => {
     updateAsyncV(selector, asyncFn);
   };
-  console.log(useAsyncVDefaultConfig)
+  console.log(useAsyncVDefaultConfig);
   console.log('render');
   // debugSyncV()
   return (
