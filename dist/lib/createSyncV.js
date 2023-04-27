@@ -7,12 +7,12 @@ import { emitChange, store } from './helper.js';
  * @param value - The value to be added to the store using the specified selector.
  */
 export function createSyncV(selector, value) {
-    const response = update(store, selector, (p) => {
-        if (Array.isArray(p)) {
-            return [...p, value];
-        }
-        return [value];
-    });
-    emitChange();
-    return response;
+  const response = update(store, selector, (p) => {
+    if (Array.isArray(p)) {
+      return [...p, value];
+    }
+    return [value];
+  });
+  emitChange();
+  return response;
 }

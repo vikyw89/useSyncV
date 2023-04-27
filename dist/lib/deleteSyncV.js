@@ -7,7 +7,7 @@ import { emitChange, store } from './helper.js';
  *
  */
 export function deleteSyncV(selector) {
-    const response = unset(store, selector);
-    emitChange();
-    return response;
+  const response = unset(store, selector);
+  emitChange();
+  return response;
 }
