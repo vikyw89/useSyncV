@@ -1,6 +1,5 @@
 import { set, update } from 'lodash-es';
 import { emitChange, store } from './helper.js';
-
 /**
  * A function that updates data in the store synchronously using the specified selector and updates.
  *
@@ -9,14 +8,14 @@ import { emitChange, store } from './helper.js';
  * If updates is a function, it will receive the previous value of the data and must return the new value.
  */
 export function updateSyncV(selector, updates) {
-  if (!updates) return;
-  if (typeof updates === 'function') {
-    const response = update(store, selector, (p) => updates(p));
-    emitChange();
-    return response;
-  } else {
-    const response = set(store, selector, updates);
-    emitChange();
-    return response;
-  }
+    if (typeof updates === 'function') {
+        const response = update(store, selector, updates);
+        emitChange();
+        return response;
+    }
+    else {
+        const response = set(store, selector, updates);
+        emitChange();
+        return response;
+    }
 }

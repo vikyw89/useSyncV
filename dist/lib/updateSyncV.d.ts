@@ -5,4 +5,4 @@
  * @param  updates - The updates to be applied to the data in the store using the specified selector.
  * If updates is a function, it will receive the previous value of the data and must return the new value.
  */
-export declare function updateSyncV(selector: string, updates?: unknown | ((arg: unknown) => unknown)): unknown;
+export declare function updateSyncV(selector: string, updates?: unknown | ((p: unknown) => unknown)): unknown;
