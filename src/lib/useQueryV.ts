@@ -1,3 +1,4 @@
+import { defaultsDeep } from 'lodash-es';
 import { useEffect } from 'react';
 import {
   updateAsyncV, updateAsyncVConfig, updateAsyncVDefaultConfig,
@@ -7,7 +8,6 @@ import {
   defaultAsyncReturn,
   useAsyncV, useAsyncVConfig, useAsyncVDefaultConfig,
 } from './useAsyncV.js';
-import { defaultsDeep } from 'lodash-es';
 
 export type useQueryVConfig = {
   updateAsyncV: Partial<updateAsyncVConfig>;
@@ -19,12 +19,6 @@ export type useQueryVDefaultConfig = {
   updateAsyncV: updateAsyncVDefaultConfig,
   useAsyncV: useAsyncVDefaultConfig,
   cacheData: boolean
-}
-
-const useQueryDefaultConfigTemplate: useQueryVDefaultConfig = {
-  useAsyncV: useAsyncVDefaultConfig,
-  updateAsyncV: updateAsyncVDefaultConfig,
-  cacheData: true
 }
 
 /**
