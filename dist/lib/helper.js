@@ -56,6 +56,7 @@ export const debugSyncV = (selector) => {
     // diff selector history with previous result
     console.groupCollapsed('Change log');
     const listOfChangedObject = diffJson(JSON.parse(previousSelectorJSONValue), JSON.parse(currentSelectorJSONValue), { newlineIsToken: false });
+    console.log(listOfChangedObject);
     listOfChangedObject.forEach((v) => {
         if (v.added) {
             console.log(`--`, v.value);

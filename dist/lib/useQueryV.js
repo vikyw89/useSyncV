@@ -1,12 +1,17 @@
 import { useEffect } from 'react';
 import { updateAsyncV, updateAsyncVDefaultConfig, } from './updateAsyncV.js';
-import { useAsyncV, useAsyncVDefaultConfig, } from './useAsyncV.js';
+import { defaultAsyncReturn, useAsyncV, useAsyncVDefaultConfig, } from './useAsyncV.js';
 import { defaultsDeep } from 'lodash-es';
+const useQueryDefaultConfigTemplate = {
+    useAsyncV: useAsyncVDefaultConfig,
+    updateAsyncV: updateAsyncVDefaultConfig,
+    cacheData: true
+};
 /**
  * Default config for useQueryV
  */
 export const useQueryVDefaultConfig = {
-    useAsyncV: Object.assign(Object.assign({}, useAsyncVDefaultConfig), { initialState: Object.assign(Object.assign({}, useAsyncVDefaultConfig.initialState), { loading: true }) }),
+    useAsyncV: Object.assign(Object.assign({}, useAsyncVDefaultConfig), { initialState: Object.assign(Object.assign({}, defaultAsyncReturn), { loading: true }) }),
     updateAsyncV: updateAsyncVDefaultConfig,
     cacheData: true
 };
@@ -18,16 +23,14 @@ export const useQueryVDefaultConfig = {
  * {@link useQueryVDefaultConfig}
  */
 export const useQueryV = (selector, asyncFn, config = useQueryVDefaultConfig) => {
-    const customConfig = structuredClone(useQueryVDefaultConfig);
-    defaultsDeep(customConfig, useQueryVDefaultConfig);
+    const customConfig = defaultsDeep(structuredClone(useQueryVDefaultConfig), useQueryVDefaultConfig);
     const state = useAsyncV(selector, customConfig.useAsyncV);
     useEffect(() => {
         // don't fetch if fetched data existed and cacheData is set to true
-        if (state && config.cacheData && typeof state === "object" && "data" in state && "loading" in state && "error" in state && state !== null)
+        if (state && config.cacheData && typeof state === "object" && "data" in state && "loading" in state && "error" in state && state.data !== null)
             return;
         // fetch data
         updateAsyncV(selector, () => asyncFn(), customConfig.updateAsyncV);
-        return;
     }, []);
     return state;
 };

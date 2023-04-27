@@ -40,11 +40,10 @@ export const updateAsyncV = async (
       ...updateAsyncVDefaultConfig,
       ...config
     }
-    console.log(config,customConfig)
+
     // set initial asyncReturn and loading true
     updateSyncV(selector, (p: unknown) => {
       if (!p || customConfig.deleteExistingData) {
-        console.log('delete existing data')
         return {
           data: null,
           loading: true,

@@ -27,11 +27,9 @@ export const updateAsyncVDefaultConfig = {
 export const updateAsyncV = (selector, asyncFn = () => __awaiter(void 0, void 0, void 0, function* () { return null; }), config = updateAsyncVDefaultConfig) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const customConfig = Object.assign(Object.assign({}, updateAsyncVDefaultConfig), config);
-        console.log(config, customConfig);
         // set initial asyncReturn and loading true
         updateSyncV(selector, (p) => {
             if (!p || customConfig.deleteExistingData) {
-                console.log('delete existing data');
                 return {
                     data: null,
                     loading: true,

@@ -70,6 +70,7 @@ export const debugSyncV = (selector: string | undefined) => {
     JSON.parse(currentSelectorJSONValue),
     { newlineIsToken: false }
   );
+  console.log(listOfChangedObject)
   listOfChangedObject.forEach((v) => {
     if (v.added) {
       console.log(`--`, v.value);
