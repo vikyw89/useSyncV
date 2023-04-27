@@ -19,11 +19,11 @@ export default function Home() {
   // }, []);
 
   const refetchHandler = () => {
-    updateAsyncV(selector, asyncFn)
+    updateAsyncV(selector, asyncFn);
   };
 
   console.log('render');
-  debugSyncV()
+  debugSyncV();
   return (
     <>
       <Box

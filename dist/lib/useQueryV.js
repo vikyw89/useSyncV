@@ -1,19 +1,27 @@
 import { useEffect } from 'react';
-import { updateAsyncV, updateAsyncVDefaultConfig, } from './updateAsyncV.js';
-import { defaultAsyncReturn, useAsyncV, useAsyncVDefaultConfig, } from './useAsyncV.js';
+import { updateAsyncV, updateAsyncVDefaultConfig } from './updateAsyncV.js';
+import {
+  defaultAsyncReturn,
+  useAsyncV,
+  useAsyncVDefaultConfig
+} from './useAsyncV.js';
 import { defaultsDeep } from 'lodash-es';
 const useQueryDefaultConfigTemplate = {
-    useAsyncV: useAsyncVDefaultConfig,
-    updateAsyncV: updateAsyncVDefaultConfig,
-    cacheData: true
+  useAsyncV: useAsyncVDefaultConfig,
+  updateAsyncV: updateAsyncVDefaultConfig,
+  cacheData: true
 };
 /**
  * Default config for useQueryV
  */
 export const useQueryVDefaultConfig = {
-    useAsyncV: Object.assign(Object.assign({}, useAsyncVDefaultConfig), { initialState: Object.assign(Object.assign({}, defaultAsyncReturn), { loading: true }) }),
-    updateAsyncV: updateAsyncVDefaultConfig,
-    cacheData: true
+  useAsyncV: Object.assign(Object.assign({}, useAsyncVDefaultConfig), {
+    initialState: Object.assign(Object.assign({}, defaultAsyncReturn), {
+      loading: true
+    })
+  }),
+  updateAsyncV: updateAsyncVDefaultConfig,
+  cacheData: true
 };
 /**
  * Hook that provides a reactive way to fetch data asynchronously and update the synchronous state of the application.
@@ -22,15 +30,30 @@ export const useQueryVDefaultConfig = {
  * @param config - The configuration object for the hook. Optional.
  * {@link useQueryVDefaultConfig}
  */
-export const useQueryV = (selector, asyncFn, config = useQueryVDefaultConfig) => {
-    const customConfig = defaultsDeep(structuredClone(useQueryVDefaultConfig), useQueryVDefaultConfig);
-    const state = useAsyncV(selector, customConfig.useAsyncV);
-    useEffect(() => {
-        // don't fetch if fetched data existed and cacheData is set to true
-        if (state && config.cacheData && typeof state === "object" && "data" in state && "loading" in state && "error" in state && state.data !== null)
-            return;
-        // fetch data
-        updateAsyncV(selector, () => asyncFn(), customConfig.updateAsyncV);
-    }, []);
-    return state;
+export const useQueryV = (
+  selector,
+  asyncFn,
+  config = useQueryVDefaultConfig
+) => {
+  const customConfig = defaultsDeep(
+    structuredClone(useQueryVDefaultConfig),
+    useQueryVDefaultConfig
+  );
+  const state = useAsyncV(selector, customConfig.useAsyncV);
+  useEffect(() => {
+    // don't fetch if fetched data existed and cacheData is set to true
+    if (
+      state &&
+      config.cacheData &&
+      typeof state === 'object' &&
+      'data' in state &&
+      'loading' in state &&
+      'error' in state &&
+      state.data !== null
+    )
+      return;
+    // fetch data
+    updateAsyncV(selector, () => asyncFn(), customConfig.updateAsyncV);
+  }, []);
+  return state;
 };
