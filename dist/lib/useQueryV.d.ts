@@ -21,4 +21,4 @@ export declare const useQueryVDefaultConfig: useQueryVDefaultConfig;
  * @param config - The configuration object for the hook. Optional.
  * {@link useQueryVDefaultConfig}
  */
-export declare const useQueryV: (selector: string, asyncFn: () => Promise<unknown>, config?: useQueryVConfig) => unknown | asyncReturn;
+export declare const useQueryV: (selector: string, asyncFn: () => Promise<unknown>, config?: Partial<useQueryVConfig>) => unknown | asyncReturn;

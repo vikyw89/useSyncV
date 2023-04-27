@@ -2,8 +2,6 @@ import CardComponent from '@/components/card';
 import { Box, Button, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { updateAsyncV, useQueryV, useAsyncV } from 'use-sync-v';
-import { useAsyncVDefaultConfig } from 'use-sync-v/dist/lib/useAsyncV';
-import { useQueryVDefaultConfig } from 'use-sync-v/dist/lib/useQueryV';
 
 const asyncFn = async () => {
   const response = await fetch('https://randomuser.me/api/');
@@ -17,13 +15,21 @@ export default function Home() {
   // const data = useQueryV(selector, asyncFn);
   const data = useAsyncV(selector);
   useEffect(() => {
-    updateAsyncV(selector, asyncFn);
+    updateAsyncV(selector, asyncFn, { deleteExistingData: true, test:{
+      ttes:{
+        another:['test',{okay:true}]
+      }
+    } });
   }, []);
 
   const refetchHandler = () => {
-    updateAsyncV(selector, asyncFn);
+    updateAsyncV(selector, asyncFn, { deleteExistingData: true, test:{
+      ttes:{
+        another:['test',{okay:undefined}]
+      }
+    } });
   };
-  console.log(useAsyncVDefaultConfig);
+
   console.log('render');
   // debugSyncV()
   return (

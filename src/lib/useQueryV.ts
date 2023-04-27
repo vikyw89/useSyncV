@@ -6,6 +6,7 @@ import {
   asyncReturn,
   useAsyncV, useAsyncVConfig, useAsyncVDefaultConfig,
 } from './useAsyncV.js';
+import { defaultsDeep } from 'lodash-es';
 
 export type useQueryVConfig = {
   updateAsyncV: Partial<updateAsyncVConfig>;
@@ -44,17 +45,18 @@ export const useQueryVDefaultConfig: useQueryVDefaultConfig = {
 export const useQueryV = (
   selector: string,
   asyncFn: () => Promise<unknown>,
-  config: useQueryVConfig = useQueryVDefaultConfig
+  config: Partial<useQueryVConfig> = useQueryVDefaultConfig
 ): unknown | asyncReturn => {
-  const state = useAsyncV(selector, config?.useAsyncV);
+  const customConfig = structuredClone(useQueryVDefaultConfig) as useQueryVDefaultConfig
+  defaultsDeep(customConfig, useQueryVDefaultConfig)
+  const state = useAsyncV(selector, customConfig.useAsyncV);
 
   useEffect(() => {
     // don't fetch if fetched data existed and cacheData is set to true
     if (state && config.cacheData && typeof state === "object" && "data" in state && "loading" in state && "error" in state && state !== null) return
 
     // fetch data
-    const customConfig = config.updateAsyncV
-    updateAsyncV(selector, () => asyncFn(), customConfig);
+    updateAsyncV(selector, () => asyncFn(), customConfig.updateAsyncV);
     return
   }, []);
 

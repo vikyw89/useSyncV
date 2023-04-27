@@ -8,7 +8,7 @@ export type updateAsyncVDefaultConfig = {
  * Type for updateAsyncVConfig
  */
 export type updateAsyncVConfig = {
-    deleteExistingData?: boolean;
+    deleteExistingData: boolean;
 };
 /**
  * Default config for updateAsyncV
@@ -23,4 +23,4 @@ export declare const updateAsyncVDefaultConfig: updateAsyncVDefaultConfig;
  * @param config - An optional object that specifies whether to delete existing data before updating.
  * {@link updateAsyncVDefaultConfig}
  */
-export declare const updateAsyncV: (selector: string, asyncFn?: () => Promise<unknown>, config?: updateAsyncVConfig) => Promise<void>;
+export declare const updateAsyncV: (selector: string, asyncFn?: () => Promise<unknown>, config?: Partial<updateAsyncVConfig>) => Promise<void>;

@@ -11,7 +11,7 @@ export type updateAsyncVDefaultConfig = {
  * Type for updateAsyncVConfig
  */
 export type updateAsyncVConfig = {
-  deleteExistingData?: boolean
+  deleteExistingData: boolean
 }
 
 /**
@@ -33,12 +33,18 @@ export const updateAsyncVDefaultConfig: updateAsyncVDefaultConfig = {
 export const updateAsyncV = async (
   selector: string,
   asyncFn: () => Promise<unknown> = async () => null,
-  config: updateAsyncVConfig = updateAsyncVDefaultConfig
+  config: Partial<updateAsyncVConfig> = updateAsyncVDefaultConfig
 ) => {
   try {
+    const customConfig = {
+      ...updateAsyncVDefaultConfig,
+      ...config
+    }
+    console.log(config,customConfig)
     // set initial asyncReturn and loading true
     updateSyncV(selector, (p: unknown) => {
-      if (!p || config.deleteExistingData) {
+      if (!p || customConfig.deleteExistingData) {
+        console.log('delete existing data')
         return {
           data: null,
           loading: true,
