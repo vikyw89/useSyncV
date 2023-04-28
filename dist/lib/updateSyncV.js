@@ -8,13 +8,14 @@ import { emitChange, store } from './helper.js';
  * If updates is a function, it will receive the previous value of the data and must return the new value.
  */
 export function updateSyncV(selector, updates) {
-  if (typeof updates === 'function') {
-    const response = update(store, selector, updates);
-    emitChange();
-    return response;
-  } else {
-    const response = set(store, selector, updates);
-    emitChange();
-    return response;
-  }
+    if (typeof updates === 'function') {
+        const response = update(store, selector, updates);
+        emitChange();
+        return response;
+    }
+    else {
+        const response = set(store, selector, updates);
+        emitChange();
+        return response;
+    }
 }
