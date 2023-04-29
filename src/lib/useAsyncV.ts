@@ -26,7 +26,7 @@ export const useAsyncV = (
   selector: string,
   config: DeepPartial<typeof useAsyncVDefaultConfig> = useAsyncVDefaultConfig
 ) => {
-  const customConfig = defaultsDeep(config, useAsyncVDefaultConfig) as typeof useAsyncVDefaultConfig & object
+  const customConfig = defaultsDeep(config, useAsyncVDefaultConfig) as typeof useAsyncVDefaultConfig
 
   const defaultInitialState = customConfig.initialState
 

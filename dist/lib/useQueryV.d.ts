@@ -14,6 +14,7 @@ export declare const useQueryVDefaultConfig: {
         deleteExistingData: boolean;
     };
     cacheData: boolean;
+    cleanupFn: () => null;
 };
 /**
  * Hook that provides a reactive way to fetch data asynchronously and update the synchronous state of the application.

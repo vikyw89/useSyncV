@@ -39,7 +39,7 @@
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></h4></li></ul></li></ul></li>
 <li>
-<h5><span class="tsd-kind-parameter">config</span>: <span class="tsd-signature-symbol">{ </span><br/><span>    </span><span class="tsd-kind-property">cacheData</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">updateAsyncV</span><span class="tsd-signature-symbol">?: </span>{ deleteExistingData?: boolean | undefined; }<span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">useAsyncV</span><span class="tsd-signature-symbol">?: </span>{ initialState?: { loading?: boolean | undefined; data?: null | undefined; error?: boolean | undefined; } | undefined; }<span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol"> = useQueryVDefaultConfig</span></h5>
+<h5><span class="tsd-kind-parameter">config</span>: <span class="tsd-signature-symbol">{ </span><br/><span>    </span><span class="tsd-kind-property">cacheData</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">cleanupFn</span><span class="tsd-signature-symbol">?: </span>{}<span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">updateAsyncV</span><span class="tsd-signature-symbol">?: </span>{ deleteExistingData?: boolean | undefined; }<span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">useAsyncV</span><span class="tsd-signature-symbol">?: </span>{ initialState?: { loading?: boolean | undefined; data?: null | undefined; error?: boolean | undefined; } | undefined; }<span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol"> = useQueryVDefaultConfig</span></h5>
 <div class="tsd-comment tsd-typography"><p>The configuration object for the hook. Optional.
 useQueryVDefaultConfig</p>
 </div>
@@ -47,12 +47,14 @@ useQueryVDefaultConfig</p>
 <li class="tsd-parameter">
 <h5><code class="tsd-tag ts-flagOptional">Optional</code> <span class="tsd-kind-property">cache<wbr/>Data</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span></h5></li>
 <li class="tsd-parameter">
+<h5><code class="tsd-tag ts-flagOptional">Optional</code> <span class="tsd-kind-property">cleanup<wbr/>Fn</span><span class="tsd-signature-symbol">?: </span>{}</h5></li>
+<li class="tsd-parameter">
 <h5><code class="tsd-tag ts-flagOptional">Optional</code> <span class="tsd-kind-property">update<wbr/>AsyncV</span><span class="tsd-signature-symbol">?: </span>{ deleteExistingData?: boolean | undefined; }</h5></li>
 <li class="tsd-parameter">
 <h5><code class="tsd-tag ts-flagOptional">Optional</code> <span class="tsd-kind-property">use<wbr/>AsyncV</span><span class="tsd-signature-symbol">?: </span>{ initialState?: { loading?: boolean | undefined; data?: null | undefined; error?: boolean | undefined; } | undefined; }</h5></li></ul></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">{ </span><br/><span>    </span><span class="tsd-kind-property">data</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">error</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">loading</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">object</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/vikyw89/useSyncV/blob/38942c3/src/lib/useQueryV.ts#L34">lib/useQueryV.ts:34</a></li></ul></aside></li></ul></section></div>
+<li>Defined in <a href="https://github.com/vikyw89/useSyncV/blob/24f55aa/src/lib/useQueryV.ts#L35">lib/useQueryV.ts:35</a></li></ul></aside></li></ul></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">

@@ -8,7 +8,8 @@ import { defaultAsyncReturn, useAsyncV, useAsyncVDefaultConfig, } from './useAsy
 export const useQueryVDefaultConfig = {
     useAsyncV: Object.assign(Object.assign({}, useAsyncVDefaultConfig), { initialState: Object.assign(Object.assign({}, defaultAsyncReturn), { loading: true }) }),
     updateAsyncV: updateAsyncVDefaultConfig,
-    cacheData: true
+    cacheData: true,
+    cleanupFn: () => null
 };
 /**
  * Hook that provides a reactive way to fetch data asynchronously and update the synchronous state of the application.
@@ -18,7 +19,7 @@ export const useQueryVDefaultConfig = {
  * {@link useQueryVDefaultConfig}
  */
 export const useQueryV = (selector, asyncFn, config = useQueryVDefaultConfig) => {
-    const customConfig = defaultsDeep(structuredClone(config), useQueryVDefaultConfig);
+    const customConfig = defaultsDeep(config, useQueryVDefaultConfig);
     const state = useAsyncV(selector, customConfig.useAsyncV);
     useEffect(() => {
         // don't fetch if fetched data existed and cacheData is set to true
@@ -26,6 +27,9 @@ export const useQueryV = (selector, asyncFn, config = useQueryVDefaultConfig) =>
             return;
         // fetch data
         updateAsyncV(selector, asyncFn, customConfig.updateAsyncV);
+        return () => {
+            customConfig.cleanupFn();
+        };
     }, []);
     return state;
 };

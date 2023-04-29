@@ -21,7 +21,8 @@ export const useQueryVDefaultConfig = {
     }
   },
   updateAsyncV: updateAsyncVDefaultConfig,
-  cacheData: true
+  cacheData: true,
+  cleanupFn: () => null
 }
 
 /**
@@ -36,7 +37,7 @@ export const useQueryV = (
   asyncFn: () => Promise<unknown>,
   config: DeepPartial<typeof useQueryVDefaultConfig> = useQueryVDefaultConfig
 ) => {
-  const customConfig = defaultsDeep(structuredClone(config), useQueryVDefaultConfig)
+  const customConfig = defaultsDeep(config, useQueryVDefaultConfig) as typeof useQueryVDefaultConfig
 
   const state = useAsyncV(selector, customConfig.useAsyncV);
 
@@ -45,6 +46,9 @@ export const useQueryV = (
     if (config.cacheData && state && typeof state === "object" && "data" in state && "loading" in state && "error" in state && state.data !== null) return
     // fetch data
     updateAsyncV(selector, asyncFn, customConfig.updateAsyncV);
+    return ()=>{
+      customConfig.cleanupFn()
+    }
   }, []);
 
   return state
