@@ -11,13 +11,13 @@ import { emitChange, store } from './helper.js';
 export function updateSyncV(
   selector: string,
   updates?: unknown | ((p: unknown) => unknown)
-): unknown {
+) {
   if (typeof updates === 'function') {
-    const response = update(store, selector, updates as (p: unknown) => unknown);
+    const response = update(store, selector, updates as (p: unknown) => unknown) as unknown
     emitChange();
     return response;
   } else {
-    const response = set(store, selector, updates);
+    const response = set(store, selector, updates) as unknown
     emitChange();
     return response;
   }

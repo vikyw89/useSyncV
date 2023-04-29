@@ -1,38 +1,26 @@
 import { defaultsDeep } from 'lodash-es';
 import { useEffect } from 'react';
 import {
-  updateAsyncV, updateAsyncVConfig, updateAsyncVDefaultConfig,
+  updateAsyncV, updateAsyncVDefaultConfig,
 } from './updateAsyncV.js';
 import {
-  asyncReturn,
   defaultAsyncReturn,
-  useAsyncV, useAsyncVConfig, useAsyncVDefaultConfig,
+  useAsyncV, useAsyncVDefaultConfig,
 } from './useAsyncV.js';
-
-export type useQueryVConfig = {
-  updateAsyncV: Partial<updateAsyncVConfig>;
-  useAsyncV: Partial<useAsyncVConfig>;
-  cacheData: boolean;
-}
-
-export type useQueryVDefaultConfig = {
-  updateAsyncV: updateAsyncVDefaultConfig,
-  useAsyncV: useAsyncVDefaultConfig,
-  cacheData: boolean
-}
+import { DeepPartial } from './helper.js';
 
 /**
  * Default config for useQueryV
  */
-export const useQueryVDefaultConfig: useQueryVDefaultConfig = {
+export const useQueryVDefaultConfig = {
   useAsyncV: {
     ...useAsyncVDefaultConfig,
-    initialState:{
+    initialState: {
       ...defaultAsyncReturn,
-      loading:true
+      loading: true
     }
   },
-  updateAsyncV:updateAsyncVDefaultConfig,
+  updateAsyncV: updateAsyncVDefaultConfig,
   cacheData: true
 }
 
@@ -46,17 +34,17 @@ export const useQueryVDefaultConfig: useQueryVDefaultConfig = {
 export const useQueryV = (
   selector: string,
   asyncFn: () => Promise<unknown>,
-  config: Partial<useQueryVConfig> = useQueryVDefaultConfig
-): unknown | asyncReturn => {
-  const customConfig = defaultsDeep(structuredClone(useQueryVDefaultConfig), useQueryVDefaultConfig) as useQueryVConfig
+  config: DeepPartial<typeof useQueryVDefaultConfig> = useQueryVDefaultConfig
+) => {
+  const customConfig = defaultsDeep(structuredClone(config), useQueryVDefaultConfig)
 
   const state = useAsyncV(selector, customConfig.useAsyncV);
 
   useEffect(() => {
     // don't fetch if fetched data existed and cacheData is set to true
-    if (state && config.cacheData && typeof state === "object" && "data" in state && "loading" in state && "error" in state && state.data !== null) return
+    if (config.cacheData && state && typeof state === "object" && "data" in state && "loading" in state && "error" in state && state.data !== null) return
     // fetch data
-    updateAsyncV(selector, () => asyncFn(), customConfig.updateAsyncV);
+    updateAsyncV(selector, asyncFn, customConfig.updateAsyncV);
   }, []);
 
   return state

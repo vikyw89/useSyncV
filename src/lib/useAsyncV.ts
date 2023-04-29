@@ -1,30 +1,17 @@
-import { update } from 'lodash-es';
-import { store } from './helper.js';
+import { defaultsDeep, update } from 'lodash-es';
+import { DeepPartial, store } from './helper.js';
 import { useSyncV } from './useSyncV.js';
 
-export type asyncReturn = {
-  data: unknown;
-  loading: boolean;
-  error: boolean;
-}
-
-export const defaultAsyncReturn: asyncReturn = {
+export const defaultAsyncReturn = {
   data: null,
   loading: false,
   error: false
 }
 
-export type useAsyncVConfig = {
-  initialState: Partial<asyncReturn>;
-}
-
-export type useAsyncVDefaultConfig = {
-  initialState: asyncReturn
-}
 /**
  * Default config for useAsyncV
  */
-export const useAsyncVDefaultConfig: useAsyncVDefaultConfig = {
+export const useAsyncVDefaultConfig = {
   initialState: defaultAsyncReturn
 }
 
@@ -37,31 +24,23 @@ export const useAsyncVDefaultConfig: useAsyncVDefaultConfig = {
  */
 export const useAsyncV = (
   selector: string,
-  config: Partial<useAsyncVConfig> = useAsyncVDefaultConfig
-): asyncReturn | unknown => {
-  // default initial state from config
-  const defaultInitialState = useAsyncVDefaultConfig.initialState;
-
-  // composing initial state from incomplete user input
-  const configInitialState = config.initialState ?? {}
-
-  const customInitialState = {
-    ...defaultInitialState,
-    ...configInitialState
-  };
+  config: DeepPartial<typeof useAsyncVDefaultConfig> = useAsyncVDefaultConfig
+) => {
+  const defaultInitialState = useAsyncVDefaultConfig.initialState
 
   update(store, selector, (p: unknown) => {
-    if (!p) return customInitialState;
-    if (typeof p === 'object') {
-      if ('data' in p && 'loading' in p && 'error' in p) return p;
-      return { ...customInitialState, ...p };
+    if (!p) {
+      const customInitialState: typeof defaultInitialState & object = defaultsDeep(structuredClone(config.initialState) ?? {}, defaultInitialState)
+      return customInitialState
     }
-
-  });
+    if (typeof p === 'object' && p !== null) {
+      const mergedState: typeof defaultInitialState & typeof p  = defaultsDeep(structuredClone(p) ?? {}, defaultInitialState)
+      return mergedState
+    }
+  })
 
   // Get the synchronous state object for the given selector
-  const state = useSyncV(selector);
+  const state = useSyncV(selector) as typeof defaultInitialState & object
 
-  // Return the synchronous state object
-  return state as asyncReturn | unknown
+  return state
 };

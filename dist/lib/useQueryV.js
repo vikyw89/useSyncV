@@ -18,14 +18,14 @@ export const useQueryVDefaultConfig = {
  * {@link useQueryVDefaultConfig}
  */
 export const useQueryV = (selector, asyncFn, config = useQueryVDefaultConfig) => {
-    const customConfig = defaultsDeep(structuredClone(useQueryVDefaultConfig), useQueryVDefaultConfig);
+    const customConfig = defaultsDeep(structuredClone(config), useQueryVDefaultConfig);
     const state = useAsyncV(selector, customConfig.useAsyncV);
     useEffect(() => {
         // don't fetch if fetched data existed and cacheData is set to true
-        if (state && config.cacheData && typeof state === "object" && "data" in state && "loading" in state && "error" in state && state.data !== null)
+        if (config.cacheData && state && typeof state === "object" && "data" in state && "loading" in state && "error" in state && state.data !== null)
             return;
         // fetch data
-        updateAsyncV(selector, () => asyncFn(), customConfig.updateAsyncV);
+        updateAsyncV(selector, asyncFn, customConfig.updateAsyncV);
     }, []);
     return state;
 };

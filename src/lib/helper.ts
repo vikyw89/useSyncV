@@ -37,9 +37,8 @@ export const debugSyncV = (selector: string | undefined) => {
     ? JSON.stringify(result(store, selector, ''), null, '\t')
     : JSON.stringify(store, null, '\t');
 
-  console.group(`START OF DEBUGSYNCV`);
+  console.groupCollapsed(`START OF DEBUGSYNCV OF ${selectorKey}`);
   console.count('Iteration number');
-  console.log(`Selector:`, selectorKey);
   console.groupCollapsed(`Value`);
   console.log(currentSelectorJSONValue);
   console.groupEnd();

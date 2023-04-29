@@ -22,8 +22,8 @@ export default function Home() {
     updateAsyncV(selector, asyncFn);
   };
   
-  console.log('render');
-  debugSyncV();
+  // console.log('render');
+  debugSyncV("api");
   return (
     <>
       <Box
