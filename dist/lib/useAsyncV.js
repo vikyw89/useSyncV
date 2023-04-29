@@ -20,17 +20,15 @@ export const useAsyncVDefaultConfig = {
  * {@link useAsyncVDefaultConfig}
  */
 export const useAsyncV = (selector, config = useAsyncVDefaultConfig) => {
-    const defaultInitialState = useAsyncVDefaultConfig.initialState;
+    const customConfig = defaultsDeep(config, useAsyncVDefaultConfig);
+    const defaultInitialState = customConfig.initialState;
     update(store, selector, (p) => {
-        var _a, _b;
-        if (!p) {
-            const customInitialState = defaultsDeep((_a = structuredClone(config.initialState)) !== null && _a !== void 0 ? _a : {}, defaultInitialState);
-            return customInitialState;
-        }
         if (typeof p === 'object' && p !== null) {
-            const mergedState = defaultsDeep((_b = structuredClone(p)) !== null && _b !== void 0 ? _b : {}, defaultInitialState);
-            return mergedState;
+            if ('data' in p && 'loading' in p && 'error' in p)
+                return p;
+            return Object.assign(Object.assign({}, defaultInitialState), p);
         }
+        return defaultInitialState;
     });
     // Get the synchronous state object for the given selector
     const state = useSyncV(selector);

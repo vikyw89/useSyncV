@@ -26,17 +26,16 @@ export const useAsyncV = (
   selector: string,
   config: DeepPartial<typeof useAsyncVDefaultConfig> = useAsyncVDefaultConfig
 ) => {
-  const defaultInitialState = useAsyncVDefaultConfig.initialState
+  const customConfig = defaultsDeep(config, useAsyncVDefaultConfig) as typeof useAsyncVDefaultConfig & object
+
+  const defaultInitialState = customConfig.initialState
 
   update(store, selector, (p: unknown) => {
-    if (!p) {
-      const customInitialState: typeof defaultInitialState & object = defaultsDeep(structuredClone(config.initialState) ?? {}, defaultInitialState)
-      return customInitialState
-    }
     if (typeof p === 'object' && p !== null) {
-      const mergedState: typeof defaultInitialState & typeof p  = defaultsDeep(structuredClone(p) ?? {}, defaultInitialState)
-      return mergedState
+      if ('data' in p && 'loading' in p && 'error' in p) return p;
+      return {...defaultInitialState, ...p}
     }
+    return defaultInitialState;
   })
 
   // Get the synchronous state object for the given selector

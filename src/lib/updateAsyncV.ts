@@ -25,7 +25,7 @@ export const updateAsyncV = async (
   config: DeepPartial<typeof updateAsyncVDefaultConfig> = updateAsyncVDefaultConfig
 ) => {
   try {
-    const customConfig = defaultsDeep(structuredClone(config),updateAsyncVDefaultConfig) as typeof updateAsyncVDefaultConfig
+    const customConfig = defaultsDeep(structuredClone(config), updateAsyncVDefaultConfig) as typeof updateAsyncVDefaultConfig
 
     // set initial asyncReturn and loading true
     updateSyncV(selector, (p: unknown) => {

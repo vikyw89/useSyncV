@@ -47,7 +47,8 @@
   "dependencies": {
     "diff": "^5.1.0",
     "lodash-es": "^4.17.21",
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "use-sync-v": "^2.1.4"
   },
   "scripts": {
     "predev": "(git pull || echo 'proceed without git pull') && npm install",
