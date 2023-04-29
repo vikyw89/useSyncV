@@ -1,19 +1,10 @@
-/**
- * Type for updateAsyncVConfig
- */
-export type updateAsyncVDefaultConfig = {
-    deleteExistingData: boolean;
-};
-/**
- * Type for updateAsyncVConfig
- */
-export type updateAsyncVConfig = {
-    deleteExistingData: boolean;
-};
+import { DeepPartial } from './helper.js';
 /**
  * Default config for updateAsyncV
  */
-export declare const updateAsyncVDefaultConfig: updateAsyncVDefaultConfig;
+export declare const updateAsyncVDefaultConfig: {
+    deleteExistingData: boolean;
+};
 /**
  * A function that updates the data in the store asynchronously using the specified selector and async function.
  *
@@ -23,4 +14,4 @@ export declare const updateAsyncVDefaultConfig: updateAsyncVDefaultConfig;
  * @param config - An optional object that specifies whether to delete existing data before updating.
  * {@link updateAsyncVDefaultConfig}
  */
-export declare const updateAsyncV: (selector: string, asyncFn?: () => Promise<unknown>, config?: Partial<updateAsyncVConfig>) => Promise<void>;
+export declare const updateAsyncV: (selector: string, asyncFn?: () => Promise<unknown>, config?: DeepPartial<typeof updateAsyncVDefaultConfig>) => Promise<void>;

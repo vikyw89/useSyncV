@@ -21,7 +21,7 @@ export default function Home() {
   const refetchHandler = () => {
     updateAsyncV(selector, asyncFn);
   };
-
+  
   console.log('render');
   debugSyncV();
   return (

@@ -1,23 +1,12 @@
+import { defaultsDeep } from 'lodash-es';
+import { DeepPartial } from './helper.js';
 import { updateSyncV } from './updateSyncV.js';
 import { defaultAsyncReturn } from './useAsyncV.js';
-/**
- * Type for updateAsyncVConfig
- */
-export type updateAsyncVDefaultConfig = {
-  deleteExistingData: boolean
-}
-
-/**
- * Type for updateAsyncVConfig
- */
-export type updateAsyncVConfig = {
-  deleteExistingData: boolean
-}
 
 /**
  * Default config for updateAsyncV
  */
-export const updateAsyncVDefaultConfig: updateAsyncVDefaultConfig = {
+export const updateAsyncVDefaultConfig = {
   deleteExistingData: false
 };
 
@@ -33,13 +22,10 @@ export const updateAsyncVDefaultConfig: updateAsyncVDefaultConfig = {
 export const updateAsyncV = async (
   selector: string,
   asyncFn: () => Promise<unknown> = async () => null,
-  config: Partial<updateAsyncVConfig> = updateAsyncVDefaultConfig
+  config: DeepPartial<typeof updateAsyncVDefaultConfig> = updateAsyncVDefaultConfig
 ) => {
   try {
-    const customConfig = {
-      ...updateAsyncVDefaultConfig,
-      ...config
-    }
+    const customConfig = defaultsDeep(structuredClone(config),updateAsyncVDefaultConfig) as typeof updateAsyncVDefaultConfig
 
     // set initial asyncReturn and loading true
     updateSyncV(selector, (p: unknown) => {

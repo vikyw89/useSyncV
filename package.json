@@ -52,7 +52,7 @@
   "scripts": {
     "predev": "(git pull || echo 'proceed without git pull') && npm install",
     "tsc": "tsc -p tsconfig.json --watch",
-    "test": "cd test && npm ci && npm link .. && npm run dev",
+    "test": "cd test && npm install && npm link .. && npm run dev",
     "typedoc": "typedoc --watch",
     "dev": "npm run tsc & npm run typedoc & npm run test"
   }

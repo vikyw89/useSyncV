@@ -3,8 +3,7 @@ import { result, update } from 'lodash-es';
 
 export const store = {};
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export let subscribers: Array<Function> = [];
+export let subscribers: Array<() => unknown> = [];
 
 export const selectorHistory = {};
 
@@ -14,8 +13,7 @@ export const emitChange = () => {
   }
 };
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export const subscribe = (callback: Function) => {
+export const subscribe = (callback: () => unknown) => {
   subscribers = [...subscribers, callback];
   return () => {
     subscribers = subscribers.filter((p) => {
@@ -62,7 +60,7 @@ export const debugSyncV = (selector: string | undefined) => {
     }
     throw "debugSyncV update history bug"
   })
-  
+
   // diff selector history with previous result
   console.groupCollapsed('Change log');
   const listOfChangedObject = diffJson(
@@ -82,3 +80,7 @@ export const debugSyncV = (selector: string | undefined) => {
   console.groupEnd();
   console.log(JSON.parse(currentSelectorJSONValue));
 };
+
+export type DeepPartial<T> = T extends object ? {
+  [P in keyof T]?: DeepPartial<T[P]>;
+} : T;
