@@ -28,7 +28,9 @@ export const useAsyncV = (selector, config = useAsyncVDefaultConfig) => {
                 return p;
             return Object.assign(Object.assign({}, defaultInitialState), p);
         }
-        return defaultInitialState;
+        else {
+            return defaultInitialState;
+        }
     });
     // Get the synchronous state object for the given selector
     const state = useSyncV(selector);

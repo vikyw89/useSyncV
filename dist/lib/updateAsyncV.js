@@ -24,52 +24,41 @@ export const updateAsyncVDefaultConfig = {
  * @param asyncFn - The async function to call to update the data in the store.
  * @param config - An optional object that specifies whether to delete existing data before updating.
  * {@link updateAsyncVDefaultConfig}
+ * @returns true if update succeed, false if failed
  */
 export const updateAsyncV = (selector, asyncFn = () => __awaiter(void 0, void 0, void 0, function* () { return null; }), config = updateAsyncVDefaultConfig) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const customConfig = defaultsDeep(structuredClone(config), updateAsyncVDefaultConfig);
+        const customConfig = defaultsDeep(config, updateAsyncVDefaultConfig);
         // set initial asyncReturn and loading true
         updateSyncV(selector, (p) => {
-            if (!p || customConfig.deleteExistingData) {
-                return {
-                    data: null,
-                    loading: true,
-                    error: false
-                };
+            if (!customConfig.deleteExistingData) {
+                if (typeof p === 'object' && p !== null) {
+                    return Object.assign(Object.assign(Object.assign({}, defaultAsyncReturn), p), { loading: true, error: false });
+                }
+                else if (p === null || p === undefined) {
+                    return Object.assign(Object.assign({}, defaultAsyncReturn), { loading: true, error: false });
+                }
+                else {
+                    return Object.assign(Object.assign({}, defaultAsyncReturn), { loading: true, error: false, existingData: p });
+                }
             }
             else {
-                return Object.assign(Object.assign(Object.assign({}, defaultAsyncReturn), p), { loading: true, error: false });
+                return Object.assign(Object.assign({}, defaultAsyncReturn), { loading: true });
             }
         });
         // fetch data
         const data = yield asyncFn();
         // Update synchronous state with new data
         updateSyncV(selector, (p) => {
-            if (!p) {
-                return {
-                    data: data,
-                    loading: false,
-                    error: false
-                };
-            }
-            else {
-                return Object.assign(Object.assign({}, p), { data: data, loading: false, error: false });
-            }
+            return Object.assign(Object.assign({}, p), { data: data, loading: false, error: false });
         });
+        return true;
     }
     catch (error) {
         // Handle errors
         updateSyncV(selector, (p) => {
-            if (!p) {
-                return {
-                    data: null,
-                    loading: false,
-                    error: true
-                };
-            }
-            else {
-                return Object.assign(Object.assign(Object.assign({}, defaultAsyncReturn), p), { loading: false, error: true });
-            }
+            return Object.assign(Object.assign(Object.assign({}, defaultAsyncReturn), p), { loading: false, error: error !== null && error !== void 0 ? error : true });
         });
+        return false;
     }
 });

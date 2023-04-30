@@ -13,5 +13,6 @@ export declare const updateAsyncVDefaultConfig: {
  * @param asyncFn - The async function to call to update the data in the store.
  * @param config - An optional object that specifies whether to delete existing data before updating.
  * {@link updateAsyncVDefaultConfig}
+ * @returns true if update succeed, false if failed
  */
-export declare const updateAsyncV: (selector: string, asyncFn?: () => Promise<unknown>, config?: DeepPartial<typeof updateAsyncVDefaultConfig>) => Promise<void>;
+export declare const updateAsyncV: (selector: string, asyncFn?: () => Promise<unknown>, config?: DeepPartial<typeof updateAsyncVDefaultConfig>) => Promise<boolean>;
