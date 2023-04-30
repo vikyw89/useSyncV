@@ -34,8 +34,9 @@ export const useAsyncV = (
     if (typeof p === 'object' && p !== null) {
       if ('data' in p && 'loading' in p && 'error' in p) return p;
       return {...defaultInitialState, ...p}
+    } else {
+      return defaultInitialState;
     }
-    return defaultInitialState;
   })
 
   // Get the synchronous state object for the given selector
