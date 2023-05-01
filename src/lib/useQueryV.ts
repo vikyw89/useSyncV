@@ -49,7 +49,7 @@ export const useQueryV = (
     return ()=>{
       customConfig.cleanupFn()
     }
-  }, []);
+  }, [state.loading]);
 
   return state
 };
