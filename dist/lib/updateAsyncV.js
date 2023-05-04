@@ -14,7 +14,8 @@ import { defaultAsyncReturn } from './useAsyncV.js';
  * Default config for updateAsyncV
  */
 export const updateAsyncVDefaultConfig = {
-    deleteExistingData: false
+    deleteExistingData: false,
+    errorTimeout: 5000
 };
 /**
  * A function that updates the data in the store asynchronously using the specified selector and async function.
@@ -27,8 +28,8 @@ export const updateAsyncVDefaultConfig = {
  * @returns true if update succeed, false if failed
  */
 export const updateAsyncV = (selector, asyncFn = () => __awaiter(void 0, void 0, void 0, function* () { return null; }), config = updateAsyncVDefaultConfig) => __awaiter(void 0, void 0, void 0, function* () {
+    const customConfig = defaultsDeep(config, updateAsyncVDefaultConfig);
     try {
-        const customConfig = defaultsDeep(config, updateAsyncVDefaultConfig);
         // set initial asyncReturn and loading true
         updateSyncV(selector, (p) => {
             if (!customConfig.deleteExistingData) {
@@ -59,6 +60,11 @@ export const updateAsyncV = (selector, asyncFn = () => __awaiter(void 0, void 0,
         updateSyncV(selector, (p) => {
             return Object.assign(Object.assign(Object.assign({}, defaultAsyncReturn), p), { loading: false, error: error !== null && error !== void 0 ? error : true });
         });
+        setTimeout(() => {
+            updateSyncV(selector, (p) => {
+                return Object.assign(Object.assign({}, p), { error: false });
+            });
+        }, customConfig.errorTimeout);
         return false;
     }
 });

@@ -4,6 +4,7 @@ import { DeepPartial } from './helper.js';
  */
 export declare const updateAsyncVDefaultConfig: {
     deleteExistingData: boolean;
+    errorTimeout: number;
 };
 /**
  * A function that updates the data in the store asynchronously using the specified selector and async function.

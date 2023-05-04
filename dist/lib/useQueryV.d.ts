@@ -12,6 +12,7 @@ export declare const useQueryVDefaultConfig: {
     };
     updateAsyncV: {
         deleteExistingData: boolean;
+        errorTimeout: number;
     };
     cacheData: boolean;
     cleanupFn: () => null;
