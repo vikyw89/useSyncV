@@ -1,4 +1,4 @@
-import { update } from 'lodash-es';
+import { result, update } from 'lodash-es';
 import { emitChange, store } from './helper.js';
 
 /**
@@ -14,12 +14,10 @@ export function setSyncV(
   updates: unknown | ((p: unknown) => unknown),
 ) {
   if (typeof updates === 'function') {
-    const response = update(store, selector, updates as (p: unknown) => unknown) as unknown
-    emitChange();
-    return response;
+    update(store, selector, updates as (p: unknown) => unknown) as unknown
   } else {
-    const response = update(store, selector, () => updates) as unknown
-    emitChange();
-    return response;
+    update(store, selector, () => updates) as unknown
   }
+  emitChange();
+  return result(store, selector)
 }

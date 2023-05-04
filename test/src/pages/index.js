@@ -18,12 +18,13 @@ export default function Home() {
   //   updateAsyncV(selector, asyncFn)
   // }, []);
 
-  const refetchHandler = () => {
-    updateAsyncV(selector, asyncFn);
+  const refetchHandler = async () => {
+    const response = await updateAsyncV(selector, asyncFn);
+    console.log("🚀 ~ file: index.js:23 ~ refetchHandler ~ response:", response)
   };
   
   // console.log('render');
-  debugSyncV("api");
+  // debugSyncV("api");
   return (
     <>
       <Box
