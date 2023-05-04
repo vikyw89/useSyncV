@@ -36,3 +36,4 @@ export const useAsyncV = (selector, config = useAsyncVDefaultConfig) => {
     const state = useSyncV(selector);
     return state;
 };
+//# sourceMappingURL=useAsyncV.js.map

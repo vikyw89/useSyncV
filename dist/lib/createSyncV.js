@@ -16,3 +16,4 @@ export function createSyncV(selector, value) {
     emitChange();
     return response;
 }
+//# sourceMappingURL=createSyncV.js.map

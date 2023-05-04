@@ -5,8 +5,8 @@ import { store } from './helper.js';
  *
  * @param selector - The selector to use for reading data from the store.
  */
-export function readSyncV(selector) {
+export function getSyncV(selector) {
     const response = result(store, selector);
     return response;
 }
-//# sourceMappingURL=readSyncV.js.map
+//# sourceMappingURL=getSyncV.js.map

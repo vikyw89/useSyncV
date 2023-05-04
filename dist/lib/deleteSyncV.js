@@ -11,3 +11,4 @@ export function deleteSyncV(selector) {
     emitChange();
     return response;
 }
+//# sourceMappingURL=deleteSyncV.js.map

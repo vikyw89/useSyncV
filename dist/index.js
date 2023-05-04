@@ -7,3 +7,4 @@ export { updateSyncV } from './lib/updateSyncV.js';
 export { useAsyncV } from './lib/useAsyncV.js';
 export { useQueryV } from './lib/useQueryV.js';
 export { useSyncV } from './lib/useSyncV.js';
+//# sourceMappingURL=index.js.map

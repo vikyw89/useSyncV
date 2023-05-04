@@ -1,7 +1,7 @@
 import { defaultsDeep } from 'lodash-es';
 import { DeepPartial } from './helper.js';
-import { updateSyncV } from './updateSyncV.js';
-import { defaultAsyncReturn } from './useAsyncV.js';
+import { defaultAsyncReturn, useAsyncVDefaultConfig } from './useAsyncV.js';
+import { setSyncV } from './setSyncV.js';
 
 /**
  * Default config for updateAsyncV
@@ -21,7 +21,7 @@ export const updateAsyncVDefaultConfig = {
  * {@link updateAsyncVDefaultConfig}
  * @returns true if update succeed, false if failed
  */
-export const updateAsyncV = async (
+export const setAsyncV = async (
   selector: string,
   asyncFn: () => Promise<unknown> = async () => null,
   config: DeepPartial<typeof updateAsyncVDefaultConfig> = updateAsyncVDefaultConfig
@@ -30,7 +30,7 @@ export const updateAsyncV = async (
   try {
 
     // set initial asyncReturn and loading true
-    updateSyncV(selector, (p: unknown) => {
+    setSyncV(selector, (p: unknown) => {
       if (!customConfig.deleteExistingData) {
         if (typeof p === 'object' && p !== null) {
           return {
@@ -65,33 +65,33 @@ export const updateAsyncV = async (
     const data = await asyncFn();
 
     // Update synchronous state with new data
-    return updateSyncV(selector, (p: object) => {
+    return setSyncV(selector, (p: object) => {
       return {
         ...p,
         data: data,
         loading: false,
         error: false
       }
-    })
+    }) as typeof useAsyncVDefaultConfig.initialState & object
   } catch (error) {
     // Handle errors
-
+    
     setTimeout(() => {
-      updateSyncV(selector, (p: object) => {
-        return {
-          ...p,
-          error: false
-        }
-      })
+        setSyncV(selector, (p: object) => {
+            return {
+                ...p,
+                error: false
+            }
+        })
     }, customConfig.errorTimeout)
-
-    return updateSyncV(selector, (p: object) => {
+    return setSyncV(selector, (p: object) => {
       return {
         ...defaultAsyncReturn,
         ...p,
         loading: false,
         error: error ?? true
       }
-    })
+    }) as typeof useAsyncVDefaultConfig.initialState & object
+    
   }
 };

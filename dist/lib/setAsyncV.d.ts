@@ -16,4 +16,8 @@ export declare const updateAsyncVDefaultConfig: {
  * {@link updateAsyncVDefaultConfig}
  * @returns true if update succeed, false if failed
  */
-export declare const updateAsyncV: (selector: string, asyncFn?: () => Promise<unknown>, config?: DeepPartial<typeof updateAsyncVDefaultConfig>) => Promise<unknown>;
+export declare const setAsyncV: (selector: string, asyncFn?: () => Promise<unknown>, config?: DeepPartial<typeof updateAsyncVDefaultConfig>) => Promise<{
+    data: null;
+    loading: boolean;
+    error: boolean;
+} & object>;

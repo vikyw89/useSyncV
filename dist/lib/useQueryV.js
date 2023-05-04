@@ -33,3 +33,4 @@ export const useQueryV = (selector, asyncFn, config = useQueryVDefaultConfig) =>
     }, []);
     return state;
 };
+//# sourceMappingURL=useQueryV.js.map

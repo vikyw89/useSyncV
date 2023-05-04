@@ -8,7 +8,7 @@ import { emitChange, store } from './helper.js';
  * @returns updated value
  * If updates is a function, it will receive the previous value of the data and must return the new value.
  */
-export function updateSyncV(selector, updates) {
+export function setSyncV(selector, updates) {
     if (typeof updates === 'function') {
         const response = update(store, selector, updates);
         emitChange();
@@ -20,4 +20,4 @@ export function updateSyncV(selector, updates) {
         return response;
     }
 }
-//# sourceMappingURL=updateSyncV.js.map
+//# sourceMappingURL=setSyncV.js.map
