@@ -30,6 +30,6 @@ export const useQueryV = (selector, asyncFn, config = useQueryVDefaultConfig) =>
         return () => {
             customConfig.cleanupFn();
         };
-    }, [state.loading]);
+    }, []);
     return state;
 };
