@@ -7,7 +7,8 @@ import { defaultAsyncReturn } from './useAsyncV.js';
  * Default config for updateAsyncV
  */
 export const updateAsyncVDefaultConfig = {
-  deleteExistingData: false
+  deleteExistingData: false,
+  errorTimeout: 5000
 };
 
 /**
@@ -25,8 +26,8 @@ export const updateAsyncV = async (
   asyncFn: () => Promise<unknown> = async () => null,
   config: DeepPartial<typeof updateAsyncVDefaultConfig> = updateAsyncVDefaultConfig
 ) => {
+  const customConfig = defaultsDeep(config, updateAsyncVDefaultConfig) as typeof updateAsyncVDefaultConfig
   try {
-    const customConfig = defaultsDeep(config, updateAsyncVDefaultConfig) as typeof updateAsyncVDefaultConfig
 
     // set initial asyncReturn and loading true
     updateSyncV(selector, (p: unknown) => {
@@ -83,6 +84,15 @@ export const updateAsyncV = async (
         error: error ?? true
       }
     })
+
+    setTimeout(() => {
+      updateSyncV(selector, (p: object) => {
+        return {
+          ...p,
+          error: false
+        }
+      })
+    }, customConfig.errorTimeout)
     return false
   }
 };
