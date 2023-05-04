@@ -12,23 +12,25 @@ import { defaultAsyncReturn } from './useAsyncV.js';
 import { setSyncV } from './setSyncV.js';
 /**
  * Default config for updateAsyncV
+ * - errorTimeout - time in ms before error is reset to false
+ * - deleteExistingData - will set existing data to null
  */
-export const updateAsyncVDefaultConfig = {
+export const setAsyncVDefaultConfig = {
     deleteExistingData: false,
     errorTimeout: 10000
 };
 /**
- * A function that updates the data in the store asynchronously using the specified selector and async function.
+ * A function that sets the data in the store asynchronously using the specified selector and async function.
  *
  * @async
  * @param selector - The selector to use for accessing data in the store.
- * @param asyncFn - The async function to call to update the data in the store.
+ * @param asyncFn - The async function to call to set the data in the store.
  * @param config - An optional object that specifies whether to delete existing data before updating.
- * {@link updateAsyncVDefaultConfig}
- * @returns true if update succeed, false if failed
+ * {@link setAsyncVDefaultConfig}
+ * @returns stored value as promise
  */
-export const setAsyncV = (selector, asyncFn = () => __awaiter(void 0, void 0, void 0, function* () { return null; }), config = updateAsyncVDefaultConfig) => __awaiter(void 0, void 0, void 0, function* () {
-    const customConfig = defaultsDeep(config, updateAsyncVDefaultConfig);
+export const setAsyncV = (selector, asyncFn = () => __awaiter(void 0, void 0, void 0, function* () { return null; }), config = setAsyncVDefaultConfig) => __awaiter(void 0, void 0, void 0, function* () {
+    const customConfig = defaultsDeep(config, setAsyncVDefaultConfig);
     try {
         // set initial asyncReturn and loading true
         setSyncV(selector, (p) => {

@@ -11,7 +11,7 @@ import { emitChange, store } from './helper.js';
  */
 export function setSyncV(
   selector: string,
-  updates: unknown | ((p: unknown) => unknown)
+  updates: unknown | ((p: unknown) => unknown),
 ) {
   if (typeof updates === 'function') {
     const response = update(store, selector, updates as (p: unknown) => unknown) as unknown
