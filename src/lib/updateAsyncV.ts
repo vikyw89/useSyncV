@@ -1,13 +1,11 @@
-import { defaultsDeep } from 'lodash-es';
 import { DeepPartial } from './helper.js';
-import { updateSyncV } from './updateSyncV.js';
-import { defaultAsyncReturn } from './useAsyncV.js';
+import { setAsyncV } from './setAsyncV.js';
 
 /**
  * Default config for updateAsyncV
  */
 export const updateAsyncVDefaultConfig = {
-  deleteExistingData: false,
+  deleteExistingData: true,
   errorTimeout: 10000
 };
 
@@ -26,72 +24,5 @@ export const updateAsyncV = async (
   asyncFn: () => Promise<unknown> = async () => null,
   config: DeepPartial<typeof updateAsyncVDefaultConfig> = updateAsyncVDefaultConfig
 ) => {
-  const customConfig = defaultsDeep(config, updateAsyncVDefaultConfig) as typeof updateAsyncVDefaultConfig
-  try {
-
-    // set initial asyncReturn and loading true
-    updateSyncV(selector, (p: unknown) => {
-      if (!customConfig.deleteExistingData) {
-        if (typeof p === 'object' && p !== null) {
-          return {
-            ...defaultAsyncReturn,
-            ...p,
-            loading: true,
-            error: false
-          }
-        } else if (p === null || p === undefined) {
-          return {
-            ...defaultAsyncReturn,
-            loading: true,
-            error: false
-          }
-        } else {
-          return {
-            ...defaultAsyncReturn,
-            loading: true,
-            error: false,
-            existingData: p
-          }
-        }
-      } else {
-        return {
-          ...defaultAsyncReturn,
-          loading: true
-        }
-      }
-    })
-
-    // fetch data
-    const data = await asyncFn();
-
-    // Update synchronous state with new data
-    return updateSyncV(selector, (p: object) => {
-      return {
-        ...p,
-        data: data,
-        loading: false,
-        error: false
-      }
-    })
-  } catch (error) {
-    // Handle errors
-
-    setTimeout(() => {
-      updateSyncV(selector, (p: object) => {
-        return {
-          ...p,
-          error: false
-        }
-      })
-    }, customConfig.errorTimeout)
-
-    return updateSyncV(selector, (p: object) => {
-      return {
-        ...defaultAsyncReturn,
-        ...p,
-        loading: false,
-        error: error ?? true
-      }
-    })
-  }
+  return await setAsyncV(selector, asyncFn, config)
 };

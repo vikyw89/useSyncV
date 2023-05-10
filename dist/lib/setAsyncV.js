@@ -16,7 +16,7 @@ import { setSyncV } from './setSyncV.js';
  * - deleteExistingData - will set existing data to null
  */
 export const setAsyncVDefaultConfig = {
-    deleteExistingData: false,
+    deleteExistingData: true,
     errorTimeout: 10000
 };
 /**
