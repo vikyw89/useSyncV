@@ -8,15 +8,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { defaultsDeep } from 'lodash-es';
-import { defaultAsyncReturn } from './useAsyncV.js';
+import { setAsyncStatusV } from './setAsyncStatusV.js';
 import { setSyncV } from './setSyncV.js';
+import { getSyncV } from './getSyncV.js';
 /**
  * Default config for updateAsyncV
  * - errorTimeout - time in ms before error is reset to false
  * - deleteExistingData - will set existing data to null
  */
 export const setAsyncVDefaultConfig = {
-    deleteExistingData: true,
+    staleWhileRefetching: true,
     errorTimeout: 10000
 };
 /**
@@ -32,40 +33,33 @@ export const setAsyncVDefaultConfig = {
 export const setAsyncV = (selector, asyncFn = () => __awaiter(void 0, void 0, void 0, function* () { return null; }), config = setAsyncVDefaultConfig) => __awaiter(void 0, void 0, void 0, function* () {
     const customConfig = defaultsDeep(config, setAsyncVDefaultConfig);
     try {
-        // set initial asyncReturn and loading true
-        setSyncV(selector, (p) => {
-            if (!customConfig.deleteExistingData) {
-                if (typeof p === 'object' && p !== null) {
-                    return Object.assign(Object.assign(Object.assign({}, defaultAsyncReturn), p), { loading: true, error: false });
-                }
-                else if (p === null || p === undefined) {
-                    return Object.assign(Object.assign({}, defaultAsyncReturn), { loading: true, error: false });
-                }
-                else {
-                    return Object.assign(Object.assign({}, defaultAsyncReturn), { loading: true, error: false, existingData: p });
-                }
-            }
-            else {
-                return Object.assign(Object.assign({}, defaultAsyncReturn), { loading: true });
-            }
+        // set initial asyncStatusStore
+        setAsyncStatusV(selector, {
+            loading: true,
+            error: null
         });
+        // set initial syncStore
+        if (customConfig.staleWhileRefetching === false) {
+            setSyncV(selector, null);
+        }
         // fetch data
-        const data = yield asyncFn();
-        // Update synchronous state with new data
-        return setSyncV(selector, (p) => {
-            return Object.assign(Object.assign({}, p), { data: data, loading: false, error: false });
+        const data = yield asyncFn(getSyncV(selector));
+        // update asyncStatusStore
+        setAsyncStatusV(selector, {
+            loading: false,
+            error: null
         });
+        // update syncStore
+        setSyncV(selector, data);
     }
     catch (error) {
         // Handle errors
         setTimeout(() => {
-            setSyncV(selector, (p) => {
-                return Object.assign(Object.assign({}, p), { error: false });
+            setAsyncStatusV(selector, {
+                loading: false,
+                error: error !== null && error !== void 0 ? error : true
             });
         }, customConfig.errorTimeout);
-        return setSyncV(selector, (p) => {
-            return Object.assign(Object.assign(Object.assign({}, defaultAsyncReturn), p), { loading: false, error: error !== null && error !== void 0 ? error : true });
-        });
     }
 });
 //# sourceMappingURL=setAsyncV.js.map

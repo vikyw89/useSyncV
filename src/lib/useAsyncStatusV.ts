@@ -1,23 +1,23 @@
-import { result } from 'lodash-es';
 import { useSyncExternalStore } from 'react';
-import { asyncStore, store, subscribe } from './helper.js';
-import { getSyncV } from './getSyncV.js';
+import { getAsyncStatusV } from './getAsyncStatusV.js';
+import { subscribe } from './helper.js';
 
 /**
  * A hook that provides synchronous access to the data in the store using the specified selector.
  *
  * @param selector - The selector to use for accessing data in the store.
  */
-export const useAsyncStatusV = (selector: string) unknown => {
-  const getSnapshot = () => {
-    return JSON.stringify(result(asyncStore, selector));
-  };
+export const useAsyncStatusV = (selector: string) => {
+    const data = getAsyncStatusV(selector)
+    const getSnapshot = () => {
+        return JSON.stringify(data);
+    };
 
-  const getServerSnapshot = () => {
-    return JSON.stringify(result(asyncStore, selector));
-  };
+    const getServerSnapshot = () => {
+        return JSON.stringify(data);
+    };
 
-  useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+    useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
-  return getSyncV(selector)
+    return data
 };

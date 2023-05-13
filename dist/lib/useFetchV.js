@@ -7,17 +7,17 @@ import { useSyncV } from "./useSyncV.js";
 /**
  * Default config for useQueryV
  */
-export const useQueryVDefaultConfig = Object.assign({}, setAsyncVDefaultConfig);
+export const useFetchVDefaultConfig = Object.assign({}, setAsyncVDefaultConfig);
 /**
  * Hook that provides a reactive way to fetch data asynchronously and update the synchronous state of the application.
  * Will refetch whenever data changes
  * @param selector - The selector for the synchronous state object to update.
  * @param asyncFn - The asynchronous function to call and get data.
  * @param config - The configuration object for the hook. Optional.
- * {@link useQueryVDefaultConfig}
+ * {@link useFetchVDefaultConfig}
  */
-export const useQueryV = (selector, asyncFn, config = useQueryVDefaultConfig) => {
-    const customConfig = defaultsDeep(config, useQueryVDefaultConfig);
+export const useFetchV = (selector, asyncFn, config = useFetchVDefaultConfig) => {
+    const customConfig = defaultsDeep(config, useFetchVDefaultConfig);
     const asyncStatus = useAsyncStatusV(selector);
     const data = useSyncV(selector);
     let dataSnapshot;
@@ -44,4 +44,4 @@ export const useQueryV = (selector, asyncFn, config = useQueryVDefaultConfig) =>
     }, [dataSnapshot, asyncStatus.loading]);
     return Object.assign(Object.assign({}, asyncStatus), { data: data });
 };
-//# sourceMappingURL=useQueryV.js.map
+//# sourceMappingURL=useFetchV.js.map

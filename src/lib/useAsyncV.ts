@@ -1,46 +1,17 @@
-import { defaultsDeep, update } from 'lodash-es';
-import { DeepPartial, store } from './helper.js';
+import { useAsyncStatusV } from './useAsyncStatusV.js';
 import { useSyncV } from './useSyncV.js';
-
-export const defaultAsyncReturn = {
-  data: null,
-  loading: false,
-  error: false
-}
-
-/**
- * Default config for useAsyncV
- */
-export const useAsyncVDefaultConfig = {
-  initialState: defaultAsyncReturn
-}
 
 /**
  * A custom hook for managing asynchronous data in an external store with synchronous state.
  *
  * @param selector - The selector for the asynchronous data.
- * @param config - Optional configuration options.
- * {@link useAsyncVDefaultConfig}
  */
-export const useAsyncV = (
-  selector: string,
-  config: DeepPartial<typeof useAsyncVDefaultConfig> = useAsyncVDefaultConfig
-) => {
-  const customConfig = defaultsDeep(config, useAsyncVDefaultConfig) as typeof useAsyncVDefaultConfig
+export const useAsyncV = (selector: string) => {
+  const asyncState = useAsyncStatusV(selector)
+  const data = useSyncV(selector)
 
-  const defaultInitialState = customConfig.initialState
-
-  update(store, selector, (p: unknown) => {
-    if (typeof p === 'object' && p !== null) {
-      if ('data' in p && 'loading' in p && 'error' in p) return p;
-      return {...defaultInitialState, ...p}
-    } else {
-      return defaultInitialState;
-    }
-  })
-
-  // Get the synchronous state object for the given selector
-  const state = useSyncV(selector) as typeof defaultInitialState & object
-
-  return state
+  return {
+    ...asyncState,
+    data:data,
+  }
 };

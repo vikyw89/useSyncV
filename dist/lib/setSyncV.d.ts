@@ -6,4 +6,4 @@
  * @returns updated value
  * If updates is a function, it will receive the previous value of the data and must return the new value.
  */
-export declare function setSyncV(selector: string, updates: unknown | ((p: unknown) => unknown)): unknown;
+export declare function setSyncV(selector: string, updates?: unknown | ((p: unknown) => unknown)): unknown;

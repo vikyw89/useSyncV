@@ -2,7 +2,7 @@ import { DeepPartial } from "./helper.js";
 /**
  * Default config for useQueryV
  */
-export declare const useQueryVDefaultConfig: {
+export declare const useSubAsyncVDefaultConfig: {
     staleWhileRefetching: boolean;
     errorTimeout: number;
 };
@@ -12,9 +12,9 @@ export declare const useQueryVDefaultConfig: {
  * @param selector - The selector for the synchronous state object to update.
  * @param asyncFn - The asynchronous function to call and get data.
  * @param config - The configuration object for the hook. Optional.
- * {@link useQueryVDefaultConfig}
+ * {@link useSubAsyncVDefaultConfig}
  */
-export declare const useQueryV: (selector: string, asyncFn: () => Promise<unknown>, config?: DeepPartial<typeof useQueryVDefaultConfig>) => {
+export declare const useSubAsyncV: (selector: string, asyncFn: () => Promise<unknown>, config?: DeepPartial<typeof useSubAsyncVDefaultConfig>) => {
     data: unknown;
     loading: boolean;
     error: object | null;

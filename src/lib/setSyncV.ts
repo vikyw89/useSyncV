@@ -1,4 +1,5 @@
-import { result, update } from 'lodash-es';
+import { update } from 'lodash-es';
+import { getSyncV } from './getSyncV.js';
 import { emitChange, syncStore } from './helper.js';
 
 /**
@@ -11,7 +12,7 @@ import { emitChange, syncStore } from './helper.js';
  */
 export function setSyncV(
   selector: string,
-  updates: unknown | ((p: unknown) => unknown),
+  updates?: unknown | ((p: unknown) => unknown),
 ) {
   if (typeof updates === 'function') {
     update(syncStore, selector, updates as (p: unknown) => unknown) as unknown
@@ -19,5 +20,5 @@ export function setSyncV(
     update(syncStore, selector, () => updates) as unknown
   }
   emitChange();
-  return result(syncStore, selector)
+  return getSyncV(selector)
 }

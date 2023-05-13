@@ -21,15 +21,15 @@ export const debugSyncVConfig = {
     maxHistory: 50
 };
 /**
- * A function that logs debug information about the data in the store using the specified selector.
+ * A function that logs debug information about the data in the syncStore using the specified selector.
  *
- * @param selector - The selector to use for accessing data in the store, debug store root if empty
+ * @param selector - The selector to use for accessing data in the syncStore, debug syncStore root if empty
  */
 export const debugSyncV = (selector) => {
     const selectorKey = selector !== null && selector !== void 0 ? selector : 'ROOT';
     const currentSelectorJSONValue = selector
-        ? JSON.stringify(result(store, selector, ''), null, '\t')
-        : JSON.stringify(store, null, '\t');
+        ? JSON.stringify(result(syncStore, selector, ''), null, '\t')
+        : JSON.stringify(syncStore, null, '\t');
     console.groupCollapsed(`START OF DEBUGSYNCV OF ${selectorKey}`);
     console.count('Iteration number');
     console.groupCollapsed(`Value`);

@@ -1,7 +1,8 @@
 import { defaultsDeep } from 'lodash-es';
 import { DeepPartial } from './helper.js';
-import { defaultAsyncReturn } from './useAsyncV.js';
+import { setAsyncStatusV } from './setAsyncStatusV.js';
 import { setSyncV } from './setSyncV.js';
+import { getSyncV } from './getSyncV.js';
 
 /**
  * Default config for updateAsyncV
@@ -9,7 +10,7 @@ import { setSyncV } from './setSyncV.js';
  * - deleteExistingData - will set existing data to null
  */
 export const setAsyncVDefaultConfig = {
-    deleteExistingData: true,
+    staleWhileRefetching: true,
     errorTimeout: 10000
 };
 
@@ -25,75 +26,38 @@ export const setAsyncVDefaultConfig = {
  */
 export const setAsyncV = async (
     selector: string,
-    asyncFn: () => Promise<unknown> = async () => null,
+    asyncFn: (p:unknown) => Promise<unknown> = async () => null,
     config: DeepPartial<typeof setAsyncVDefaultConfig> = setAsyncVDefaultConfig
 ) => {
     const customConfig = defaultsDeep(config, setAsyncVDefaultConfig) as typeof setAsyncVDefaultConfig
     try {
-
-        // set initial asyncReturn and loading true
-        setSyncV(selector, (p: unknown) => {
-            if (!customConfig.deleteExistingData) {
-                if (typeof p === 'object' && p !== null) {
-                    return {
-                        ...defaultAsyncReturn,
-                        ...p,
-                        loading: true,
-                        error: false
-                    }
-                } else if (p === null || p === undefined) {
-                    return {
-                        ...defaultAsyncReturn,
-                        loading: true,
-                        error: false
-                    }
-                } else {
-                    return {
-                        ...defaultAsyncReturn,
-                        loading: true,
-                        error: false,
-                        existingData: p
-                    }
-                }
-            } else {
-                return {
-                    ...defaultAsyncReturn,
-                    loading: true
-                }
-            }
+        // set initial asyncStatusStore
+        setAsyncStatusV(selector, {
+            loading: true,
+            error: null
         })
+        // set initial syncStore
+        if (customConfig.staleWhileRefetching === false) {
+            setSyncV(selector, null)
+        }
 
         // fetch data
-        const data = await asyncFn();
+        const data = await asyncFn(getSyncV(selector));
 
-        // Update synchronous state with new data
-        return setSyncV(selector, (p: object) => {
-            return {
-                ...p,
-                data: data,
-                loading: false,
-                error: false
-            }
-        }) as typeof defaultAsyncReturn & object
+        // update asyncStatusStore
+        setAsyncStatusV(selector, {
+            loading: false,
+            error: null
+        })
+        // update syncStore
+        setSyncV(selector, data)
     } catch (error) {
         // Handle errors
-
         setTimeout(() => {
-            setSyncV(selector, (p: object) => {
-                return {
-                    ...p,
-                    error: false
-                }
+            setAsyncStatusV(selector, {
+                loading:false,
+                error:error ?? true
             })
         }, customConfig.errorTimeout)
-        return setSyncV(selector, (p: object) => {
-            return {
-                ...defaultAsyncReturn,
-                ...p,
-                loading: false,
-                error: error ?? true
-            }
-        }) as typeof defaultAsyncReturn & object
-
     }
 };
