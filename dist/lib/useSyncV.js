@@ -1,7 +1,7 @@
 import { result } from 'lodash-es';
 import { useSyncExternalStore } from 'react';
 import { store, subscribe } from './helper.js';
-import { readSyncV } from './readSyncV.js';
+import { getSyncV } from './getSyncV.js';
 /**
  * A hook that provides synchronous access to the data in the store using the specified selector.
  *
@@ -15,6 +15,6 @@ export const useSyncV = (selector) => {
         return JSON.stringify(result(store, selector));
     };
     useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
-    return readSyncV(selector);
+    return getSyncV(selector);
 };
 //# sourceMappingURL=useSyncV.js.map
