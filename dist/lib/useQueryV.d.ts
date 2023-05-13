@@ -10,10 +10,7 @@ export declare const useQueryVDefaultConfig: {
             error: boolean;
         };
     };
-    updateAsyncV: {
-        deleteExistingData: boolean;
-        errorTimeout: number;
-    };
+    updateAsyncV: any;
     cacheData: boolean;
     cleanupFn: () => null;
 };

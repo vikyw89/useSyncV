@@ -1,5 +1,6 @@
+import { result } from 'lodash-es';
 import { useSyncExternalStore } from 'react';
-import { subscribe } from './helper.js';
+import { asyncStore, store, subscribe } from './helper.js';
 import { getSyncV } from './getSyncV.js';
 
 /**
@@ -7,17 +8,16 @@ import { getSyncV } from './getSyncV.js';
  *
  * @param selector - The selector to use for accessing data in the store.
  */
-export const useSyncV = (selector: string) :unknown => {
-  const data = getSyncV(selector)
+export const useAsyncStatusV = (selector: string) unknown => {
   const getSnapshot = () => {
-    return JSON.stringify(data);
+    return JSON.stringify(result(asyncStore, selector));
   };
 
   const getServerSnapshot = () => {
-    return JSON.stringify(data);
+    return JSON.stringify(result(asyncStore, selector));
   };
 
   useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
-  return data
+  return getSyncV(selector)
 };

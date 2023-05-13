@@ -1,4 +1,4 @@
-export { createSyncV } from './lib/createSyncV.js';
+export { useAsyncStatusV } from './lib/useAsyncStatusV.js';
 export { deleteSyncV } from './lib/deleteSyncV.js';
 export { getSyncV } from './lib/getSyncV.js';
 export { debugSyncV } from './lib/helper.js';

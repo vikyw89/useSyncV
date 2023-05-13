@@ -1,8 +1,8 @@
 import { diffJson } from 'diff';
 import { result, update } from 'lodash-es';
 
-export const store = {};
-
+export const syncStore = {};
+export const asyncStatusStore = {}
 export let subscribers: Array<() => unknown> = [];
 
 export const selectorHistory = {};

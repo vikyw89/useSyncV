@@ -1,5 +1,5 @@
 import { result, update } from 'lodash-es';
-import { emitChange, store } from './helper.js';
+import { emitChange, syncStore } from './helper.js';
 
 /**
  * A function that updates data in the store synchronously using the specified selector and updates.
@@ -14,10 +14,10 @@ export function setSyncV(
   updates: unknown | ((p: unknown) => unknown),
 ) {
   if (typeof updates === 'function') {
-    update(store, selector, updates as (p: unknown) => unknown) as unknown
+    update(syncStore, selector, updates as (p: unknown) => unknown) as unknown
   } else {
-    update(store, selector, () => updates) as unknown
+    update(syncStore, selector, () => updates) as unknown
   }
   emitChange();
-  return result(store, selector)
+  return result(syncStore, selector)
 }
