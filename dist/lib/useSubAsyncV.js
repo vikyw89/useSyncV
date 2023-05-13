@@ -2,7 +2,7 @@ import { defaultsDeep } from "lodash-es";
 import { useEffect } from "react";
 import { setAsyncV, setAsyncVDefaultConfig } from "./setAsyncV.js";
 import { setSyncV } from "./setSyncV.js";
-import { useAsyncStatusV } from "./useAsyncStatusV.js";
+import { useAsyncV } from "./useAsyncV.js";
 import { useSyncV } from "./useSyncV.js";
 /**
  * Default config for useQueryV
@@ -18,15 +18,8 @@ export const useSubAsyncVDefaultConfig = Object.assign({}, setAsyncVDefaultConfi
  */
 export const useSubAsyncV = (selector, asyncFn, config = useSubAsyncVDefaultConfig) => {
     const customConfig = defaultsDeep(config, useSubAsyncVDefaultConfig);
-    const asyncStatus = useAsyncStatusV(selector);
+    const asyncStatus = useAsyncV(selector);
     const data = useSyncV(selector);
-    let dataSnapshot;
-    try {
-        dataSnapshot = JSON.stringify(data);
-    }
-    catch (_a) {
-        dataSnapshot = data;
-    }
     // initial fetch
     useEffect(() => {
         setAsyncV(selector, asyncFn, customConfig);
@@ -38,10 +31,11 @@ export const useSubAsyncV = (selector, asyncFn, config = useSubAsyncVDefaultConf
     // for refetch
     // will refetch when data inside the selector is modified
     useEffect(() => {
-        if (asyncStatus.loading)
+        if (!asyncStatus.refetch)
             return;
         setAsyncV(selector, asyncFn, customConfig);
-    }, [dataSnapshot, asyncStatus.loading]);
+        console.log('refetch!');
+    }, [asyncStatus.refetch]);
     return Object.assign(Object.assign({}, asyncStatus), { data: data });
 };
 //# sourceMappingURL=useSubAsyncV.js.map

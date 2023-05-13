@@ -34,7 +34,8 @@ export const setAsyncV = async (
         // set initial asyncStatusStore
         setAsyncStatusV(selector, {
             loading: true,
-            error: null
+            error: null,
+            refetch: false
         })
         // set initial syncStore
         if (customConfig.staleWhileRefetching === false) {
@@ -43,11 +44,11 @@ export const setAsyncV = async (
 
         // fetch data
         const data = await asyncFn(getSyncV(selector));
-
         // update asyncStatusStore
         setAsyncStatusV(selector, {
             loading: false,
-            error: null
+            error: null,
+            refetch:false
         })
         // update syncStore
         setSyncV(selector, data)
@@ -56,7 +57,8 @@ export const setAsyncV = async (
         setTimeout(() => {
             setAsyncStatusV(selector, {
                 loading:false,
-                error:error ?? true
+                error:error ?? true,
+                refetch:false
             })
         }, customConfig.errorTimeout)
     }

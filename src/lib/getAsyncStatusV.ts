@@ -4,12 +4,14 @@ import { asyncStatusStore } from './helper.js';
 
 export type defaultAsyncStatus = {
   loading: boolean
-  error: null | object
+  error: null | object,
+  refetch: false
 }
 
 export const defaultAsyncStatus = {
   loading: false,
-  error: null
+  error: null,
+  refetch: false
 }
 
 /**

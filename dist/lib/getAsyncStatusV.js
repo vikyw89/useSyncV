@@ -2,7 +2,8 @@ import { result, update } from 'lodash-es';
 import { asyncStatusStore } from './helper.js';
 export const defaultAsyncStatus = {
     loading: false,
-    error: null
+    error: null,
+    refetch: false
 };
 /**
  * A function that reads data from the asyncStatus store and return the async state of the selector

@@ -36,7 +36,8 @@ export const setAsyncV = (selector, asyncFn = () => __awaiter(void 0, void 0, vo
         // set initial asyncStatusStore
         setAsyncStatusV(selector, {
             loading: true,
-            error: null
+            error: null,
+            refetch: false
         });
         // set initial syncStore
         if (customConfig.staleWhileRefetching === false) {
@@ -47,7 +48,8 @@ export const setAsyncV = (selector, asyncFn = () => __awaiter(void 0, void 0, vo
         // update asyncStatusStore
         setAsyncStatusV(selector, {
             loading: false,
-            error: null
+            error: null,
+            refetch: false
         });
         // update syncStore
         setSyncV(selector, data);
@@ -57,7 +59,8 @@ export const setAsyncV = (selector, asyncFn = () => __awaiter(void 0, void 0, vo
         setTimeout(() => {
             setAsyncStatusV(selector, {
                 loading: false,
-                error: error !== null && error !== void 0 ? error : true
+                error: error !== null && error !== void 0 ? error : true,
+                refetch: false
             });
         }, customConfig.errorTimeout);
     }

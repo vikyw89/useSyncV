@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { DeepPartial } from "./helper.js";
 import { setAsyncV, setAsyncVDefaultConfig } from "./setAsyncV.js";
 import { setSyncV } from "./setSyncV.js";
-import { useAsyncStatusV } from "./useAsyncStatusV.js";
+import { useAsyncV } from "./useAsyncV.js";
 import { useSyncV } from "./useSyncV.js";
 
 /**
@@ -27,14 +27,8 @@ export const useSubAsyncV = (
   config: DeepPartial<typeof useSubAsyncVDefaultConfig> = useSubAsyncVDefaultConfig
 ) => {
   const customConfig = defaultsDeep(config, useSubAsyncVDefaultConfig) as typeof useSubAsyncVDefaultConfig
-  const asyncStatus = useAsyncStatusV(selector)
+  const asyncStatus = useAsyncV(selector)
   const data = useSyncV(selector)
-  let dataSnapshot
-  try {
-    dataSnapshot = JSON.stringify(data)
-  } catch {
-    dataSnapshot = data
-  }
 
   // initial fetch
   useEffect(() => {
@@ -47,10 +41,12 @@ export const useSubAsyncV = (
 
   // for refetch
   // will refetch when data inside the selector is modified
-  useEffect(()=>{
-    if (asyncStatus.loading) return
+  useEffect(() => {
+    if (!asyncStatus.refetch) return
     setAsyncV(selector, asyncFn, customConfig)
-  },[dataSnapshot, asyncStatus.loading])
+    console.log('refetch!')
+  }, [asyncStatus.refetch])
+
   return {
     ...asyncStatus,
     data: data

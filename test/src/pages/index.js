@@ -1,30 +1,31 @@
-import CardComponent from '@/components/card';
 import { Box, Button, Typography } from '@mui/material';
 import { useEffect } from 'react';
-import { updateAsyncV, useQueryV, useAsyncV, debugSyncV } from 'use-sync-v';
+import { setAsyncV, setSyncV, useAsyncV, useSubAsyncV, useSyncV } from 'use-sync-v';
 
 const asyncFn = async () => {
   const response = await fetch('https://randomuser.me/api/');
   const data = await response.json();
-  console.log('downloading');
   return data;
 };
 
 export default function Home() {
+  const counter = useSyncV('counter')
+  console.log('rerender')
   const selector = 'api';
-  const data = useQueryV(selector, asyncFn);
-  // const data = useAsyncV(selector);
-  // useEffect(() => {
-  //   updateAsyncV(selector, asyncFn)
-  // }, []);
+  const data = useSubAsyncV(selector,asyncFn)
 
   const refetchHandler = async () => {
-    const response = await updateAsyncV(selector, asyncFn);
-    console.log("🚀 ~ file: index.js:23 ~ refetchHandler ~ response:", response)
+    // const response = await setAsyncV(selector, asyncFn);
+    setAsyncV(selector, async()=>{
+
+    }, {})
   };
-  
-  // console.log('render');
-  // debugSyncV("api");
+  useEffect(() => {
+    setSyncV('counter', 1)
+  }, [])
+  const incrementCounter = () => {
+    setSyncV('counter', p => p + 1)
+  }
   return (
     <>
       <Box
@@ -38,12 +39,16 @@ export default function Home() {
           gap: '10px'
         }}
       >
+        <Typography>
+          counter: &nbsp;{counter}
+        </Typography>
+        <Button onClick={incrementCounter}>increment</Button>
         {data.loading && <Typography>Loading</Typography>}
         {data.data && <Typography>{JSON.stringify(data.data)}test</Typography>}
         {data.error && <Typography>error</Typography>}
         <Button onClick={refetchHandler}>refetch</Button>
-        <CardComponent props={'users[0].id'} />
-        <CardComponent props={'users[0]'} />
+        {/* <CardComponent props={'users[0].id'} />
+        <CardComponent props={'users[0]'} /> */}
       </Box>
     </>
   );

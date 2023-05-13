@@ -17,5 +17,11 @@ export declare const useSubAsyncVDefaultConfig: {
 export declare const useSubAsyncV: (selector: string, asyncFn: () => Promise<unknown>, config?: DeepPartial<typeof useSubAsyncVDefaultConfig>) => {
     data: unknown;
     loading: boolean;
+    error: null;
+    refetch: boolean;
+} | {
+    data: unknown;
+    loading: boolean;
     error: object | null;
+    refetch: false;
 };
