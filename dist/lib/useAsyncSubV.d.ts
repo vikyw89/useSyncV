@@ -14,7 +14,7 @@ export declare const useAsyncSubVDefaultConfig: {
  * @param config - The configuration object for the hook. Optional.
  * {@link useAsyncSubVDefaultConfig}
  */
-export declare const useAsyncSubV: (selector: string, asyncFn: () => Promise<unknown>, config?: DeepPartial<typeof useAsyncSubVDefaultConfig>) => {
+export declare const useAsyncSubV: (selector: string, asyncFn: (p: unknown) => Promise<unknown>, config?: DeepPartial<typeof useAsyncSubVDefaultConfig>) => {
     data: unknown;
     loading: boolean;
     error: object | null;

@@ -26,7 +26,7 @@ export const useAsyncSubVDefaultConfig = {
  */
 export const useAsyncSubV = (
   selector: string,
-  asyncFn: () => Promise<unknown>,
+  asyncFn: (p:unknown) => Promise<unknown>,
   config: DeepPartial<typeof useAsyncSubVDefaultConfig> = useAsyncSubVDefaultConfig
 ) => {
   const customConfig = defaultsDeep(config, useAsyncSubVDefaultConfig) as typeof useAsyncSubVDefaultConfig
