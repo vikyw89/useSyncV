@@ -21,7 +21,15 @@ Why use sync v ?
 npm i use-sync-v
 ```
 
-## Usage
+## Usage Example
+
+### To subscribe data from backend for backend without built in subscription
+
+- You want to have a global store that fetch data from backend
+- everytime you modify the backend data, useAsyncSubV will refetch the data for you
+- we use stale data while refetching by default
+- loading and data state can both be true at the same time
+- when the component is dismounted, all fetched data will be erased
 
 ```jsx
 const asyncFn = async () => {
@@ -30,18 +38,20 @@ const asyncFn = async () => {
   return data;
 };
 
-export const UseSubAsyncVTest = () => {
+export const UseAsyncSubVTest = () => {
   // this will subscribe this component to 'randomUser', whenever we do setAsyncFn with 'randomUser' as selector, the data will refetch
-  const { data, loading, error } = useSubAsyncV('randomUser', asyncFn);
+  const { data, loading, error } = useAsyncSubV('randomUser', asyncFn);
 
   const refetchHandler = async () => {
-    // this will do an asyncFunction under 'randomUser'
-    setAsyncV('randomUser', async (p) => {
-      // we can put function here to post / modify data in backend database
-      await insertDataToRandomUserTable()
+    // we want to modify backend data
+    asyncRefetchV('randomUser', async (p) => {
+      // we can set the data here for optimistic rendering (optional)
+      setSyncV('randomUser', someDataForOptimisticRendering);
 
-      // data that we return here will be displayed in
-      return p;
+      // we can put function here to post / modify data in backend database
+      await insertDataToRandomUserTable();
+
+      // useAsyncSubV will automatically refetch data
     });
   };
   return (
@@ -53,9 +63,36 @@ export const UseSubAsyncVTest = () => {
     </div>
   );
 };
-```
 
-### To store and update data
+// let's say we have another component that we want to use the data from 'randomUser'
+export const AnotherComponent = () => {
+  // access data from 'randomUser' earlier
+  const { data, loading, error } = useAsyncV('randomUser');
+  return (
+    <div>
+      {loading && <div>Loading</div>}
+      {data && <div>{JSON.stringify(data)}</div>}
+      {error && <div>error</div>}
+      <button onClick={refetchHandler}>refetch</button>
+    </div>
+  );
+};
+```
+### To subscribe data from backend for backend with built in subscription
+
+```jsx
+export const AsyncSubTest = () => {
+  const {data, loading, error} = useAsyncV('random')
+
+  useEffect(()=>{
+    // set up subscription 
+    // then modify state data with 
+    setAsyncV('random', dataReturnedFromSubscription)
+    // this way, everytime there's a new data sent from backend, it will automatically stored to 'random' state
+  },[])
+}
+```
+### To have a global state, like redux, zustand etc
 
 ```jsx
 setSyncV('counter', 0);
@@ -98,117 +135,11 @@ export const CounterDisplayComponent = () => {
 };
 ```
 
-### Fetching data:
-
-Let's say we want to fetch data from api and store it in "api" state
-
-```jsx
-const fetchRandomUser = async () => {
-  const response = await fetch('https://randomuser.me/api/');
-  const data = await response.json();
-  return data;
-};
-
-export const DataDisplayComponent = () => {
-  const { data, loading, error } = useAsyncV('api');
-  // this will subscribe the component to 'api' store/ state
-
-  useEffect(() => {
-    setAsyncV('api', fetchRandomUser);
-    // this will fetch random user data
-  }, []);
-
-  return (
-    <div>
-      {data && <div>{data}</div>}
-      {loading && <div>Loading...</div>}
-      {error && <div>Error fetching data...</div>}
-    </div>
-  );
-};
-```
-
-By default, setAsyncV will return stored value as promise
-By default, setAsyncV will put 10 seconds setTimeout on error, if error happens. So we don't need to delete error message manually. (configurable in config)
-
-For async data, where we want to track loading, and error state, we use updateAsyncV and useAsyncV
-We can simplify it further by using useQueryV, it's a wrapper for useAsyncV and updateAsyncV
-
-```jsx
-export const DataDisplayComponent = () => {
-  const { data, loading, error } = useQueryV('api', fetchRandomUser);
-
-  return (
-    <div>
-      {data && <div>{data}</div>}
-      {loading && <div>Loading...</div>}
-      {error && <div>Error fetching data...</div>}
-    </div>
-  );
-};
-```
-
-By default useQueryV will set the initial loading value to true
-By default useQueryV will cache data, so if there's any existing data, it won't do refetch
-
-### To organize the store in a different file and have a reducer
-
-in your stores directory
-
-```jsx
-// @/lib/store.index.js
-
-import { setSyncV } from 'use-sync-v';
-
-setSyncV('counter', 0);
-
-// for the reducer
-export class CounterReducer {
-  static increment = () => {
-    setSyncV('counter', (p) => p + 1);
-  };
-  static reset = () => {
-    setSyncV('counter', 0);
-  };
-}
-
-export const initSyncV = () => {};
-```
-
-and call the file in the root of your react app
-
-```jsx
-// _App.js
-
-import { initSyncV } from '@/lib/store';
-
-initSyncV();
-export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} />;
-}
-```
-
-and call the reducer anywhere
-
-```jsx
-export const CounterComponent = () => {
-  const counter = useSyncV('counter');
-  return (
-    <>
-      <div>{counter}</div>
-      <button onClick={() => CounterReducer.increment()}>increment</button>
-      <button onClick={() => CounterReducer.reset()}>reset</button>
-    </>
-  );
-};
-```
-
 ### To recap:
 
-```jsx
-getSyncV(selector:string)
-// to read value of the state selector at the time the function is called
+#### For sync global state
 
+```jsx
 setSyncV(selector:string, updates:function(previousValue) || value)
 // to update the value of the state selector using an updater function or a value
 // the updater function take a parameter (original state) and return a value (updated state)
@@ -217,17 +148,27 @@ setSyncV(selector:string, updates:function(previousValue) || value)
 useSyncV(selector:string)
 // to subscribe to the state selector, and will re render the component whenever the value change
 // be specific in the selector to prevent unnecessary rerendering
-
-useAsyncV(selector:string, asyncFn:function, config?:obj)
-// will subscribe to the selector, and if there's no existing data, it will prepopulate it with {loading, data, error} initial state
-
-setAsyncV(selector:string, asyncFn:function, config?:obj)
-// to fetch a data from api, save the results into the store
-
-useQueryV(selector:string, asyncFn:function, config?:obj)
-// this is a bundle of useAsyncV and updateAsyncV
-// to fetch a data from api, save the results into the store, and subscribe to it
-// by default the result is cached in js variable
 ```
 
+#### For async global state
+- with backend without built in subscription
+```jsx
+useAsyncSubV(selector:string, asyncFn:function, config?:obj)
+// to subscribe to backend
+
+useAsyncV(selector:string, config?:object)
+// will subscribe to the selector, and if there's no existing data, it will prepopulate it with {loading, data, error} initial state
+
+asyncRefetchV(selector:string, asyncFn:function, config?:object)
+// to fetch a data from api, save the results into the store
+
+```
+- with backend with built in subscription like Firestore
+```jsx
+useAsyncV(selector:string)
+// to listen to asyncData
+
+setAsyncV(selector:string, asyncFn:function, config?:object)
+//
+```
 for more explanation: look at the code snippet

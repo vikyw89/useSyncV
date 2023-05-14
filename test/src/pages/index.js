@@ -1,5 +1,5 @@
+import { UseAsyncSubVTest } from '@/components/useAsyncSubVTest';
 import { UseAsyncVTest } from '@/components/useAsyncVTest';
-import { UseSubAsyncVTest } from '@/components/useSubAsyncVTest';
 import { UseSyncVTest } from '@/components/useSyncVTest';
 import { Box } from '@mui/material';
 
@@ -18,7 +18,7 @@ export default function Home() {
           gap: '5px'
         }}
       >
-        {/* <UseSubAsyncVTest/> */}
+        <UseAsyncSubVTest/>
         <UseAsyncVTest/>
         <UseSyncVTest/>
       </Box>
