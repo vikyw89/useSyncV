@@ -1,6 +1,6 @@
 {
   "name": "use-sync-v",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "a custom react hook to sync store, and asyncQuery,",
   "type": "module",
   "main": "./dist/index.js",
