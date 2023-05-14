@@ -48,8 +48,8 @@ export const useAsyncSubV = (
   // will refetch when refetchSubV is called
   useEffect(() => {
     if (!sub.refetch) return
-    setAsyncV(selector, asyncFn, customConfig)
     setSubStatusV(selector, { refetch: false })
+    setAsyncV(selector, asyncFn, customConfig)
   }, [sub.refetch])
 
   return {
