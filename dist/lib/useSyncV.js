@@ -8,24 +8,10 @@ import { getSyncV } from './getSyncV.js';
  */
 export const useSyncV = (selector) => {
     const getSnapshot = () => {
-        const data = getSyncV(selector);
-        try {
-            const snapshot = JSON.stringify(data);
-            return snapshot;
-        }
-        catch (_a) {
-            return data;
-        }
+        return JSON.stringify(getSyncV(selector));
     };
     const getServerSnapshot = () => {
-        const data = getSyncV(selector);
-        try {
-            const snapshot = JSON.stringify(data);
-            return snapshot;
-        }
-        catch (_a) {
-            return data;
-        }
+        return JSON.stringify(getSyncV(selector));
     };
     useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
     return getSyncV(selector);

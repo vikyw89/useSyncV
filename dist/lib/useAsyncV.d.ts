@@ -7,5 +7,4 @@ export declare const useAsyncV: (selector: string) => {
     data: unknown;
     loading: boolean;
     error: object | null;
-    refetch: boolean;
 };

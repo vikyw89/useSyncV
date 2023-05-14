@@ -7,14 +7,13 @@ import { subscribe } from './helper.js';
  * @param selector - The selector to use for accessing data in the store.
  */
 export const useAsyncStatusV = (selector) => {
-    const data = getAsyncStatusV(selector);
     const getSnapshot = () => {
-        return JSON.stringify(data);
+        return JSON.stringify(getAsyncStatusV(selector));
     };
     const getServerSnapshot = () => {
-        return JSON.stringify(data);
+        return JSON.stringify(getAsyncStatusV(selector));
     };
     useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
-    return data;
+    return getAsyncStatusV(selector);
 };
 //# sourceMappingURL=useAsyncStatusV.js.map

@@ -5,7 +5,6 @@ import { DeepPartial } from "./helper.js";
 export declare const useSubAsyncVDefaultConfig: {
     staleWhileRefetching: boolean;
     errorTimeout: number;
-    refetch: boolean;
 };
 /**
  * Hook that provides a reactive way to fetch data asynchronously and update the synchronous state of the application.
@@ -19,5 +18,4 @@ export declare const useSubAsyncV: (selector: string, asyncFn: () => Promise<unk
     data: unknown;
     loading: boolean;
     error: object | null;
-    refetch: boolean;
 };

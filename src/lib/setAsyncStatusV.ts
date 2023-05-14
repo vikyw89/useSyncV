@@ -12,7 +12,7 @@ import { asyncStatusStore, emitChange } from './helper.js';
  */
 export function setAsyncStatusV(
   selector: string,
-  updates: defaultAsyncStatus | ((p: defaultAsyncStatus) => defaultAsyncStatus),
+  updates?: defaultAsyncStatus | ((p: defaultAsyncStatus) => defaultAsyncStatus),
 ) {
   let output
   if (typeof updates === 'function') {

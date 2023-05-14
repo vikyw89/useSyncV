@@ -7,4 +7,4 @@ import { defaultAsyncStatus } from './getAsyncStatusV.js';
  * @returns updated value
  * If updates is a function, it will receive the previous value of the data and must return the new value.
  */
-export declare function setAsyncStatusV(selector: string, updates: defaultAsyncStatus | ((p: defaultAsyncStatus) => defaultAsyncStatus)): defaultAsyncStatus;
+export declare function setAsyncStatusV(selector: string, updates?: defaultAsyncStatus | ((p: defaultAsyncStatus) => defaultAsyncStatus)): defaultAsyncStatus;

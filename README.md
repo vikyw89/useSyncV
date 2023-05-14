@@ -6,13 +6,14 @@ NPM: https://www.npmjs.com/package/use-sync-v
 
 GH: https://github.com/vikyw89/useSyncV
 
-a getter, setter and subscription to react global state
+breaking change on v3
 
-- no boilercode to start with, use it out of the box
-- structure the store / state how you want it, it's behaving like JS object
-- efficient rendering by utilizing selector
-- extendable if you like to use reducer, write a reducer just like how you write vanilla JS IIFE or static class
-- built in fetch with cache, and return synced \{data, loading, error\} for your UI
+Why use sync v ?
+
+- in front all we want is to get synced data from backend
+  - recreating database in front end in a global state is tedious
+  - just subscribe to the data that we need, that we can access anywhere in front end
+- opinionated
 
 ## To start
 
@@ -21,6 +22,38 @@ npm i use-sync-v
 ```
 
 ## Usage
+
+```jsx
+const asyncFn = async () => {
+  const response = await fetch('https://randomuser.me/api/');
+  const data = await response.json();
+  return data;
+};
+
+export const UseSubAsyncVTest = () => {
+  // this will subscribe this component to 'randomUser', whenever we do setAsyncFn with 'randomUser' as selector, the data will refetch
+  const { data, loading, error } = useSubAsyncV('randomUser', asyncFn);
+
+  const refetchHandler = async () => {
+    // this will do an asyncFunction under 'randomUser'
+    setAsyncV('randomUser', async (p) => {
+      // we can put function here to post / modify data in backend database
+      await insertDataToRandomUserTable()
+
+      // data that we return here will be displayed in
+      return p;
+    });
+  };
+  return (
+    <div>
+      {loading && <div>Loading</div>}
+      {data && <div>{JSON.stringify(data)}</div>}
+      {error && <div>error</div>}
+      <button onClick={refetchHandler}>refetch</button>
+    </div>
+  );
+};
+```
 
 ### To store and update data
 
@@ -94,11 +127,13 @@ export const DataDisplayComponent = () => {
   );
 };
 ```
+
 By default, setAsyncV will return stored value as promise
 By default, setAsyncV will put 10 seconds setTimeout on error, if error happens. So we don't need to delete error message manually. (configurable in config)
 
 For async data, where we want to track loading, and error state, we use updateAsyncV and useAsyncV
 We can simplify it further by using useQueryV, it's a wrapper for useAsyncV and updateAsyncV
+
 ```jsx
 export const DataDisplayComponent = () => {
   const { data, loading, error } = useQueryV('api', fetchRandomUser);
@@ -112,6 +147,7 @@ export const DataDisplayComponent = () => {
   );
 };
 ```
+
 By default useQueryV will set the initial loading value to true
 By default useQueryV will cache data, so if there's any existing data, it won't do refetch
 

@@ -19,7 +19,6 @@ import { getSyncV } from './getSyncV.js';
 export const setAsyncVDefaultConfig = {
     staleWhileRefetching: true,
     errorTimeout: 10000,
-    refetch: true
 };
 /**
  * A function that sets the data in the store asynchronously using the specified selector and async function.
@@ -37,8 +36,7 @@ export const setAsyncV = (selector, asyncFn = () => __awaiter(void 0, void 0, vo
         // set initial asyncStatusStore
         setAsyncStatusV(selector, {
             loading: true,
-            error: null,
-            refetch: customConfig.refetch
+            error: null
         });
         // set initial syncStore
         if (customConfig.staleWhileRefetching === false) {
@@ -49,19 +47,21 @@ export const setAsyncV = (selector, asyncFn = () => __awaiter(void 0, void 0, vo
         // update asyncStatusStore
         setAsyncStatusV(selector, {
             loading: false,
-            error: null,
-            refetch: customConfig.refetch
+            error: null
         });
         // update syncStore
         setSyncV(selector, data);
     }
     catch (error) {
         // Handle errors
+        setAsyncStatusV(selector, {
+            loading: false,
+            error: error !== null && error !== void 0 ? error : true
+        });
         setTimeout(() => {
             setAsyncStatusV(selector, {
                 loading: false,
-                error: error !== null && error !== void 0 ? error : true,
-                refetch: customConfig.refetch
+                error: null
             });
         }, customConfig.errorTimeout);
     }

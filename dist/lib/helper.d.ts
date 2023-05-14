@@ -1,5 +1,6 @@
 export declare const syncStore: {};
 export declare const asyncStatusStore: {};
+export declare const subStatusStore: {};
 export declare let subscribers: Array<() => unknown>;
 export declare const selectorHistory: {};
 export declare const emitChange: () => void;

@@ -1,12 +1,10 @@
 export type defaultAsyncStatus = {
     loading: boolean;
     error: null | object;
-    refetch: boolean;
 };
 export declare const defaultAsyncStatus: {
     loading: boolean;
     error: null;
-    refetch: boolean;
 };
 /**
  * A function that reads data from the asyncStatus store and return the async state of the selector

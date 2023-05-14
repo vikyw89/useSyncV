@@ -1,5 +1,6 @@
 export const syncStore = {};
 export const asyncStatusStore = {};
+export const subStatusStore = {};
 export let subscribers = [];
 export const selectorHistory = {};
 export const emitChange = () => {

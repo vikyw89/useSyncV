@@ -12,7 +12,6 @@ import { getSyncV } from './getSyncV.js';
 export const setAsyncVDefaultConfig = {
     staleWhileRefetching: true,
     errorTimeout: 10000,
-    refetch:true
 };
 
 /**
@@ -27,7 +26,7 @@ export const setAsyncVDefaultConfig = {
  */
 export const setAsyncV = async (
     selector: string,
-    asyncFn: (p:unknown) => Promise<unknown> = async () => null,
+    asyncFn: (p?: unknown) => Promise<unknown> = async () => null,
     config: DeepPartial<typeof setAsyncVDefaultConfig> = setAsyncVDefaultConfig
 ) => {
     const customConfig = defaultsDeep(config, setAsyncVDefaultConfig) as typeof setAsyncVDefaultConfig
@@ -35,8 +34,7 @@ export const setAsyncV = async (
         // set initial asyncStatusStore
         setAsyncStatusV(selector, {
             loading: true,
-            error: null,
-            refetch: customConfig.refetch
+            error: null
         })
         // set initial syncStore
         if (customConfig.staleWhileRefetching === false) {
@@ -48,18 +46,20 @@ export const setAsyncV = async (
         // update asyncStatusStore
         setAsyncStatusV(selector, {
             loading: false,
-            error: null,
-            refetch: customConfig.refetch
+            error: null
         })
         // update syncStore
         setSyncV(selector, data)
     } catch (error) {
         // Handle errors
+        setAsyncStatusV(selector, {
+            loading: false,
+            error: error ?? true
+        })
         setTimeout(() => {
             setAsyncStatusV(selector, {
-                loading:false,
-                error:error ?? true,
-                refetch: customConfig.refetch
+                loading: false,
+                error: null
             })
         }, customConfig.errorTimeout)
     }

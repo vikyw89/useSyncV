@@ -4,6 +4,9 @@ import { setAsyncV, setAsyncVDefaultConfig } from "./setAsyncV.js";
 import { setSyncV } from "./setSyncV.js";
 import { useAsyncV } from "./useAsyncV.js";
 import { useSyncV } from "./useSyncV.js";
+import { setAsyncStatusV } from "./setAsyncStatusV.js";
+import { useSubStatusV } from "./useSubStatusV.js";
+import { setSubStatusV } from "./setSubStatusV.js";
 /**
  * Default config for useQueryV
  */
@@ -20,22 +23,24 @@ export const useSubAsyncV = (selector, asyncFn, config = useSubAsyncVDefaultConf
     const customConfig = defaultsDeep(config, useSubAsyncVDefaultConfig);
     const asyncStatus = useAsyncV(selector);
     const data = useSyncV(selector);
+    const sub = useSubStatusV(selector);
     // initial fetch
     useEffect(() => {
-        setAsyncV(selector, asyncFn, Object.assign(Object.assign({}, customConfig), { refetch: false }));
+        setAsyncV(selector, asyncFn, customConfig);
         return () => {
             // clear data in syncStore when component dismounted
             setSyncV(selector);
+            setAsyncStatusV(selector);
         };
     }, []);
     // for refetch
-    // will refetch when setAsyncV is called
+    // will refetch when refetchSubV is called
     useEffect(() => {
-        if (!asyncStatus.refetch)
+        if (!sub.refetch)
             return;
-        setAsyncV(selector, asyncFn, Object.assign(Object.assign({}, customConfig), { refetch: false }));
-        console.log('refetch!');
-    }, [asyncStatus.refetch]);
+        setAsyncV(selector, asyncFn, customConfig);
+        setSubStatusV(selector, { refetch: false });
+    }, [sub.refetch]);
     return Object.assign(Object.assign({}, asyncStatus), { data: data });
 };
 //# sourceMappingURL=useSubAsyncV.js.map

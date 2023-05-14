@@ -1,17 +1,15 @@
-import { result, update } from 'lodash-es';
+import { result } from 'lodash-es';
 import { asyncStatusStore } from './helper.js';
 
 
 export type defaultAsyncStatus = {
   loading: boolean
-  error: null | object,
-  refetch: boolean
+  error: null | object
 }
 
 export const defaultAsyncStatus = {
   loading: false,
-  error: null,
-  refetch: true
+  error: null
 }
 
 /**
@@ -20,11 +18,10 @@ export const defaultAsyncStatus = {
  * @param selector - The selector to use for reading data from the store.
  */
 export function getAsyncStatusV(selector: string) {
-  const data = result(asyncStatusStore, selector) as defaultAsyncStatus
-
-  if (!data) {
-    return update(asyncStatusStore, selector, () => ({ ...defaultAsyncStatus, refetch: false })) as defaultAsyncStatus
-  }
+  const data = result(asyncStatusStore, selector, {
+    loading: false,
+    error: null
+  }) as defaultAsyncStatus
 
   return data;
 }
