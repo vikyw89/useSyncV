@@ -3,8 +3,4 @@
  *
  * @param selector - The selector to use for accessing data in the store.
  */
-export declare const useAsyncStatusV: (selector: string) => import("./getAsyncStatusV.js").defaultAsyncStatus | {
-    loading: boolean;
-    error: null;
-    refetch: boolean;
-};
+export declare const useAsyncStatusV: (selector: string) => import("./getAsyncStatusV.js").defaultAsyncStatus;

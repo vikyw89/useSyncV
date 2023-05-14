@@ -11,7 +11,8 @@ import { getSyncV } from './getSyncV.js';
  */
 export const setAsyncVDefaultConfig = {
     staleWhileRefetching: true,
-    errorTimeout: 10000
+    errorTimeout: 10000,
+    refetch:true
 };
 
 /**
@@ -35,7 +36,7 @@ export const setAsyncV = async (
         setAsyncStatusV(selector, {
             loading: true,
             error: null,
-            refetch: false
+            refetch: customConfig.refetch
         })
         // set initial syncStore
         if (customConfig.staleWhileRefetching === false) {
@@ -48,7 +49,7 @@ export const setAsyncV = async (
         setAsyncStatusV(selector, {
             loading: false,
             error: null,
-            refetch:false
+            refetch: customConfig.refetch
         })
         // update syncStore
         setSyncV(selector, data)
@@ -58,7 +59,7 @@ export const setAsyncV = async (
             setAsyncStatusV(selector, {
                 loading:false,
                 error:error ?? true,
-                refetch:false
+                refetch: customConfig.refetch
             })
         }, customConfig.errorTimeout)
     }

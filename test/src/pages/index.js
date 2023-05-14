@@ -12,14 +12,19 @@ export default function Home() {
   const counter = useSyncV('counter')
   console.log('rerender')
   const selector = 'api';
-  const data = useSubAsyncV(selector,asyncFn)
+  const data = useSubAsyncV(selector, asyncFn)
 
   const refetchHandler = async () => {
     // const response = await setAsyncV(selector, asyncFn);
-    setAsyncV(selector, async()=>{
+    setAsyncV(selector, async (p) => {
+      const data = await asyncFn()
+      console.log("🚀 ~ file: index.js:21 ~ setAsyncV ~ data:", data)
+      const returnValue = 'test'
+      console.log("🚀 ~ file: index.js:23 ~ setAsyncV ~ returnValue:", returnValue)
+      return returnValue
+    })
+  }
 
-    }, {})
-  };
   useEffect(() => {
     setSyncV('counter', 1)
   }, [])

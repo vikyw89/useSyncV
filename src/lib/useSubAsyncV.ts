@@ -29,10 +29,12 @@ export const useSubAsyncV = (
   const customConfig = defaultsDeep(config, useSubAsyncVDefaultConfig) as typeof useSubAsyncVDefaultConfig
   const asyncStatus = useAsyncV(selector)
   const data = useSyncV(selector)
-
   // initial fetch
   useEffect(() => {
-    setAsyncV(selector, asyncFn, customConfig)
+    setAsyncV(selector, asyncFn, {
+      ...customConfig,
+      refetch: false
+    })
     return () => {
       // clear data in syncStore when component dismounted
       setSyncV(selector)
@@ -40,10 +42,13 @@ export const useSubAsyncV = (
   }, [])
 
   // for refetch
-  // will refetch when data inside the selector is modified
+  // will refetch when setAsyncV is called
   useEffect(() => {
     if (!asyncStatus.refetch) return
-    setAsyncV(selector, asyncFn, customConfig)
+    setAsyncV(selector, asyncFn, {
+      ...customConfig,
+      refetch: false
+    })
     console.log('refetch!')
   }, [asyncStatus.refetch])
 

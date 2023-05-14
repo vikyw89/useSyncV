@@ -22,18 +22,18 @@ export const useSubAsyncV = (selector, asyncFn, config = useSubAsyncVDefaultConf
     const data = useSyncV(selector);
     // initial fetch
     useEffect(() => {
-        setAsyncV(selector, asyncFn, customConfig);
+        setAsyncV(selector, asyncFn, Object.assign(Object.assign({}, customConfig), { refetch: false }));
         return () => {
             // clear data in syncStore when component dismounted
             setSyncV(selector);
         };
     }, []);
     // for refetch
-    // will refetch when data inside the selector is modified
+    // will refetch when setAsyncV is called
     useEffect(() => {
         if (!asyncStatus.refetch)
             return;
-        setAsyncV(selector, asyncFn, customConfig);
+        setAsyncV(selector, asyncFn, Object.assign(Object.assign({}, customConfig), { refetch: false }));
         console.log('refetch!');
     }, [asyncStatus.refetch]);
     return Object.assign(Object.assign({}, asyncStatus), { data: data });

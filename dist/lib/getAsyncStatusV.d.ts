@@ -1,7 +1,7 @@
 export type defaultAsyncStatus = {
     loading: boolean;
     error: null | object;
-    refetch: false;
+    refetch: boolean;
 };
 export declare const defaultAsyncStatus: {
     loading: boolean;
@@ -13,8 +13,4 @@ export declare const defaultAsyncStatus: {
  *
  * @param selector - The selector to use for reading data from the store.
  */
-export declare function getAsyncStatusV(selector: string): defaultAsyncStatus | {
-    loading: boolean;
-    error: null;
-    refetch: boolean;
-};
+export declare function getAsyncStatusV(selector: string): defaultAsyncStatus;

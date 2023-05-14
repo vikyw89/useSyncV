@@ -3,7 +3,7 @@ import { asyncStatusStore } from './helper.js';
 export const defaultAsyncStatus = {
     loading: false,
     error: null,
-    refetch: false
+    refetch: true
 };
 /**
  * A function that reads data from the asyncStatus store and return the async state of the selector
@@ -13,8 +13,7 @@ export const defaultAsyncStatus = {
 export function getAsyncStatusV(selector) {
     const data = result(asyncStatusStore, selector);
     if (!data) {
-        update(asyncStatusStore, selector, () => defaultAsyncStatus);
-        return defaultAsyncStatus;
+        return update(asyncStatusStore, selector, () => (Object.assign(Object.assign({}, defaultAsyncStatus), { refetch: false })));
     }
     return data;
 }

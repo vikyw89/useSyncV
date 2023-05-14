@@ -5,13 +5,13 @@ import { asyncStatusStore } from './helper.js';
 export type defaultAsyncStatus = {
   loading: boolean
   error: null | object,
-  refetch: false
+  refetch: boolean
 }
 
 export const defaultAsyncStatus = {
   loading: false,
   error: null,
-  refetch: false
+  refetch: true
 }
 
 /**
@@ -23,8 +23,7 @@ export function getAsyncStatusV(selector: string) {
   const data = result(asyncStatusStore, selector) as defaultAsyncStatus
 
   if (!data) {
-    update(asyncStatusStore, selector, () => defaultAsyncStatus) as defaultAsyncStatus
-    return defaultAsyncStatus
+    return update(asyncStatusStore, selector, () => ({ ...defaultAsyncStatus, refetch: false })) as defaultAsyncStatus
   }
 
   return data;

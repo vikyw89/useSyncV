@@ -7,6 +7,7 @@ import { DeepPartial } from './helper.js';
 export declare const setAsyncVDefaultConfig: {
     staleWhileRefetching: boolean;
     errorTimeout: number;
+    refetch: boolean;
 };
 /**
  * A function that sets the data in the store asynchronously using the specified selector and async function.
