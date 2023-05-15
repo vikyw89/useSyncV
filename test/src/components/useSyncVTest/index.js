@@ -1,16 +1,19 @@
 import { Box, Button, Typography } from '@mui/material';
 import { useEffect } from 'react';
-import { setSyncV, useSyncV } from 'use-sync-v';
+import { setSyncV, useSyncV, getSyncV } from 'use-sync-v';
 
 export const UseSyncVTest = () => {
     const syncVData = useSyncV('counter')
-    useSyncV
+    
     useEffect(() => {
         setSyncV('counter', 0)
     }, [])
     
     const incrementHandler = () => {
         setSyncV('counter', p => p + 1)
+        setSyncV('counter', p => p + 1)
+        setSyncV('counter', p => p + 1)
+        const value = getSyncV('counter')
     }
 
     return (

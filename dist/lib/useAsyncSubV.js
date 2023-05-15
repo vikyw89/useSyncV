@@ -38,8 +38,8 @@ export const useAsyncSubV = (selector, asyncFn, config = useAsyncSubVDefaultConf
     useEffect(() => {
         if (!sub.refetch)
             return;
-        setSubStatusV(selector, { refetch: false });
         setAsyncV(selector, asyncFn, customConfig);
+        setSubStatusV(selector, { refetch: false });
     }, [sub.refetch]);
     return Object.assign(Object.assign({}, asyncStatus), { data: data });
 };

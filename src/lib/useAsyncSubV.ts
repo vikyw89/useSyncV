@@ -8,6 +8,7 @@ import { useSyncV } from "./useSyncV.js";
 import { setAsyncStatusV } from "./setAsyncStatusV.js";
 import { useSubStatusV } from "./useSubStatusV.js";
 import { setSubStatusV } from "./setSubStatusV.js";
+import { useAsyncStatusV } from "./useAsyncStatusV.js";
 
 /**
  * Default config for useQueryV
@@ -48,8 +49,8 @@ export const useAsyncSubV = (
   // will refetch when refetchSubV is called
   useEffect(() => {
     if (!sub.refetch) return
-    setSubStatusV(selector, { refetch: false })
     setAsyncV(selector, asyncFn, customConfig)
+    setSubStatusV(selector, { refetch: false })
   }, [sub.refetch])
 
   return {

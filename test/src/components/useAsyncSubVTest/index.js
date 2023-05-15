@@ -1,5 +1,5 @@
 import { Box, Button, Typography } from '@mui/material';
-import { asyncRefetchV, useAsyncSubV } from 'use-sync-v';
+import { asyncRefetchV, useAsyncSubV, useSubStatusV } from 'use-sync-v';
 
 const asyncFn = async () => {
     const response = await fetch('https://randomuser.me/api/');
@@ -9,11 +9,9 @@ const asyncFn = async () => {
 
 export const UseAsyncSubVTest = () => {
     const data = useAsyncSubV('randomUser', asyncFn)
-
+    const sub = useSubStatusV('randomUser')
     const refetchHandler = async () => {
-        asyncRefetchV('randomUser', async (p) => {
-            return p
-        })
+        asyncRefetchV('randomUser')
     }
     return (
         <Box>
