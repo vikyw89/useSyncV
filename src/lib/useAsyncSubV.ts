@@ -27,14 +27,14 @@ export const useAsyncSubVDefaultConfig = {
  */
 export const useAsyncSubV = (
   selector: string,
-  asyncFn: (p:unknown) => Promise<unknown>,
+  asyncFn: (p: unknown) => Promise<unknown>,
   config: DeepPartial<typeof useAsyncSubVDefaultConfig> = useAsyncSubVDefaultConfig
 ) => {
   const customConfig = defaultsDeep(config, useAsyncSubVDefaultConfig) as typeof useAsyncSubVDefaultConfig
   const asyncStatus = useAsyncV(selector)
   const data = useSyncV(selector)
   const sub = useSubStatusV(selector)
-
+  const refetch = sub.refetch
   // initial fetch
   useEffect(() => {
     setAsyncV(selector, asyncFn, customConfig)
@@ -44,14 +44,14 @@ export const useAsyncSubV = (
       setAsyncStatusV(selector)
     }
   }, [])
-
+  
   // for refetch
   // will refetch when refetchSubV is called
   useEffect(() => {
-    if (!sub.refetch) return
-    setSubStatusV(selector, { refetch: false })
+    if (!refetch) return
     setAsyncV(selector, asyncFn, customConfig)
-  }, [sub.refetch])
+    setSubStatusV(selector, { refetch: false })
+  }, [refetch])
 
   return {
     ...asyncStatus,

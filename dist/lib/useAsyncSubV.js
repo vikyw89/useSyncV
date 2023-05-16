@@ -24,6 +24,7 @@ export const useAsyncSubV = (selector, asyncFn, config = useAsyncSubVDefaultConf
     const asyncStatus = useAsyncV(selector);
     const data = useSyncV(selector);
     const sub = useSubStatusV(selector);
+    const refetch = sub.refetch;
     // initial fetch
     useEffect(() => {
         setAsyncV(selector, asyncFn, customConfig);
@@ -36,11 +37,11 @@ export const useAsyncSubV = (selector, asyncFn, config = useAsyncSubVDefaultConf
     // for refetch
     // will refetch when refetchSubV is called
     useEffect(() => {
-        if (!sub.refetch)
+        if (!refetch)
             return;
-        setSubStatusV(selector, { refetch: false });
         setAsyncV(selector, asyncFn, customConfig);
-    }, [sub.refetch]);
+        setSubStatusV(selector, { refetch: false });
+    }, [refetch]);
     return Object.assign(Object.assign({}, asyncStatus), { data: data });
 };
 //# sourceMappingURL=useAsyncSubV.js.map
