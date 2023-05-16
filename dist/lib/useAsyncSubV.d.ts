@@ -4,6 +4,9 @@ import { DeepPartial } from "./helper.js";
  */
 export declare const useAsyncSubVDefaultConfig: {
     staleWhileRefetching: boolean;
+    /**
+     * Default config for useQueryV
+     */
     errorTimeout: number;
 };
 /**

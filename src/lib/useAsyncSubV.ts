@@ -1,5 +1,5 @@
 import { defaultsDeep } from "lodash-es";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { DeepPartial } from "./helper.js";
 import { setAsyncV, setAsyncVDefaultConfig } from "./setAsyncV.js";
 import { setSyncV } from "./setSyncV.js";
@@ -49,8 +49,8 @@ export const useAsyncSubV = (
   // will refetch when refetchSubV is called
   useEffect(() => {
     if (!sub.refetch) return
-    setAsyncV(selector, asyncFn, customConfig)
     setSubStatusV(selector, { refetch: false })
+    setAsyncV(selector, asyncFn, customConfig)
   }, [sub.refetch])
 
   return {

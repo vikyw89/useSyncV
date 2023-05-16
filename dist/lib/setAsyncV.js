@@ -11,6 +11,7 @@ import { defaultsDeep } from 'lodash-es';
 import { setAsyncStatusV } from './setAsyncStatusV.js';
 import { setSyncV } from './setSyncV.js';
 import { getSyncV } from './getSyncV.js';
+import { getAsyncStatusV } from './getAsyncStatusV.js';
 /**
  * Default config for updateAsyncV
  * - errorTimeout - time in ms before error is reset to false
@@ -32,6 +33,10 @@ export const setAsyncVDefaultConfig = {
  */
 export const setAsyncV = (selector, asyncFn = () => __awaiter(void 0, void 0, void 0, function* () { return null; }), config = setAsyncVDefaultConfig) => __awaiter(void 0, void 0, void 0, function* () {
     const customConfig = defaultsDeep(config, setAsyncVDefaultConfig);
+    // prevent multiple fetch when one isn't done yet
+    const ongoingFetch = getAsyncStatusV(selector).loading;
+    if (ongoingFetch)
+        return;
     try {
         // set initial asyncStatusStore
         setAsyncStatusV(selector, {
@@ -44,13 +49,13 @@ export const setAsyncV = (selector, asyncFn = () => __awaiter(void 0, void 0, vo
         }
         // fetch data
         const data = yield asyncFn(getSyncV(selector));
+        // update syncStore
+        setSyncV(selector, data);
         // update asyncStatusStore
         setAsyncStatusV(selector, {
             loading: false,
             error: null
         });
-        // update syncStore
-        setSyncV(selector, data);
     }
     catch (error) {
         // Handle errors

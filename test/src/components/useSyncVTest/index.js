@@ -4,11 +4,15 @@ import { setSyncV, useSyncV, getSyncV } from 'use-sync-v';
 
 export const UseSyncVTest = () => {
     const syncVData = useSyncV('counter')
-    
+    console.log("🚀 ~ file: index.js:7 ~ UseSyncVTest ~ syncVData:", syncVData)
+
     useEffect(() => {
         setSyncV('counter', 0)
+        // return () => {
+        //     setSyncV('counter', 0)
+        // }
     }, [])
-    
+
     const incrementHandler = () => {
         setSyncV('counter', p => p + 1)
         setSyncV('counter', p => p + 1)

@@ -3,6 +3,8 @@ import { DeepPartial } from './helper.js';
 import { setAsyncStatusV } from './setAsyncStatusV.js';
 import { setSyncV } from './setSyncV.js';
 import { getSyncV } from './getSyncV.js';
+import { useEffect } from 'react';
+import { getAsyncStatusV } from './getAsyncStatusV.js';
 
 /**
  * Default config for updateAsyncV
@@ -30,6 +32,9 @@ export const setAsyncV = async (
     config: DeepPartial<typeof setAsyncVDefaultConfig> = setAsyncVDefaultConfig
 ) => {
     const customConfig = defaultsDeep(config, setAsyncVDefaultConfig) as typeof setAsyncVDefaultConfig
+    // prevent multiple fetch when one isn't done yet
+    const ongoingFetch = getAsyncStatusV(selector).loading
+    if (ongoingFetch) return
     try {
         // set initial asyncStatusStore
         setAsyncStatusV(selector, {
@@ -43,13 +48,13 @@ export const setAsyncV = async (
 
         // fetch data
         const data = await asyncFn(getSyncV(selector));
+        // update syncStore
+        setSyncV(selector, data)
         // update asyncStatusStore
         setAsyncStatusV(selector, {
             loading: false,
             error: null
         })
-        // update syncStore
-        setSyncV(selector, data)
     } catch (error) {
         // Handle errors
         setAsyncStatusV(selector, {

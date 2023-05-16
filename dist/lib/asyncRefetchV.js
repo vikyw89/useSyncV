@@ -45,15 +45,24 @@ export const asyncRefetchV = (selector, asyncFn = () => __awaiter(void 0, void 0
         }
         // fetch data
         yield asyncFn(getSyncV(selector));
-        // update asyncStatusStore
+        // update asyncstatus on successful fetch
+        setAsyncStatusV(selector, {
+            loading: false,
+            error: null
+        });
+        // signal to refetch asyncSubV
         setSubStatusV(selector, { refetch: true });
     }
     catch (error) {
         // Handle errors
+        setAsyncStatusV(selector, {
+            loading: false,
+            error: error !== null && error !== void 0 ? error : true
+        });
         setTimeout(() => {
             setAsyncStatusV(selector, {
                 loading: false,
-                error: error !== null && error !== void 0 ? error : true
+                error: null
             });
         }, customConfig.errorTimeout);
     }

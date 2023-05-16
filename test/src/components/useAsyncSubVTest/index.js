@@ -9,7 +9,6 @@ const asyncFn = async () => {
 
 export const UseAsyncSubVTest = () => {
     const data = useAsyncSubV('randomUser', asyncFn)
-    const sub = useSubStatusV('randomUser')
     const refetchHandler = async () => {
         asyncRefetchV('randomUser')
     }

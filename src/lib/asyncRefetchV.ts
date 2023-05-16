@@ -44,15 +44,23 @@ export const asyncRefetchV = async (
 
         // fetch data
         await asyncFn(getSyncV(selector));
-
-        // update asyncStatusStore
+        // update asyncstatus on successful fetch
+        setAsyncStatusV(selector, {
+            loading: false,
+            error: null
+        })
+        // signal to refetch asyncSubV
         setSubStatusV(selector, { refetch: true })
     } catch (error) {
         // Handle errors
+        setAsyncStatusV(selector, {
+            loading: false,
+            error: error ?? true
+        })
         setTimeout(() => {
             setAsyncStatusV(selector, {
                 loading: false,
-                error: error ?? true
+                error: null
             })
         }, customConfig.errorTimeout)
     }
