@@ -1,174 +1,233 @@
 # useSyncV
 
-DOC : https://vikyw89.github.io/useSyncV/
+A lightweight React global store with TypeScript support that combines the simplicity of Zustand with the async power of SWR and React Query.
 
-NPM: https://www.npmjs.com/package/use-sync-v
+[!["npm"](https://img.shields.io/npm/v/use-sync-v)](https://www.npmjs.com/package/use-sync-v)
+[!["license"](https://img.shields.io/badge/license-ISC-blue.svg)](https://github.com/vikyw89/useSyncV/blob/master/LICENSE)
 
-GH: https://github.com/vikyw89/useSyncV
+## Why useSyncV?
 
-breaking change on v3
+- **Simple API** -- No boilerplate, no context providers, no reducers
+- **Typed with TypeScript** -- Full type definitions out of the box
+- **Flexible selectors** -- Use dot notation to access nested state (e.g., `data[0].name`)
+- **Async built-in** -- First-class support for data fetching with loading/error states
+- **Subscription-based refetching** -- Automatically refetch when data changes
+- **Stale-while-revalidate** -- Keep showing old data while refetching new data
+- **React 18 ready** -- Built on `useSyncExternalStore`
 
-Why use sync v ?
+## Installation
 
-- in front all we want is to get synced data from backend
-  - recreating database in front end in a global state is tedious
-  - just subscribe to the data that we need, that we can access anywhere in front end
-- opinionated
-
-## To start
-
-```jsx
-npm i use-sync-v
+```bash
+npm install use-sync-v
 ```
 
-## Usage Example
-
-### To subscribe data from backend for backend without built in subscription
-
-- You want to have a global store that fetch data from backend
-- everytime you modify the backend data, useAsyncSubV will refetch the data for you
-- we use stale data while refetching by default
-- loading and data state can both be true at the same time
-- when the component is dismounted, all fetched data will be erased
-
-```jsx
-const asyncFn = async () => {
-  const response = await fetch('https://randomuser.me/api/');
-  const data = await response.json();
-  return data;
-};
-
-export const UseAsyncSubVTest = () => {
-  // this will subscribe this component to 'randomUser', whenever we do setAsyncFn with 'randomUser' as selector, the data will refetch
-  const { data, loading, error } = useAsyncSubV('randomUser', asyncFn);
-
-  const refetchHandler = async () => {
-    // we want to modify backend data
-    asyncRefetchV('randomUser', async (p) => {
-      // we can set the data here for optimistic rendering (optional)
-      setSyncV('randomUser', someDataForOptimisticRendering);
-
-      // we can put function here to post / modify data in backend database
-      await insertDataToRandomUserTable();
-
-      // useAsyncSubV will automatically refetch data
-    });
-  };
-  return (
-    <div>
-      {loading && <div>Loading</div>}
-      {data && <div>{JSON.stringify(data)}</div>}
-      {error && <div>error</div>}
-      <button onClick={refetchHandler}>refetch</button>
-    </div>
-  );
-};
-
-// let's say we have another component that we want to use the data from 'randomUser'
-export const AnotherComponent = () => {
-  // access data from 'randomUser' earlier
-  const { data, loading, error } = useAsyncV('randomUser');
-  return (
-    <div>
-      {loading && <div>Loading</div>}
-      {data && <div>{JSON.stringify(data)}</div>}
-      {error && <div>error</div>}
-      <button onClick={refetchHandler}>refetch</button>
-    </div>
-  );
-};
+```bash
+yarn add use-sync-v
 ```
-### To subscribe data from backend for backend with built in subscription
+
+## Quick Start
+
+### Global Synchronous State
+
+Create and manage global state without any provider setup:
 
 ```jsx
-export const AsyncSubTest = () => {
-  const {data, loading, error} = useAsyncV('random')
+import { setSyncV, useSyncV } from 'use-sync-v';
 
-  useEffect(()=>{
-    // set up subscription 
-    // then modify state data with 
-    setAsyncV('random', dataReturnedFromSubscription)
-    // this way, everytime there's a new data sent from backend, it will automatically stored to 'random' state
-  },[])
+// Initialize state
+setSyncV('counter', 0);
+
+// Read and subscribe to state
+function CounterDisplay() {
+  const count = useSyncV('counter');
+  return <div>Count: {count}</div>;
+}
+
+// Update state -- supports immutable updates via function
+function IncrementButton() {
+  return (
+    <button onClick={() => setSyncV('counter', p => p + 1)}>
+      Increment
+    </button>
+  );
 }
 ```
-### To have a global state, like redux, zustand etc
+
+### Deeply Nested Updates
+
+Access and update nested objects with dot notation:
 
 ```jsx
-setSyncV('counter', 0);
-// create a counter state with initial value of 0
-// this is not a hook, you can call the function anywhere
-
-setSyncV('counter', (p) => p + 1);
-// this will increment counter state by 1
-
-setSyncV('data', [
-  {
-    name: 'Irene'
-  },
-  {
-    name: 'Irenelle'
-  }
+// Set nested data
+setSyncV('users', [
+  { name: 'Alice', email: 'alice@example.com' },
+  { name: 'Bob', email: 'bob@example.com' }
 ]);
-// this will store an Array of Object into "data" state
+
+// Update deeply nested property
+setSyncV('users[0].phone', '010039945');
+
+// Read specific nested value
+const user = useSyncV('users[0]'); // { name: 'Alice', email: 'alice@example.com', phone: '010039945' }
 ```
 
-Updating a deeply nested object is easy
+### Async Data Fetching
+
+Built-in support for async data with loading/error states:
 
 ```jsx
-setSyncV('data[0].phone_number', '010039945');
-// this will add phone number field to the first object in our Array under the name Irene
+import { setAsyncV, useAsyncV } from 'use-sync-v';
 
-getSyncV('data[0]');
-// => {
-//   name:'Irene',
-//   phone_number:'010039945'
-// }
+function UserProfile() {
+  const { data, loading, error } = useAsyncV('userProfile');
+
+  useEffect(() => {
+    setAsyncV('userProfile', async () => {
+      const res = await fetch('/api/user');
+      return res.json();
+    });
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error loading user</div>;
+  return <div>{data?.name}</div>;
+}
 ```
 
-### To have our react component listens to state change with selector
+### Auto-Refetching Subscriptions
+
+Subscribe to data that automatically refetches when you modify it:
 
 ```jsx
-export const CounterDisplayComponent = () => {
-  const data = useSyncV('data[0]');
-  // sync this component to "data[0]" state, will re render component whenever the value of "data[0]" state changes
+import { useAsyncSubV, asyncRefetchV } from 'use-sync-v';
+
+const fetchUser = async () => {
+  const res = await fetch('https://api.example.com/user');
+  return res.json();
 };
+
+function UserData() {
+  // This subscribes to 'userData' and will auto-refetch when data changes
+  const { data, loading, error } = useAsyncSubV('userData', fetchUser);
+
+  const handleUpdate = async () => {
+    // Modify backend data, then trigger auto-refetch
+    await asyncRefetchV('userData', async () => {
+      await fetch('https://api.example.com/user', { method: 'PUT', body: '...' });
+      // useAsyncSubV will automatically refetch after this completes
+    });
+  };
+
+  return (
+    <div>
+      {loading && <div>Loading...</div>}
+      {data && <div>{JSON.stringify(data)}</div>}
+      <button onClick={handleUpdate}>Update & Refetch</button>
+    </div>
+  );
+}
+
+// Another component can access the same data
+function UserBadge() {
+  const { data } = useAsyncV('userData'); // Access cached data
+  return data ? <span>{data.name}</span> : null;
+}
 ```
 
-### To recap:
+### With Real-time Backends (Firebase, Firestore, etc.)
 
-#### For sync global state
+For backends with built-in subscriptions:
 
 ```jsx
-setSyncV(selector:string, updates:function(previousValue) || value)
-// to update the value of the state selector using an updater function or a value
-// the updater function take a parameter (original state) and return a value (updated state)
-// if given a value, it will replace existing value with the value
+import { setAsyncV, useAsyncV } from 'use-sync-v';
 
-useSyncV(selector:string)
-// to subscribe to the state selector, and will re render the component whenever the value change
-// be specific in the selector to prevent unnecessary rerendering
+function LiveCounter() {
+  const { data, loading } = useAsyncV('liveCounter');
+
+  useEffect(() => {
+    // Set up your realtime subscription
+    const unsubscribe = firestore.collection('counter')
+      .onSnapshot(doc => {
+        // Update store when realtime data arrives
+        setAsyncV('liveCounter', async () => doc.data());
+      });
+
+    return () => unsubscribe();
+  }, []);
+
+  return <div>Live count: {data?.count}</div>;
+}
 ```
 
-#### For async global state
-- with backend without built in subscription
+## API Reference
+
+### Synchronous State
+
+| Function | Description |
+|----------|-------------|
+| `setSyncV(selector, value)` | Set state at selector (supports dot notation) |
+| `setSyncV(selector, updaterFn)` | Update state using previous value |
+| `useSyncV(selector)` | Subscribe to state; re-renders on change |
+
+### Asynchronous State
+
+| Function | Description |
+|----------|-------------|
+| `setAsyncV(selector, asyncFn)` | Fetch and store async data |
+| `useAsyncV(selector)` | Subscribe to async data `{data, loading, error}` |
+| `useAsyncSubV(selector, asyncFn)` | Auto-refetch when data changes |
+| `asyncRefetchV(selector, asyncFn)` | Manually trigger refetch after mutation |
+
+### Configuration
+
+Both async functions accept an optional config:
+
 ```jsx
-useAsyncSubV(selector:string, asyncFn:function, config?:obj)
-// to subscribe to backend
-
-useAsyncV(selector:string, config?:object)
-// will subscribe to the selector, and if there's no existing data, it will prepopulate it with {loading, data, error} initial state
-
-asyncRefetchV(selector:string, asyncFn:function, config?:object)
-// to fetch a data from api, save the results into the store
-
+{
+  staleWhileRefetching: true,  // Keep old data while refetching (default: true)
+  errorTimeout: 10000,         // Auto-clear error after N ms (default: 10000)
+}
 ```
-- with backend with built in subscription like Firestore
+
+## Comparison
+
+| Feature | useSyncV | Redux | Zustand | SWR | React Query |
+|---------|----------|-------|---------|-----|-------------|
+| Boilerplate | None | High | Low | Low | Low |
+| TypeScript | Full | Full | Full | Full | Full |
+| Sync State | Yes | Yes | Yes | No | No |
+| Async State | Yes | No | No | Yes | Yes |
+| Dot notation | Yes | No | No | No | No |
+| Auto-refetch | Yes | No | No | Yes | Yes |
+| SSR/Next.js | Yes | Yes | Yes | Yes | Yes |
+
+## Example with Next.js
+
 ```jsx
-useAsyncV(selector:string)
-// to listen to asyncData
+// app/dashboard/page.jsx
+import { setAsyncV, useAsyncV } from 'use-sync-v';
 
-setAsyncV(selector:string, asyncFn:function, config?:object)
-//
+export default function Dashboard() {
+  const { data: stats, loading } = useAsyncV('dashboardStats');
+
+  useEffect(() => {
+    setAsyncV('dashboardStats', async () => {
+      const res = await fetch('https://api.example.com/stats');
+      return res.json();
+    });
+  }, []);
+
+  if (loading) return <DashboardSkeleton />;
+  return <StatsGrid data={stats} />;
+}
 ```
-for more explanation: look at the code snippet
+
+## License
+
+ISC
+
+## Links
+
+- [Documentation](https://vikyw89.github.io/useSyncV/)
+- [NPM Package](https://www.npmjs.com/package/use-sync-v)
+- [GitHub Repository](https://github.com/vikyw89/useSyncV)
